@@ -1,0 +1,15 @@
+#+title: symbanta-dashboard: Συμβάντα
+
+[🚧 Work in Progress]
+
+Symbanta  is a  privacy-friendly, free and open-source software analytics platform.
+
+It tries to inspire a return to what measurement should be: tracking *what happened so as to improve user experience and reliability*, not for profit and selling customized ads to people.
+
+Symbanta (Greek: *Συμβάντα*, singular *Συμβάν* / *Symban*) originates from the Ancient Greek verb /συμβαίνω/ (/sumbainō/), a compound of /syn-/ ("together") and /bainō/ ("to step or walk"). It translates to: /events, occurrences, or happenings/.
+
+-------
+
+Find the [[https://codeberg.org/jjba23/symbanta][core of symbanta and its API here]]
+
+This project serves as a dashboard to interactively and easily visualize analytics on your properties.
