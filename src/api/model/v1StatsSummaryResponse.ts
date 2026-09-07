@@ -9,6 +9,10 @@
  */
 
 export interface V1StatsSummaryResponse {
+  /** Start timestamp for the aggregated metrics period (inclusive). */
+  from?: string;
+  /** End timestamp for the aggregated metrics period (inclusive). */
+  to?: string;
   pageViews: number;
   visitors: number;
   /** Percentage of single-page visits. */

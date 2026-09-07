@@ -7,23 +7,23 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { GetStatsSummaryPeriod } from "./getStatsSummaryPeriod";
+import type { GetStatsSummaryPeriod } from './getStatsSummaryPeriod';
 
 export type GetStatsSummaryParams = {
-  /**
-   * Registered domain name to fetch metrics for.
-   */
-  domain: string;
-  /**
-   * Time range for aggregated metrics.
-   */
-  period?: GetStatsSummaryPeriod;
-  /**
-   * Required if period is set to `CUSTOM` (YYYY-MM-DD).
-   */
-  "start-date"?: string;
-  /**
-   * Required if period is set to `CUSTOM` (YYYY-MM-DD).
-   */
-  "end-date"?: string;
+/**
+ * Registered domain name to fetch metrics for.
+ */
+domain: string;
+/**
+ * Time range for aggregated metrics.
+ */
+period?: GetStatsSummaryPeriod;
+/**
+ * Required if period is set to `CUSTOM` (YYYY-MM-DD).
+ */
+'start-date'?: string;
+/**
+ * Required if period is set to `CUSTOM` (YYYY-MM-DD).
+ */
+'end-date'?: string;
 };

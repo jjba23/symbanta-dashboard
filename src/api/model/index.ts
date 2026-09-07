@@ -8,10 +8,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export * from "./getStatsSummaryParams";
-export * from "./getStatsSummaryPeriod";
-export * from "./v1EventPayload";
-export * from "./v1EventPayloadProps";
-export * from "./v1EventResponse";
-export * from "./v1ProblemDetails";
-export * from "./v1StatsSummaryResponse";
+export * from './getStatsSummaryParams';
+export * from './getStatsSummaryPeriod';
+export * from './v1EventPayload';
+export * from './v1EventPayloadProps';
+export * from './v1EventResponse';
+export * from './v1ProblemDetails';
+export * from './v1StatsSummaryResponse';
