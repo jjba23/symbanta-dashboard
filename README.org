@@ -13,3 +13,5 @@ Symbanta (Greek: *Συμβάντα*, singular *Συμβάν* / *Symban*) origina
 Find the [[https://codeberg.org/jjba23/symbanta][core of symbanta and its API here]]
 
 This project serves as a dashboard to interactively and easily visualize analytics on your properties.
+
+Built with React, Vite, TailwindCSS, React Query, Orval + OpenAPI
