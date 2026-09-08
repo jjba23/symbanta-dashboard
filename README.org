@@ -1,4 +1,4 @@
-#+title: symbanta-dashboard: Συμβάντα
+#+title: symbanta 🌿 Συμβάντα
 
 Symbanta  is a  privacy-friendly, free and open-source software analytics platform.
 

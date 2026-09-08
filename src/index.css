@@ -17,3 +17,8 @@
 */
 
 @import "tailwindcss";
+
+@theme {
+    --font-sans: "Lucida Sans", sans-serif;
+    --font-mono: "Intel One Mono", monospace;
+}
