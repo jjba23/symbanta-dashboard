@@ -28,10 +28,12 @@ import type {
 
 import type {
   GetStatsSummaryParams,
+  GetTimeSeriesStatsParams,
   V1EventPayload,
   V1EventResponse,
   V1ProblemDetails,
-  V1StatsSummaryResponse
+  V1StatsSummaryResponse,
+  V1TimeSeriesStatsResponse
 } from './model';
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
@@ -284,6 +286,141 @@ export function useGetStatsSummary<TData = Awaited<ReturnType<typeof getStatsSum
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetStatsSummaryQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export type getTimeSeriesStatsResponse200 = {
+  data: V1TimeSeriesStatsResponse
+  status: 200
+}
+
+export type getTimeSeriesStatsResponse401 = {
+  data: V1ProblemDetails
+  status: 401
+}
+
+export type getTimeSeriesStatsResponseSuccess = (getTimeSeriesStatsResponse200) & {
+  headers: Headers;
+};
+export type getTimeSeriesStatsResponseError = (getTimeSeriesStatsResponse401) & {
+  headers: Headers;
+};
+
+export type getTimeSeriesStatsResponse = (getTimeSeriesStatsResponseSuccess | getTimeSeriesStatsResponseError)
+
+export const getGetTimeSeriesStatsUrl = (params: GetTimeSeriesStatsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:8080/v1/stats/timeseries?${stringifiedParams}` : `http://localhost:8080/v1/stats/timeseries`
+}
+
+/**
+ * Retrieve time-bucketed analytics (hourly or daily) formatted for populating bar/line charts.
+ * @summary Get time-series statistics for chart rendering
+ */
+export const getTimeSeriesStats = async (params: GetTimeSeriesStatsParams, options?: RequestInit): Promise<getTimeSeriesStatsResponse> => {
+
+  const res = await fetch(getGetTimeSeriesStatsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+)
+
+  const contentType = (res.headers.get('content-type') ?? '').toLowerCase();
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getTimeSeriesStatsResponse['data'] = body ? (contentType.includes('json') ? JSON.parse(body) : body) : {}
+  return { data, status: res.status, headers: res.headers } as getTimeSeriesStatsResponse
+}
+
+
+
+
+
+export const getGetTimeSeriesStatsQueryKey = (params?: GetTimeSeriesStatsParams,) => {
+    return [
+    `http://localhost:8080/v1/stats/timeseries`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetTimeSeriesStatsQueryOptions = <TData = Awaited<ReturnType<typeof getTimeSeriesStats>>, TError = V1ProblemDetails>(params: GetTimeSeriesStatsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimeSeriesStatsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeSeriesStats>>> = ({ signal }) => getTimeSeriesStats(params, { signal, ...fetchOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetTimeSeriesStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeSeriesStats>>>
+export type GetTimeSeriesStatsQueryError = V1ProblemDetails
+
+
+export function useGetTimeSeriesStats<TData = Awaited<ReturnType<typeof getTimeSeriesStats>>, TError = V1ProblemDetails>(
+ params: GetTimeSeriesStatsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimeSeriesStats>>,
+          TError,
+          Awaited<ReturnType<typeof getTimeSeriesStats>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimeSeriesStats<TData = Awaited<ReturnType<typeof getTimeSeriesStats>>, TError = V1ProblemDetails>(
+ params: GetTimeSeriesStatsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimeSeriesStats>>,
+          TError,
+          Awaited<ReturnType<typeof getTimeSeriesStats>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimeSeriesStats<TData = Awaited<ReturnType<typeof getTimeSeriesStats>>, TError = V1ProblemDetails>(
+ params: GetTimeSeriesStatsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get time-series statistics for chart rendering
+ */
+
+export function useGetTimeSeriesStats<TData = Awaited<ReturnType<typeof getTimeSeriesStats>>, TError = V1ProblemDetails>(
+ params: GetTimeSeriesStatsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSeriesStats>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetTimeSeriesStatsQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
