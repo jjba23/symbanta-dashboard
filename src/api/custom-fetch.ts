@@ -21,9 +21,12 @@ export const customFetch = async <T>(
     url: string,
     options: RequestInit = {}
 ): Promise<T> => {
-    const response = await fetch(url, {
+    // Convert http://localhost:8080/v1/... to /v1/... so it uses Vite proxy
+    const relativeUrl = url.replace('http://localhost:8080', '');
+
+    const response = await fetch(relativeUrl, {
         ...options,
-        credentials: 'include', // Automatically sends JSESSIONID cookie on all requests
+        credentials: 'include',
     });
 
     const contentType = (response.headers.get('content-type') ?? '').toLowerCase();
