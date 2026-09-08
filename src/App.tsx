@@ -30,7 +30,7 @@ function App() {
 
                     <header className="mb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 flex items-center gap-3">
-                            Symbanta 🌿
+                            symbanta 🌿 Συμβάντα
                         </h1>
                         <p className="mt-2 text-base text-stone-500">
                             Your cozy, privacy-friendly analytics dashboard.
