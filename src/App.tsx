@@ -16,34 +16,55 @@
 * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import {StatsDashboard} from "./StatsDashboard.tsx";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {TimeSeries} from "./TimeSeries.tsx";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {LoginPage} from './LoginPage';
+import {StatsDashboard} from './StatsDashboard';
+import {TimeSeries} from './TimeSeries';
+import Header from "./Header.tsx";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error: any) => {
+            const status = error?.status || error?.response?.status;
+            if (status === 401 || status === 403) {
+                if (window.location.pathname !== '/login') {
+                    window.location.href = '/login';
+                }
+            }
+        },
+    }),
+});
+
+function DashboardLayout() {
+    return (
+        <div className="p-8 max-w-7xl mx-auto space-y-8">
+            <Header/>
+            <StatsDashboard domain="localhost"/>
+            <TimeSeries domain="localhost"/>
+        </div>
+    );
+}
+
+function LoginLayout() {
+    return (
+        <div className="p-8 max-w-7xl mx-auto space-y-8">
+            <Header/>
+            <LoginPage/>
+        </div>
+    );
+}
+
 
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="min-h-screen bg-stone-50 text-stone-800 font-sans selection:bg-rose-200">
-                <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
-                    <header className="mb-10">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 flex items-center gap-3">
-                            symbanta 🌿 Συμβάντα
-                        </h1>
-                        <p className="mt-2 text-base text-stone-500">
-                            Your cozy, privacy-friendly analytics dashboard.
-                        </p>
-                    </header>
-
-                    <main className="flex flex-col gap-8">
-                        <StatsDashboard/>
-                        <TimeSeries/>
-                    </main>
-
-                </div>
-            </div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<LoginLayout/>}/>
+                    <Route path="/" element={<DashboardLayout/>}/>
+                </Routes>
+            </BrowserRouter>
         </QueryClientProvider>
     );
 }
