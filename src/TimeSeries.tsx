@@ -95,6 +95,7 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
     const {data, isLoading, isError, error} = useGetTimeSeriesStats({
         domain,
         period,
+        
     });
 
     // Login Mutation
