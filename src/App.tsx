@@ -1,3 +1,21 @@
+/* symbanta-dashboard
+*
+* Copyright © Josep Bigorra <jjbigorra@gmail.com>
+*
+* symbanta-dashboard is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* symbanta-dashboard is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import {StatsDashboard} from "./StatsDashboard.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {TimeSeries} from "./TimeSeries.tsx";
@@ -7,7 +25,6 @@ const queryClient = new QueryClient();
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            {/* Added a warm background, nice default text color, and full minimum height */}
             <div className="min-h-screen bg-stone-50 text-stone-800 font-sans selection:bg-rose-200">
                 <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 

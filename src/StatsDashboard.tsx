@@ -24,31 +24,39 @@ interface StatsDashboardProps {
     domain?: string;
 }
 
+// A reusable sub-component for our cozy stat cards
+function StatCard({title, value}: { title: string, value: string | number }) {
+    return (
+        <div className="flex flex-col p-5 bg-stone-50/80 rounded-2xl border border-stone-100">
+            <span className="text-sm font-medium text-stone-500 mb-1">{title}</span>
+            <span className="text-3xl font-bold text-stone-800">{value}</span>
+        </div>
+    );
+}
+
 export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
     const {data, isLoading, isError, error} = useGetStatsSummary({
         domain,
         period: "LAST_30_DAYS",
     });
 
-
     if (isLoading) {
-        return <div>Loading analytics...</div>;
+        return <div className="p-8 text-stone-500 text-center animate-pulse">Gathering leaves... (Loading
+            analytics)</div>;
     }
 
     if (isError) {
         const errObj = error as { detail?: string; title?: string; message?: string };
         const errorMessage =
             errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
-        return <div>Error loading stats: {errorMessage}</div>;
+        return <div className="p-8 text-rose-500 bg-rose-50 rounded-3xl">Error loading stats: {errorMessage}</div>;
     }
-
 
     const stats = data?.data as V1StatsSummaryResponse;
 
     const pageViews = stats.pageViews ?? 0;
     const visitors = stats.visitors ?? 0;
     const bounceRate = stats.bounceRate ?? 0;
-
     const roundDuration = (num: number) => Math.round((num + Number.EPSILON) * 100) / 100;
 
     const averageDurationSeconds = stats.averageDurationMillis
@@ -60,16 +68,32 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
     // @ts-ignore
     const to = new Date(stats.to);
 
-
     return (
-        <div className="w-full h-120 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl text-pink-700">Analytics for: {domain}</h2>
-            <p>Page Views: {pageViews.toLocaleString()}</p>
-            <p>Visitors: {visitors.toLocaleString()}</p>
-            <p>Average session duration =~ {roundDuration(averageDurationSeconds)} seconds</p>
-            <p>Bounce Rate: {bounceRate}%</p>
-            <p>From: {formattedDate(from)}</p>
-            <p>To: {formattedDate(to)}</p>
+        <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
+
+            {/* Header section with nice pill badges */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+                <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2">
+                    Overview for
+                    <span className="text-rose-600 bg-rose-50 px-3 py-1 rounded-xl text-sm border border-rose-100">
+                        {domain}
+                    </span>
+                </h2>
+
+                <div
+                    className="text-sm font-medium text-stone-500 bg-stone-100 px-4 py-1.5 rounded-full flex items-center gap-2">
+                    <span>🗓</span> {formattedDate(from)} <span className="text-stone-300">—</span> {formattedDate(to)}
+                </div>
+            </div>
+
+            {/* Cozy Grid layout for the numbers */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <StatCard title="Page Views" value={pageViews.toLocaleString()}/>
+                <StatCard title="Unique Visitors" value={visitors.toLocaleString()}/>
+                <StatCard title="Avg. Visit" value={`${roundDuration(averageDurationSeconds)}s`}/>
+                <StatCard title="Bounce Rate" value={`${bounceRate}%`}/>
+            </div>
+
         </div>
     );
 }
