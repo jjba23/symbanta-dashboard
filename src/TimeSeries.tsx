@@ -16,8 +16,9 @@
 * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import {useState} from "react";
 import {useGetTimeSeriesStats} from "./api/symbanta.ts";
-import type {V1TimeSeriesStatsResponse} from "./api/model";
+import {GetTimeSeriesStatsPeriod, type V1TimeSeriesStatsResponse} from "./api/model";
 import {
     Bar,
     BarChart,
@@ -29,6 +30,18 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
+
+
+type PeriodType = typeof GetTimeSeriesStatsPeriod[keyof typeof GetTimeSeriesStatsPeriod];
+
+const PERIOD_LABELS: Record<PeriodType, string> = {
+    [GetTimeSeriesStatsPeriod.LAST_24_HOURS]: 'Last 24 Hours',
+    [GetTimeSeriesStatsPeriod.LAST_7_DAYS]: 'Last 7 Days',
+    [GetTimeSeriesStatsPeriod.LAST_30_DAYS]: 'Last 30 Days',
+    [GetTimeSeriesStatsPeriod.LAST_6_MONTHS]: 'Last 6 Months',
+    [GetTimeSeriesStatsPeriod.LAST_12_MONTHS]: 'Last 12 Months',
+    [GetTimeSeriesStatsPeriod.CUSTOM]: 'Custom',
+};
 
 interface StatsDashboardProps {
     domain?: string;
@@ -58,9 +71,11 @@ const CustomTooltip = ({active, payload, label}: TooltipProps<number, string>) =
 };
 
 export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
+    const [period, setPeriod] = useState<PeriodType>(GetTimeSeriesStatsPeriod.LAST_30_DAYS);
+
     const {data, isLoading, isError, error} = useGetTimeSeriesStats({
         domain,
-        period: "LAST_30_DAYS",
+        period,
     });
 
     if (isLoading) {
@@ -78,9 +93,29 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
     const stats = data?.data as V1TimeSeriesStatsResponse | undefined;
 
     if (!stats || !stats.points || stats.points.length === 0) {
-        return <div
-            className="p-8 text-center text-stone-500 bg-white rounded-3xl shadow-sm border border-stone-200/60">No
-            traffic data available for this period yet. 🍂</div>;
+        return (
+            <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+                    <h2 className="text-xl font-bold text-stone-800">Traffic Trends</h2>
+                    <select
+                        value={period}
+                        onChange={(e) => setPeriod(e.target.value as PeriodType)}
+                        className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                    >
+                        {Object.values(GetTimeSeriesStatsPeriod)
+                            .filter((p) => p !== GetTimeSeriesStatsPeriod.CUSTOM)
+                            .map((p) => (
+                                <option key={p} value={p}>
+                                    {PERIOD_LABELS[p]}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+                <div className="p-8 text-center text-stone-500">
+                    No traffic data available for this period yet. 🍂
+                </div>
+            </div>
+        );
     }
 
     const chartData = stats.points.map((point) => {
@@ -105,11 +140,26 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
 
     return (
         <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
-            <div className="mb-8">
+            {/* Header with Title and Period Picker */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
                 <h2 className="text-xl font-bold text-stone-800">Traffic Trends</h2>
+
+                <select
+                    value={period}
+                    onChange={(e) => setPeriod(e.target.value as PeriodType)}
+                    className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                >
+                    {Object.values(GetTimeSeriesStatsPeriod)
+                        .filter((p) => p !== GetTimeSeriesStatsPeriod.CUSTOM)
+                        .map((p) => (
+                            <option key={p} value={p}>
+                                {PERIOD_LABELS[p]}
+                            </option>
+                        ))}
+                </select>
             </div>
 
-            {/* Fixed the Tailwind height to an arbitrary, safe 400px height */}
+            {/* Chart Area */}
             <div className="w-full h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -145,15 +195,15 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                         <Bar
                             dataKey="pageViews"
                             name="Page Views"
-                            fill="#8b5cf6" // A softer Violet
-                            radius={[6, 6, 0, 0]} // Slightly more rounded bars
+                            fill="#8b5cf6"
+                            radius={[6, 6, 0, 0]}
                             maxBarSize={45}
                         />
 
                         <Bar
                             dataKey="visitors"
                             name="Unique Visitors"
-                            fill="#f472b6" // A warm pink
+                            fill="#f472b6"
                             radius={[6, 6, 0, 0]}
                             maxBarSize={45}
                         />
@@ -163,3 +213,4 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
         </div>
     );
 }
+

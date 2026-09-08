@@ -18,19 +18,19 @@
 
 import {useState} from "react";
 import {useGetStatsSummary} from "./api/symbanta.ts";
-import {GetTimeSeriesStatsPeriod, type V1StatsSummaryResponse} from "./api/model";
 import {formatDuration, formattedDate, roundToTwoPlaces} from "./Prelude.ts";
+import {GetStatsSummaryPeriod, type V1StatsSummaryResponse} from "./api/model";
 
 
-type PeriodType = typeof GetTimeSeriesStatsPeriod[keyof typeof GetTimeSeriesStatsPeriod];
+type PeriodType = typeof GetStatsSummaryPeriod[keyof typeof GetStatsSummaryPeriod];
 
 const PERIOD_LABELS: Record<PeriodType, string> = {
-    [GetTimeSeriesStatsPeriod.LAST_24_HOURS]: 'Last 24 Hours',
-    [GetTimeSeriesStatsPeriod.LAST_7_DAYS]: 'Last 7 Days',
-    [GetTimeSeriesStatsPeriod.LAST_30_DAYS]: 'Last 30 Days',
-    [GetTimeSeriesStatsPeriod.LAST_6_MONTHS]: 'Last 6 Months',
-    [GetTimeSeriesStatsPeriod.LAST_12_MONTHS]: 'Last 12 Months',
-    [GetTimeSeriesStatsPeriod.CUSTOM]: 'Custom',
+    [GetStatsSummaryPeriod.LAST_24_HOURS]: 'Last 24 Hours',
+    [GetStatsSummaryPeriod.LAST_7_DAYS]: 'Last 7 Days',
+    [GetStatsSummaryPeriod.LAST_30_DAYS]: 'Last 30 Days',
+    [GetStatsSummaryPeriod.LAST_6_MONTHS]: 'Last 6 Months',
+    [GetStatsSummaryPeriod.LAST_12_MONTHS]: 'Last 12 Months',
+    [GetStatsSummaryPeriod.CUSTOM]: 'Custom',
 };
 
 interface StatsDashboardProps {
@@ -47,7 +47,7 @@ function StatCard({title, value}: { title: string; value: string | number }) {
 }
 
 export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
-    const [period, setPeriod] = useState<PeriodType>(GetTimeSeriesStatsPeriod.LAST_30_DAYS);
+    const [period, setPeriod] = useState<PeriodType>(GetStatsSummaryPeriod.LAST_30_DAYS);
 
     const {data, isLoading, isError, error} = useGetStatsSummary({
         domain,
@@ -107,8 +107,8 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
                         onChange={(e) => setPeriod(e.target.value as PeriodType)}
                         className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
                     >
-                        {Object.values(GetTimeSeriesStatsPeriod)
-                            .filter((p) => p !== GetTimeSeriesStatsPeriod.CUSTOM) // Filter out CUSTOM if not handling custom date ranges
+                        {Object.values(GetStatsSummaryPeriod)
+                            .filter((p) => p !== GetStatsSummaryPeriod.CUSTOM) // Filter out CUSTOM if not handling custom date ranges
                             .map((p) => (
                                 <option key={p} value={p}>
                                     {PERIOD_LABELS[p]}
@@ -136,3 +136,5 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
         </div>
     );
 }
+
+
