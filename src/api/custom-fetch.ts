@@ -22,9 +22,9 @@ export const customFetch = async <T>(
     options: RequestInit = {}
 ): Promise<T> => {
     // Convert http://localhost:8080/v1/... to /v1/... so it uses Vite proxy
-    const relativeUrl = url.replace('http://localhost:8080', '');
+    // const relativeUrl = url.replace('http://localhost:8080', '');
 
-    const response = await fetch(relativeUrl, {
+    const response = await fetch(url, {
         ...options,
         credentials: 'include',
     });
