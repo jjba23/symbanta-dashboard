@@ -25,7 +25,14 @@ export default defineConfig({
             target: "./src/api/symbanta.ts",
             schemas: "./src/api/model",
             client: "react-query",
+            override: {
+                mutator: {
+                    path: './src/api/custom-fetch.ts',
+                    name: 'customFetch',
+                },
+            },
             baseUrl: "http://localhost:8080",
         },
     },
 });
+

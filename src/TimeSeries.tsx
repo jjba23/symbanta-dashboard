@@ -17,9 +17,8 @@
 */
 
 import {useState} from "react";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useGetTimeSeriesStats} from "./api/symbanta.ts";
-import {GetTimeSeriesStatsPeriod, type V1TimeSeriesStatsResponse} from "./api/model";
+import {GetStatsSummaryPeriod, GetTimeSeriesStatsPeriod, type V1TimeSeriesStatsResponse} from "./api/model";
 import {
     Bar,
     BarChart,
@@ -47,22 +46,6 @@ interface StatsDashboardProps {
     domain?: string;
 }
 
-// Helper login fetcher matching Spring Boot /api/auth/login endpoint
-const loginUser = async (credentials: { username: string; password: string }) => {
-    const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify(credentials),
-    });
-
-    if (!response.ok) {
-        throw new Error('Invalid username or password');
-    }
-    return response.json();
-};
-
-// --- Custom Tooltip ---
 // @ts-ignore
 const CustomTooltip = ({active, payload, label}: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
@@ -87,98 +70,18 @@ const CustomTooltip = ({active, payload, label}: TooltipProps<number, string>) =
 
 export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
     const [period, setPeriod] = useState<PeriodType>(GetTimeSeriesStatsPeriod.LAST_30_DAYS);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
-    const queryClient = useQueryClient();
-
-    const {data, isLoading, isError, error} = useGetTimeSeriesStats({
-        domain,
-        period,
-        
-    });
-
-    // Login Mutation
-    const loginMutation = useMutation({
-        mutationFn: loginUser,
-        onSuccess: () => {
-            // Refetch queries after authenticating
-            queryClient.invalidateQueries();
-        },
-    });
-
-    const handleLoginSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        loginMutation.mutate({username, password});
-    };
+    // Pass fetch credentials so JSESSIONID cookie is sent with the request
+    const {data, isLoading, isError, error} = useGetTimeSeriesStats(
+        {domain, period},
+    );
 
     if (isLoading) {
         return <div className="p-8 text-stone-500 text-center animate-pulse">Loading time series...</div>;
     }
 
-    // Handle Authorization / Error State
     if (isError) {
-        const errObj = error as {
-            status?: number;
-            response?: { status?: number };
-            detail?: string;
-            title?: string;
-            message?: string
-        };
-        const status = errObj?.status || errObj?.response?.status;
-        const isAuthError = status === 401 || status === 403;
-
-        // Render Login Form if unauthorized or unauthenticated
-        if (isAuthError) {
-            return (
-                <div
-                    className="w-full max-w-md mx-auto bg-white p-8 rounded-3xl shadow-sm border border-stone-200/60 my-10">
-                    <h2 className="text-xl font-bold text-stone-800 mb-2">Authentication Required</h2>
-                    <p className="text-sm text-stone-500 mb-6">Please log in to view traffic analytics.</p>
-
-                    <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
-                        <div>
-                            <label className="block text-xs font-semibold text-stone-600 mb-1">Username</label>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                                className="w-full text-sm text-stone-800 bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
-                                placeholder="Enter username"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-xs font-semibold text-stone-600 mb-1">Password</label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                className="w-full text-sm text-stone-800 bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
-                                placeholder="••••••••"
-                            />
-                        </div>
-
-                        {loginMutation.isError && (
-                            <p className="text-xs text-rose-500 font-medium">
-                                {(loginMutation.error as Error).message}
-                            </p>
-                        )}
-
-                        <button
-                            type="submit"
-                            disabled={loginMutation.isPending}
-                            className="w-full mt-2 bg-rose-500 hover:bg-rose-600 text-white font-medium text-sm py-2.5 rounded-xl transition-colors disabled:opacity-50"
-                        >
-                            {loginMutation.isPending ? 'Logging in...' : 'Sign In'}
-                        </button>
-                    </form>
-                </div>
-            );
-        }
-
+        const errObj = error as { detail?: string; title?: string; message?: string };
         const errorMessage = errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
         return <div className="p-8 text-rose-500 bg-rose-50 rounded-3xl">Error loading time
             series: {errorMessage}</div>;
@@ -197,7 +100,7 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                         className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
                     >
                         {Object.values(GetTimeSeriesStatsPeriod)
-                            .filter((p) => p !== GetTimeSeriesStatsPeriod.CUSTOM)
+                            .filter((p) => p !== GetStatsSummaryPeriod.CUSTOM)
                             .map((p) => (
                                 <option key={p} value={p}>
                                     {PERIOD_LABELS[p]}
@@ -214,30 +117,16 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
 
     const chartData = stats.points.map((point) => {
         const date = new Date(point.timestamp);
-        let formattedLabel = '';
-        if (stats.granularity === 'DAY') {
-            formattedLabel = date.toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric'
-            });
-        } else {
-            formattedLabel = date.toLocaleTimeString(undefined, {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-        return {
-            ...point,
-            label: formattedLabel,
-        };
+        const formattedLabel = stats.granularity === 'DAY'
+            ? date.toLocaleDateString(undefined, {month: 'short', day: 'numeric'})
+            : date.toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
+        return {...point, label: formattedLabel};
     });
 
     return (
         <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
-            {/* Header with Title and Period Picker */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
                 <h2 className="text-xl font-bold text-stone-800">Traffic Trends</h2>
-
                 <select
                     value={period}
                     onChange={(e) => setPeriod(e.target.value as PeriodType)}
@@ -253,54 +142,21 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                 </select>
             </div>
 
-            {/* Chart Area */}
             <div className="w-full h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                        data={chartData}
-                        margin={{top: 10, right: 10, left: -20, bottom: 0}}
-                    >
+                    <BarChart data={chartData} margin={{top: 10, right: 10, left: -20, bottom: 0}}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4"/>
-
-                        <XAxis
-                            dataKey="label"
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{fill: '#a8a29e', fontSize: 12}}
-                            dy={10}
-                        />
-
-                        <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{fill: '#a8a29e', fontSize: 12}}
-                            allowDecimals={false}
-                        />
-
+                        <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{fill: '#a8a29e', fontSize: 12}}
+                               dy={10}/>
+                        <YAxis axisLine={false} tickLine={false} tick={{fill: '#a8a29e', fontSize: 12}}
+                               allowDecimals={false}/>
                         <Tooltip content={<CustomTooltip/>} cursor={{fill: '#fafaf9'}}/>
-
-                        <Legend
-                            verticalAlign="top"
-                            height={40}
-                            iconType="circle"
-                            wrapperStyle={{fontSize: '14px', color: '#57534e', paddingBottom: '10px'}}
-                        />
-
-                        <Bar
-                            dataKey="pageViews"
-                            name="Page Views"
-                            fill="#8b5cf6"
-                            radius={[6, 6, 0, 0]}
-                            maxBarSize={45}
-                        />
-
-                        <Bar
-                            dataKey="visitors"
-                            name="Unique Visitors"
-                            fill="#f472b6"
-                            radius={[6, 6, 0, 0]}
-                            maxBarSize={45}
-                        />
+                        <Legend position="top" height={40} iconType="circle"
+                                wrapperStyle={{fontSize: '14px', color: '#57534e', paddingBottom: '10px'}}/>
+                        <Bar dataKey="pageViews" name="Page Views" fill="#8b5cf6" radius={[6, 6, 0, 0]}
+                             maxBarSize={45}/>
+                        <Bar dataKey="visitors" name="Unique Visitors" fill="#f472b6" radius={[6, 6, 0, 0]}
+                             maxBarSize={45}/>
                     </BarChart>
                 </ResponsiveContainer>
             </div>
