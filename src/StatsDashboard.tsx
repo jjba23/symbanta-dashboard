@@ -18,7 +18,7 @@
 
 import {useGetStatsSummary} from "./api/symbanta.ts";
 import type {V1StatsSummaryResponse} from "./api/model";
-import {formattedDate} from "./Prelude.ts";
+import {formatDuration, formattedDate, roundToTwoPlaces} from "./Prelude.ts";
 
 interface StatsDashboardProps {
     domain?: string;
@@ -57,7 +57,6 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
     const pageViews = stats.pageViews ?? 0;
     const visitors = stats.visitors ?? 0;
     const bounceRate = stats.bounceRate ?? 0;
-    const roundDuration = (num: number) => Math.round((num + Number.EPSILON) * 100) / 100;
 
     const averageDurationSeconds = stats.averageDurationMillis
         ? stats.averageDurationMillis / 1000
@@ -90,8 +89,8 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <StatCard title="Page Views" value={pageViews.toLocaleString()}/>
                 <StatCard title="Unique Visitors" value={visitors.toLocaleString()}/>
-                <StatCard title="Avg. Visit" value={`${roundDuration(averageDurationSeconds)}s`}/>
-                <StatCard title="Bounce Rate" value={`${bounceRate}%`}/>
+                <StatCard title="Avg. Visit" value={`${formatDuration(averageDurationSeconds)}`}/>
+                <StatCard title="Bounce Rate" value={`${roundToTwoPlaces(bounceRate)}%`}/>
             </div>
 
         </div>
