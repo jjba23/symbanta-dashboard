@@ -21,10 +21,6 @@
 
 ;; ====== Maak constants ======
 
-;; The TCP port on which the development web server will listen.
-(define http-port
-  50011)
-
 ;; The absolute path to the directory where the main project files will be deployed.
 (define deploy-dir
   "/srv/http/symbanta.jointhefreeworld.org")
