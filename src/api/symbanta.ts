@@ -35,6 +35,7 @@ import type {
   V1EventPayload,
   V1EventResponse,
   V1ProblemDetails,
+  V1PropertiesResponse,
   V1StatsSummaryResponse,
   V1TimeSeriesStatsResponse
 } from './model';
@@ -471,6 +472,127 @@ export const useRegisterEvent = <TError = V1ProblemDetails,
       > => {
       return useMutation(getRegisterEventMutationOptions(options), queryClient);
     }
+
+export type getPropertiesResponse200 = {
+  data: V1PropertiesResponse
+  status: 200
+}
+
+export type getPropertiesResponse401 = {
+  data: V1ProblemDetails
+  status: 401
+}
+
+export type getPropertiesResponseSuccess = (getPropertiesResponse200) & {
+  headers: Headers;
+};
+export type getPropertiesResponseError = (getPropertiesResponse401) & {
+  headers: Headers;
+};
+
+export type getPropertiesResponse = (getPropertiesResponseSuccess | getPropertiesResponseError)
+
+export const getGetPropertiesUrl = () => {
+
+
+
+
+  return `http://localhost:8080/v1/properties`
+}
+
+/**
+ * Retrieve a list of registered properties (domains) for selection in the dashboard.
+ * @summary Get registered properties
+ */
+export const getProperties = async ( options?: Parameters<typeof customFetch>[1]): Promise<getPropertiesResponse> => {
+
+  return customFetch<getPropertiesResponse>(getGetPropertiesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPropertiesQueryKey = () => {
+    return [
+    `http://localhost:8080/v1/properties`
+    ] as const;
+    }
+
+
+export const getGetPropertiesQueryOptions = <TData = Awaited<ReturnType<typeof getProperties>>, TError = V1ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPropertiesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProperties>>> = ({ signal }) => getProperties({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetPropertiesQueryResult = NonNullable<Awaited<ReturnType<typeof getProperties>>>
+export type GetPropertiesQueryError = V1ProblemDetails
+
+
+export function useGetProperties<TData = Awaited<ReturnType<typeof getProperties>>, TError = V1ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProperties>>,
+          TError,
+          Awaited<ReturnType<typeof getProperties>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProperties<TData = Awaited<ReturnType<typeof getProperties>>, TError = V1ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProperties>>,
+          TError,
+          Awaited<ReturnType<typeof getProperties>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProperties<TData = Awaited<ReturnType<typeof getProperties>>, TError = V1ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get registered properties
+ */
+
+export function useGetProperties<TData = Awaited<ReturnType<typeof getProperties>>, TError = V1ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProperties>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetPropertiesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 
 export type getStatsSummaryResponse200 = {
   data: V1StatsSummaryResponse

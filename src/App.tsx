@@ -22,6 +22,8 @@ import {LoginPage} from './LoginPage';
 import {StatsDashboard} from './StatsDashboard';
 import {TimeSeries} from './TimeSeries';
 import Header from "./Header.tsx";
+import {DomainSwitcher} from "./DomainSwitcher.tsx";
+import {useState} from "react";
 
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
@@ -37,9 +39,11 @@ const queryClient = new QueryClient({
 });
 
 function DashboardLayout() {
+    const [selectedDomain, setSelectedDomain] = useState('');
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-8">
             <Header/>
+            <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain}/>
             <StatsDashboard domain="localhost"/>
             <TimeSeries domain="localhost"/>
         </div>
