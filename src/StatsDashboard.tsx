@@ -71,7 +71,7 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
         );
     }
 
-    const stats = data?.data as V1StatsSummaryResponse;
+    const stats = data?.data as V1StatsSummaryResponse | undefined;
     const pageViews = stats?.pageViews ?? 0;
     const visitors = stats?.visitors ?? 0;
     const bounceRate = stats?.bounceRate ?? 0;
@@ -79,6 +79,8 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
 
     const from = stats?.from ? new Date(stats.from) : new Date();
     const to = stats?.to ? new Date(stats.to) : new Date();
+
+    const hasNoData = !stats || (pageViews === 0 && visitors === 0);
 
     return (
         <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
@@ -113,12 +115,32 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatCard title="Page Views" value={pageViews.toLocaleString()}/>
-                <StatCard title="Unique Visitors" value={visitors.toLocaleString()}/>
-                <StatCard title="Avg. Visit" value={`${formatDuration(averageDurationSeconds)}`}/>
-                <StatCard title="Bounce Rate" value={`${roundToTwoPlaces(bounceRate)}%`}/>
-            </div>
+            {hasNoData ? (
+                <div
+                    className="w-full py-12 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-2xl bg-stone-50/50">
+                    <div
+                        className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 border border-stone-200/60 flex items-center justify-center text-stone-400 shadow-sm">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                                  d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                                  d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/>
+                        </svg>
+                    </div>
+                    <h3 className="text-base font-semibold text-stone-800 mb-1">No summary data available</h3>
+                    <p className="text-xs text-stone-500 max-w-xs leading-relaxed">
+                        No traffic activity recorded for <span className="font-medium text-stone-700">{domain}</span> in
+                        this timeframe.
+                    </p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <StatCard title="Page Views" value={pageViews.toLocaleString()}/>
+                    <StatCard title="Unique Visitors" value={visitors.toLocaleString()}/>
+                    <StatCard title="Avg. Visit" value={`${formatDuration(averageDurationSeconds)}`}/>
+                    <StatCard title="Bounce Rate" value={`${roundToTwoPlaces(bounceRate)}%`}/>
+                </div>
+            )}
         </div>
     );
 }

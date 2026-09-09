@@ -44,8 +44,8 @@ function DashboardLayout() {
         <div className="p-8 max-w-7xl mx-auto space-y-8">
             <Header/>
             <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain}/>
-            <StatsDashboard domain="localhost"/>
-            <TimeSeries domain="localhost"/>
+            <StatsDashboard domain={selectedDomain}/>
+            <TimeSeries domain={selectedDomain}/>
         </div>
     );
 }
