@@ -38,9 +38,19 @@ interface StatsDashboardProps {
 
 function StatCard({title, value}: { title: string; value: string | number }) {
     return (
-        <div className="flex flex-col p-5 bg-stone-50/80 rounded-2xl border border-stone-100">
-            <span className="text-sm font-medium text-stone-500 mb-1">{title}</span>
-            <span className="text-3xl font-bold text-stone-800">{value}</span>
+        <div
+            className="flex flex-col justify-between p-4 sm:p-5 bg-stone-50/80 rounded-2xl border border-stone-100 min-w-0 transition-all">
+            <span className="text-xs sm:text-sm font-medium text-stone-500 mb-1.5 truncate">
+                {title}
+            </span>
+            <div className="w-full overflow-hidden">
+                <span
+                    className="block text-xl sm:text-2xl xl:text-3xl font-bold text-stone-800 whitespace-nowrap truncate tracking-tight"
+                    title={String(value)}
+                >
+                    {value}
+                </span>
+            </div>
         </div>
     );
 }
@@ -48,7 +58,6 @@ function StatCard({title, value}: { title: string; value: string | number }) {
 export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
     const [period, setPeriod] = useState<PeriodType>(GetStatsSummaryPeriod.LAST_7_DAYS);
 
-    // Pass fetch credentials so JSESSIONID cookie is sent with the request
     const {data, isLoading, isError, error} = useGetStatsSummary(
         {domain, period},
     );
@@ -83,11 +92,13 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
     const hasNoData = !stats || (pageViews === 0 && visitors === 0);
 
     return (
-        <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-                <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2">
+        <div
+            className="w-full bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60 ">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-4">
+                <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2 flex-wrap">
                     Overview for
-                    <span className="text-rose-600 bg-rose-50 px-3 py-1 rounded-xl text-sm border border-rose-100">
+                    <span
+                        className="text-stone-200 bg-pink-500 px-3 py-1 rounded-xl text-md border border-rose-100">
                         {domain}
                     </span>
                 </h2>
@@ -108,7 +119,7 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
                     </select>
 
                     <div
-                        className="text-sm font-medium text-stone-500 bg-stone-100 px-4 py-1.5 rounded-full flex items-center gap-2">
+                        className="text-xs sm:text-sm font-medium text-stone-500 bg-stone-100 px-3.5 sm:px-4 py-1.5 rounded-full flex items-center gap-2">
                         <span>🗓</span> {formattedDate(from)} <span
                         className="text-stone-300">—</span> {formattedDate(to)}
                     </div>
@@ -127,17 +138,18 @@ export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
                                   d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/>
                         </svg>
                     </div>
-                    <h3 className="text-base font-semibold text-stone-800 mb-1">No summary data available</h3>
+                    <h3 className="text-base font-semibold text-stone-800 mb-1">No summary data
+                        available</h3>
                     <p className="text-xs text-stone-500 max-w-xs leading-relaxed">
-                        No traffic activity recorded for <span className="font-medium text-stone-700">{domain}</span> in
-                        this timeframe.
+                        No traffic activity recorded for <span
+                        className="font-medium text-stone-700">{domain}</span> in this timeframe.
                     </p>
                 </div>
             ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <StatCard title="Page Views" value={pageViews.toLocaleString()}/>
                     <StatCard title="Unique Visitors" value={visitors.toLocaleString()}/>
-                    <StatCard title="Avg. Visit" value={`${formatDuration(averageDurationSeconds)}`}/>
+                    <StatCard title="Avg. Visit" value={formatDuration(averageDurationSeconds)}/>
                     <StatCard title="Bounce Rate" value={`${roundToTwoPlaces(bounceRate)}%`}/>
                 </div>
             )}
