@@ -46,7 +46,7 @@ function StatCard({title, value}: { title: string; value: string | number }) {
 }
 
 export function StatsDashboard({domain = "localhost"}: StatsDashboardProps) {
-    const [period, setPeriod] = useState<PeriodType>(GetStatsSummaryPeriod.LAST_30_DAYS);
+    const [period, setPeriod] = useState<PeriodType>(GetStatsSummaryPeriod.LAST_7_DAYS);
 
     // Pass fetch credentials so JSESSIONID cookie is sent with the request
     const {data, isLoading, isError, error} = useGetStatsSummary(

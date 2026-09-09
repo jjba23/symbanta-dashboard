@@ -69,7 +69,7 @@ const CustomTooltip = ({active, payload, label}: TooltipProps<number, string>) =
 };
 
 export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
-    const [period, setPeriod] = useState<PeriodType>(GetTimeSeriesStatsPeriod.LAST_30_DAYS);
+    const [period, setPeriod] = useState<PeriodType>(GetTimeSeriesStatsPeriod.LAST_7_DAYS);
 
     // Pass fetch credentials so JSESSIONID cookie is sent with the request
     const {data, isLoading, isError, error} = useGetTimeSeriesStats(
