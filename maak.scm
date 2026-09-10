@@ -34,9 +34,9 @@
 (define (build)
   "Build the project."
   ($ (list "nix --extra-experimental-features 'flakes nix-command'"
-           "develop -c bash -c '"
+           "develop -c bash -c 'npm install && "
            ;; Inject the variable directly into the shell string executed inside Nix
-           (~ "VITE_API_HOST=~a npm install && npm run build" api-host) "'")
+           (~ "VITE_API_HOST=~a npm run build" api-host) "'")
      #:verbose? #t))
 
 (define (default)
