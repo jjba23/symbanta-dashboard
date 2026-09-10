@@ -26,17 +26,13 @@
 (define deploy-dir
   "/srv/symbanta.jointhefreeworld.org")
 
-(define api-host
-  "api.symbanta.jointhefreeworld.org")
-
 ;; ====== Maak tasks ======
 
 (define (build)
   "Build the project."
   ($ (list "nix --extra-experimental-features 'flakes nix-command'"
            "develop -c bash -c 'npm install && "
-           ;; Inject the variable directly into the shell string executed inside Nix
-           (~ "VITE_API_HOST=~a npm run build" api-host) "'")
+           "npm run build" "'")
      #:verbose? #t))
 
 (define (default)
