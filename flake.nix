@@ -15,7 +15,6 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             nodejs
-            npm
             prettier
             typescript-language-server
           ];

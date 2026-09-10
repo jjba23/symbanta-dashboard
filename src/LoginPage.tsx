@@ -27,7 +27,9 @@ export function LoginPage() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
+
     const loginMutation = useLogin({
+        // @ts-ignore
         fetch: {
             credentials: 'include', // Mandates sending session cookies (JSESSIONID)
         },

@@ -29,7 +29,8 @@
 
 (define* (build)
   "Build the project."
-  ($ '("nix --extra-experimental-features 'flakes command' develop -c npm run build")))
+  ($ '("nix --extra-experimental-features 'flakes nix-command'"
+        "develop -c bash -c '" "npm install && npm run build" "'")))
 
 (define (default)
   "Default task to be run, list available tasks."
@@ -39,5 +40,5 @@
   "Deploy the project."
   (build)
   (delete-file-recursively (~ "~a/*" deploy-dir))
-  ($ (list "cp -rfv public/*"
+  ($ (list "cp -rfv dist/*"
            (~ "~a/" deploy-dir))))
