@@ -29,7 +29,7 @@
 
 (define* (build)
   "Build the project."
-  ($ '("echo 'BUILDING'")))
+  ($ '("nix --extra-experimental-features 'flakes command' develop -c npm run build")))
 
 (define (default)
   "Default task to be run, list available tasks."

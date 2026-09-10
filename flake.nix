@@ -15,9 +15,9 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             nodejs
-            nodePackages.npm
-            nodePackages.prettier
-            nodePackages.typescript-language-server
+            npm
+            prettier
+            typescript-language-server
           ];
 
           shellHook = ''
