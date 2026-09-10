@@ -23,9 +23,7 @@ export const customFetch = async <T>(
     url: string,
     options: RequestInit = {}
 ): Promise<T> => {
-    // Clean up the URL if Orval is still passing the hardcoded base URL from its config
-    const relativeUrl = url.replace('http://localhost:8080', '');
-    const fullUrl = `${API_HOST}${relativeUrl}`;
+    const fullUrl = `${API_HOST}${url}`;
 
     const response = await fetch(fullUrl, {
         ...options,
