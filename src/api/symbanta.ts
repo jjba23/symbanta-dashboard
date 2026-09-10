@@ -84,7 +84,7 @@ export const getLoginUrl = () => {
 
 
 
-  return `http://localhost:8080/api/auth/login`
+  return `/api/auth/login`
 }
 
 /**
@@ -177,7 +177,7 @@ export const getLogoutUrl = () => {
 
 
 
-  return `http://localhost:8080/api/auth/logout`
+  return `/api/auth/logout`
 }
 
 /**
@@ -271,7 +271,7 @@ export const getGetCurrentUserUrl = () => {
 
 
 
-  return `http://localhost:8080/api/auth/me`
+  return `/api/auth/me`
 }
 
 /**
@@ -295,7 +295,7 @@ export const getCurrentUser = async ( options?: Parameters<typeof customFetch>[1
 
 export const getGetCurrentUserQueryKey = () => {
     return [
-    `http://localhost:8080/api/auth/me`
+    `/api/auth/me`
     ] as const;
     }
 
@@ -397,7 +397,7 @@ export const getRegisterEventUrl = () => {
 
 
 
-  return `http://localhost:8080/v1/events/register`
+  return `/v1/events/register`
 }
 
 /**
@@ -497,7 +497,7 @@ export const getGetPropertiesUrl = () => {
 
 
 
-  return `http://localhost:8080/v1/properties`
+  return `/v1/properties`
 }
 
 /**
@@ -521,7 +521,7 @@ export const getProperties = async ( options?: Parameters<typeof customFetch>[1]
 
 export const getGetPropertiesQueryKey = () => {
     return [
-    `http://localhost:8080/v1/properties`
+    `/v1/properties`
     ] as const;
     }
 
@@ -625,7 +625,7 @@ export const getGetStatsSummaryUrl = (params: GetStatsSummaryParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:8080/v1/stats/summary?${stringifiedParams}` : `http://localhost:8080/v1/stats/summary`
+  return stringifiedParams.length > 0 ? `/v1/stats/summary?${stringifiedParams}` : `/v1/stats/summary`
 }
 
 /**
@@ -649,7 +649,7 @@ export const getStatsSummary = async (params: GetStatsSummaryParams, options?: P
 
 export const getGetStatsSummaryQueryKey = (params?: GetStatsSummaryParams,) => {
     return [
-    `http://localhost:8080/v1/stats/summary`, ...(params ? [params] : [])
+    `/v1/stats/summary`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -753,7 +753,7 @@ export const getGetTimeSeriesStatsUrl = (params: GetTimeSeriesStatsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:8080/v1/stats/timeseries?${stringifiedParams}` : `http://localhost:8080/v1/stats/timeseries`
+  return stringifiedParams.length > 0 ? `/v1/stats/timeseries?${stringifiedParams}` : `/v1/stats/timeseries`
 }
 
 /**
@@ -777,7 +777,7 @@ export const getTimeSeriesStats = async (params: GetTimeSeriesStatsParams, optio
 
 export const getGetTimeSeriesStatsQueryKey = (params?: GetTimeSeriesStatsParams,) => {
     return [
-    `http://localhost:8080/v1/stats/timeseries`, ...(params ? [params] : [])
+    `/v1/stats/timeseries`, ...(params ? [params] : [])
     ] as const;
     }
 
