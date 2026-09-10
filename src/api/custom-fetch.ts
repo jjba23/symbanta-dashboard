@@ -17,17 +17,11 @@
 */
 
 
-const API_HOST = import.meta.env['VITE_API_HOST'] || '';
-
-console.log(`API_HOST: ${API_HOST}`);
-
 export const customFetch = async <T>(
     url: string,
     options: RequestInit = {}
 ): Promise<T> => {
-    const fullUrl = `${API_HOST}${url}`;
-
-    const response = await fetch(fullUrl, {
+    const response = await fetch(url, {
         ...options,
         credentials: 'include',
     });

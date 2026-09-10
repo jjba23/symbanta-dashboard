@@ -32,7 +32,7 @@ export default defineConfig({
                 },
             },
             //baseUrl: "http://localhost:8080",
-            baseUrl: ""
+            baseUrl: "https://api.symbanta.jointhefreeworld.org"
         },
     },
 });
