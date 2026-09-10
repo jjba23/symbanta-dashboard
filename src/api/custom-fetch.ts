@@ -17,14 +17,17 @@
 */
 
 
+const API_HOST = import.meta.env['VITE_API_HOST'] || '';
+
 export const customFetch = async <T>(
     url: string,
     options: RequestInit = {}
 ): Promise<T> => {
-    // Convert http://localhost:8080/v1/... to /v1/... so it uses Vite proxy
-    // const relativeUrl = url.replace('http://localhost:8080', '');
+    // Clean up the URL if Orval is still passing the hardcoded base URL from its config
+    const relativeUrl = url.replace('http://localhost:8080', '');
+    const fullUrl = `${API_HOST}${relativeUrl}`;
 
-    const response = await fetch(url, {
+    const response = await fetch(fullUrl, {
         ...options,
         credentials: 'include',
     });

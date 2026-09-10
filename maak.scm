@@ -30,8 +30,11 @@
 
 (define (build)
   "Build the project."
-  ($ '("API_BASE_URL=symbanta.jointhefreeworld.org nix --extra-experimental-features 'flakes nix-command'"
-        "develop -c bash -c '" "npm install && npm run build" "'")))
+  (let ((api-host "symbanta.jointhefreeworld.org"))
+    ($ (list "nix --extra-experimental-features 'flakes nix-command'"
+             "develop -c bash -c '"
+             ;; Inject the variable directly into the shell string executed inside Nix
+             (~ "VITE_API_HOST=~a npm install && npm run build" api-host) "'"))))
 
 (define (default)
   "Default task to be run, list available tasks."
