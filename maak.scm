@@ -23,7 +23,7 @@
 
 ;; The absolute path to the directory where the main project files will be deployed.
 (define deploy-dir
-  "/srv/http/symbanta.jointhefreeworld.org")
+  "/srv/symbanta.jointhefreeworld.org")
 
 ;; ====== Maak tasks ======
 
