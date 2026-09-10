@@ -84,7 +84,7 @@ export const getLoginUrl = () => {
 
 
 
-  return `/api/auth/login`
+  return `https://api.symbanta.jointhefreeworld.org/api/auth/login`
 }
 
 /**
@@ -177,7 +177,7 @@ export const getLogoutUrl = () => {
 
 
 
-  return `/api/auth/logout`
+  return `https://api.symbanta.jointhefreeworld.org/api/auth/logout`
 }
 
 /**
@@ -271,7 +271,7 @@ export const getGetCurrentUserUrl = () => {
 
 
 
-  return `/api/auth/me`
+  return `https://api.symbanta.jointhefreeworld.org/api/auth/me`
 }
 
 /**
@@ -295,7 +295,7 @@ export const getCurrentUser = async ( options?: Parameters<typeof customFetch>[1
 
 export const getGetCurrentUserQueryKey = () => {
     return [
-    `/api/auth/me`
+    `https://api.symbanta.jointhefreeworld.org/api/auth/me`
     ] as const;
     }
 
@@ -397,7 +397,7 @@ export const getRegisterEventUrl = () => {
 
 
 
-  return `/v1/events/register`
+  return `https://api.symbanta.jointhefreeworld.org/v1/events/register`
 }
 
 /**
@@ -497,7 +497,7 @@ export const getGetPropertiesUrl = () => {
 
 
 
-  return `/v1/properties`
+  return `https://api.symbanta.jointhefreeworld.org/v1/properties`
 }
 
 /**
@@ -521,7 +521,7 @@ export const getProperties = async ( options?: Parameters<typeof customFetch>[1]
 
 export const getGetPropertiesQueryKey = () => {
     return [
-    `/v1/properties`
+    `https://api.symbanta.jointhefreeworld.org/v1/properties`
     ] as const;
     }
 
@@ -625,7 +625,7 @@ export const getGetStatsSummaryUrl = (params: GetStatsSummaryParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/v1/stats/summary?${stringifiedParams}` : `/v1/stats/summary`
+  return stringifiedParams.length > 0 ? `https://api.symbanta.jointhefreeworld.org/v1/stats/summary?${stringifiedParams}` : `https://api.symbanta.jointhefreeworld.org/v1/stats/summary`
 }
 
 /**
@@ -649,7 +649,7 @@ export const getStatsSummary = async (params: GetStatsSummaryParams, options?: P
 
 export const getGetStatsSummaryQueryKey = (params?: GetStatsSummaryParams,) => {
     return [
-    `/v1/stats/summary`, ...(params ? [params] : [])
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/summary`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -753,7 +753,7 @@ export const getGetTimeSeriesStatsUrl = (params: GetTimeSeriesStatsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/v1/stats/timeseries?${stringifiedParams}` : `/v1/stats/timeseries`
+  return stringifiedParams.length > 0 ? `https://api.symbanta.jointhefreeworld.org/v1/stats/timeseries?${stringifiedParams}` : `https://api.symbanta.jointhefreeworld.org/v1/stats/timeseries`
 }
 
 /**
@@ -777,7 +777,7 @@ export const getTimeSeriesStats = async (params: GetTimeSeriesStatsParams, optio
 
 export const getGetTimeSeriesStatsQueryKey = (params?: GetTimeSeriesStatsParams,) => {
     return [
-    `/v1/stats/timeseries`, ...(params ? [params] : [])
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/timeseries`, ...(params ? [params] : [])
     ] as const;
     }
 
