@@ -31,8 +31,8 @@ export default defineConfig({
                     name: 'customFetch',
                 },
             },
-            baseUrl: "http://localhost:8080",
-            // baseUrl: ""
+            //baseUrl: "http://localhost:8080",
+            baseUrl: ""
         },
     },
 });
