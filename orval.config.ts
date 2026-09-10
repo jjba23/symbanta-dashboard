@@ -20,7 +20,7 @@ import {defineConfig} from "orval";
 
 export default defineConfig({
     symbanta: {
-        input: "https://codeberg.org/jjba23/symbanta/raw/branch/trunk/src/main/resources/openapi.yaml",
+        input: process.env.OPENAPI_SPEC_URL || "https://codeberg.org/jjba23/symbanta/raw/branch/trunk/src/main/resources/openapi.yaml",
         output: {
             target: "./src/api/symbanta.ts",
             schemas: "./src/api/model",
@@ -31,9 +31,8 @@ export default defineConfig({
                     name: 'customFetch',
                 },
             },
-            baseUrl: "http://localhost:8080",
+            baseUrl: process.env.API_BASE_URL || "http://localhost:8080",
             // baseUrl: ""
         },
     },
 });
-

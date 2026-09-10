@@ -17,7 +17,8 @@
 
 (define-module (maak)
   #:declarative? #t
-  #:use-module (maak maak))
+  #:use-module (maak maak)
+  #:export (build deploy default))
 
 ;; ====== Maak constants ======
 
@@ -27,9 +28,9 @@
 
 ;; ====== Maak tasks ======
 
-(define* (build)
+(define (build)
   "Build the project."
-  ($ '("nix --extra-experimental-features 'flakes nix-command'"
+  ($ '("API_BASE_URL=symbanta.jointhefreeworld.org nix --extra-experimental-features 'flakes nix-command'"
         "develop -c bash -c '" "npm install && npm run build" "'")))
 
 (define (default)
