@@ -8,14 +8,14 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetTimeSeriesStatsPeriod = typeof GetTimeSeriesStatsPeriod[keyof typeof GetTimeSeriesStatsPeriod];
-
+export type GetTimeSeriesStatsPeriod =
+  (typeof GetTimeSeriesStatsPeriod)[keyof typeof GetTimeSeriesStatsPeriod];
 
 export const GetTimeSeriesStatsPeriod = {
-  LAST_24_HOURS: 'LAST_24_HOURS',
-  LAST_7_DAYS: 'LAST_7_DAYS',
-  LAST_30_DAYS: 'LAST_30_DAYS',
-  LAST_6_MONTHS: 'LAST_6_MONTHS',
-  LAST_12_MONTHS: 'LAST_12_MONTHS',
-  CUSTOM: 'CUSTOM',
+  LAST_24_HOURS: "LAST_24_HOURS",
+  LAST_7_DAYS: "LAST_7_DAYS",
+  LAST_30_DAYS: "LAST_30_DAYS",
+  LAST_6_MONTHS: "LAST_6_MONTHS",
+  LAST_12_MONTHS: "LAST_12_MONTHS",
+  CUSTOM: "CUSTOM",
 } as const;
