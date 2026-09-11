@@ -22,6 +22,7 @@ import { LoginPage } from "./LoginPage";
 import { StatsDashboard } from "./StatsDashboard";
 import { TimeSeries } from "./TimeSeries";
 import Header from "./Header.tsx";
+import Footer from "./Footer.tsx";
 import { DomainSwitcher } from "./DomainSwitcher.tsx";
 import { useState } from "react";
 import { UserDetails } from "./UserDetails.tsx";
@@ -40,6 +41,8 @@ const queryClient = new QueryClient({
         if (window.location.pathname !== "/login") {
           window.location.href = "/login";
         }
+      } else if (status === 500) {
+        console.error(error);
       }
     },
   }),
@@ -54,6 +57,7 @@ function DashboardLayout() {
       <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain} />
       <StatsDashboard domain={selectedDomain} />
       <TimeSeries domain={selectedDomain} />
+      <Footer />
     </div>
   );
 }
@@ -63,6 +67,7 @@ function LoginLayout() {
     <div className="p-8 max-w-7xl mx-auto space-y-8">
       <Header />
       <LoginPage />
+      <Footer />
     </div>
   );
 }
