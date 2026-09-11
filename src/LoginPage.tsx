@@ -16,7 +16,7 @@
 * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from 'react-router-dom';
 import {useLogin} from './api/symbanta';
@@ -43,7 +43,7 @@ export function LoginPage() {
         },
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
         loginMutation.mutate({
             data: {username, password},

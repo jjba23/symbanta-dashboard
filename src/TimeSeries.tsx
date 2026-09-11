@@ -21,9 +21,9 @@ import {useGetTimeSeriesStats} from "./api/symbanta.ts";
 import {GetTimeSeriesStatsPeriod, type V1TimeSeriesStatsResponse} from "./api/model";
 import {
     Bar,
-    BarChart,
     CartesianGrid,
     Legend,
+    LineChart,
     ResponsiveContainer,
     Tooltip,
     type TooltipProps,
@@ -53,7 +53,7 @@ const CustomTooltip = ({active, payload, label}: TooltipProps<number, string>) =
             <div className="bg-white p-4 border border-stone-100 shadow-xl rounded-2xl">
                 <p className="text-stone-500 mb-3 font-medium text-sm">{label}</p>
                 {payload.map((entry: any, index: number) => (
-                    <div key={index} className="flex items-center gap-2 text-sm mb-1 last:mb-0">
+                    <div key={index} className="flex items-center gap-2 text-sm mb-1">
                         <div
                             className="w-3 h-3 rounded-full shadow-sm"
                             style={{backgroundColor: entry.color}}
@@ -124,7 +124,7 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
             {/* Render Empty State OR Chart */}
             {hasNoData ? (
                 <div
-                    className="w-full h-[360px] flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-2xl bg-stone-50/50">
+                    className="w-full h-90 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-2xl bg-stone-50/50">
                     <div
                         className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 border border-stone-200/60 flex items-center justify-center text-stone-400 shadow-sm">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,9 +138,9 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                     </p>
                 </div>
             ) : (
-                <div className="w-full h-[400px]">
+                <div className="w-full h-100">
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} margin={{top: 10, right: 10, left: -20, bottom: 0}}>
+                        <LineChart data={chartData} margin={{top: 10, right: 10, left: -20, bottom: 0}}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4"/>
                             <XAxis dataKey="label" axisLine={false} tickLine={false}
                                    tick={{fill: '#a8a29e', fontSize: 12}} dy={10}/>
@@ -153,7 +153,7 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                                  maxBarSize={45}/>
                             <Bar dataKey="visitors" name="Unique Visitors" fill="#f472b6" radius={[6, 6, 0, 0]}
                                  maxBarSize={45}/>
-                        </BarChart>
+                        </LineChart>
                     </ResponsiveContainer>
                 </div>
             )}
