@@ -24,7 +24,7 @@ function Header() {
         <img
           src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
           alt="Symbanta logo"
-          className="h-8 w-auto inline-block align-middle object-contain"
+          className="h-10 w-auto inline-block align-middle object-contain"
         />
         Συμβάντα
       </h1>
