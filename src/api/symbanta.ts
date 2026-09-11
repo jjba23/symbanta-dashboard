@@ -75,7 +75,7 @@ export type loginResponseError = loginResponse401 & {
 export type loginResponse = loginResponseSuccess | loginResponseError;
 
 export const getLoginUrl = () => {
-  return `https://api.symbanta.jointhefreeworld.org/api/auth/login`;
+  return `https://api.symbanta.jointhefreeworld.org/auth/login`;
 };
 
 /**
@@ -176,7 +176,7 @@ export type logoutResponseSuccess = logoutResponse200 & {
 export type logoutResponse = logoutResponseSuccess;
 
 export const getLogoutUrl = () => {
-  return `https://api.symbanta.jointhefreeworld.org/api/auth/logout`;
+  return `https://api.symbanta.jointhefreeworld.org/auth/logout`;
 };
 
 /**
@@ -249,7 +249,7 @@ export type getCurrentUserResponseError = getCurrentUserResponse401 & {
 export type getCurrentUserResponse = getCurrentUserResponseSuccess | getCurrentUserResponseError;
 
 export const getGetCurrentUserUrl = () => {
-  return `https://api.symbanta.jointhefreeworld.org/api/auth/me`;
+  return `https://api.symbanta.jointhefreeworld.org/auth/me`;
 };
 
 /**
@@ -266,7 +266,7 @@ export const getCurrentUser = async (
 };
 
 export const getGetCurrentUserQueryKey = () => {
-  return [`https://api.symbanta.jointhefreeworld.org/api/auth/me`] as const;
+  return [`https://api.symbanta.jointhefreeworld.org/auth/me`] as const;
 };
 
 export const getGetCurrentUserQueryOptions = <

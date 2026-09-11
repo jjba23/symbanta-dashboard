@@ -19,7 +19,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUserData = async () => {
-  const response = await fetch("http://localhost:8080/api/users/me", {
+  const response = await fetch("http://localhost:8080/auth/me", {
     credentials: "include", // Pass cookies to Spring Boot
   });
 
