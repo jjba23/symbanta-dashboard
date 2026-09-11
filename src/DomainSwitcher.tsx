@@ -16,7 +16,7 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useGetProperties } from "./api/symbanta";
 import type { V1PropertiesResponse, V1Property } from "./api/model";
 
@@ -29,14 +29,19 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
   const { data, isLoading, isError } = useGetProperties();
 
   const propertiesResponse = data?.data as V1PropertiesResponse | undefined;
-  const properties: V1Property[] = propertiesResponse?.properties ?? [];
+  const properties: V1Property[] = useMemo(
+    () => propertiesResponse?.properties ?? [],
+    [propertiesResponse?.properties],
+  );
+
+  const firstDomain = properties[0]?.domain;
 
   // Auto-select the first available domain if none is currently selected
   useEffect(() => {
-    if (!selectedDomain && properties.length > 0 && properties[0]) {
-      onSelectDomain(properties[0].domain);
+    if (!selectedDomain && firstDomain) {
+      onSelectDomain(firstDomain);
     }
-  }, [properties, selectedDomain, onSelectDomain]);
+  }, [selectedDomain, firstDomain, onSelectDomain]);
 
   if (isLoading) {
     return (
