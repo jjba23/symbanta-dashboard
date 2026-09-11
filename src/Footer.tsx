@@ -22,7 +22,6 @@ function Footer() {
   return (
     <footer className="mt-20 border-t border-stone-200/80 pt-8 pb-12 text-stone-500 text-sm">
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-
         {/* Left Section: Logo, Copyright & Contact */}
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
@@ -73,7 +72,6 @@ function Footer() {
             </a>
           </p>
         </div>
-
       </div>
     </footer>
   );

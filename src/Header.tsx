@@ -19,15 +19,17 @@
 function Header() {
   return (
     <header className="mb-10">
-      <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 flex items-center gap-3">
-        symbanta
-        <img
-          src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
-          alt="Symbanta logo"
-          className="h-10 w-auto inline-block align-middle object-contain"
-        />
-        Συμβάντα
-      </h1>
+      <a href="/">
+        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 flex items-center gap-3">
+          symbanta
+          <img
+            src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
+            alt="Symbanta logo"
+            className="h-10 w-auto inline-block align-middle object-contain"
+          />
+          Συμβάντα
+        </h1>
+      </a>
       <p className="mt-2 text-base text-stone-500">
         Your privacy-friendly cozy analytics dashboard.
       </p>
