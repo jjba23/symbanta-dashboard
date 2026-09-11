@@ -196,7 +196,7 @@ export function TimeSeries({domain = "localhost"}: StatsDashboardProps) {
                             <Tooltip content={<CustomTooltip/>}/>
 
                             <Legend
-                                position="insideTopRight"
+                                position="top"
                                 height={40}
                                 iconType="circle"
                                 wrapperStyle={{fontSize: "13px", fontWeight: 500, color: "#57534e"}}
