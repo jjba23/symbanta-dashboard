@@ -7,8 +7,8 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { TimeSeriesPoint } from "./timeSeriesPoint";
-import type { V1TimeSeriesStatsResponseGranularity } from "./v1TimeSeriesStatsResponseGranularity";
+import type { TimeSeriesPoint } from './timeSeriesPoint';
+import type { V1TimeSeriesStatsResponseGranularity } from './v1TimeSeriesStatsResponseGranularity';
 
 export interface V1TimeSeriesStatsResponse {
   /** Time bucket size used for aggregation. */

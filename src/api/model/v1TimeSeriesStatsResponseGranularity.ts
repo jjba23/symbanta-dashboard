@@ -11,10 +11,10 @@
 /**
  * Time bucket size used for aggregation.
  */
-export type V1TimeSeriesStatsResponseGranularity =
-  (typeof V1TimeSeriesStatsResponseGranularity)[keyof typeof V1TimeSeriesStatsResponseGranularity];
+export type V1TimeSeriesStatsResponseGranularity = typeof V1TimeSeriesStatsResponseGranularity[keyof typeof V1TimeSeriesStatsResponseGranularity];
+
 
 export const V1TimeSeriesStatsResponseGranularity = {
-  HOUR: "HOUR",
-  DAY: "DAY",
+  HOUR: 'HOUR',
+  DAY: 'DAY',
 } as const;

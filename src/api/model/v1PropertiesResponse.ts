@@ -7,7 +7,7 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { V1Property } from "./v1Property";
+import type { V1Property } from './v1Property';
 
 export interface V1PropertiesResponse {
   properties: V1Property[];
