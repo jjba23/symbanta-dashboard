@@ -7,7 +7,7 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { V1UserAgentStat } from './v1UserAgentStat';
+import type { V1UserAgentStat } from "./v1UserAgentStat";
 
 export interface V1UserAgentStatsResponse {
   /** Start timestamp for the aggregated metrics period (inclusive). */

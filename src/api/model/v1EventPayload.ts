@@ -7,7 +7,7 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { V1EventPayloadProps } from './v1EventPayloadProps';
+import type { V1EventPayloadProps } from "./v1EventPayloadProps";
 
 export interface V1EventPayload {
   /** Registered domain name. */

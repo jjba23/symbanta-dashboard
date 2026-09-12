@@ -7,23 +7,23 @@
  *
  * OpenAPI spec version: 1.0.0
  */
-import type { Period } from './period';
+import type { Period } from "./period";
 
 export type GetTimeSeriesStatsParams = {
-/**
- * Registered domain name to fetch metrics for.
- */
-domain: string;
-/**
- * Time range for metrics aggregation.
- */
-period?: Period;
-/**
- * Required if period is set to `CUSTOM` (YYYY-MM-DD).
- */
-'start-date'?: string;
-/**
- * Required if period is set to `CUSTOM` (YYYY-MM-DD).
- */
-'end-date'?: string;
+  /**
+   * Registered domain name to fetch metrics for.
+   */
+  domain: string;
+  /**
+   * Time range for metrics aggregation.
+   */
+  period?: Period;
+  /**
+   * Required if period is set to `CUSTOM` (YYYY-MM-DD).
+   */
+  "start-date"?: string;
+  /**
+   * Required if period is set to `CUSTOM` (YYYY-MM-DD).
+   */
+  "end-date"?: string;
 };

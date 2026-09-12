@@ -11,22 +11,21 @@
 /**
  * Time range for aggregated metrics generation.
  */
-export type Period = typeof Period[keyof typeof Period];
-
+export type Period = (typeof Period)[keyof typeof Period];
 
 export const Period = {
-  TODAY: 'TODAY',
-  YESTERDAY: 'YESTERDAY',
-  LAST_24_HOURS: 'LAST_24_HOURS',
-  LAST_3_DAYS: 'LAST_3_DAYS',
-  LAST_7_DAYS: 'LAST_7_DAYS',
-  LAST_30_DAYS: 'LAST_30_DAYS',
-  THIS_MONTH: 'THIS_MONTH',
-  LAST_MONTH: 'LAST_MONTH',
-  LAST_6_MONTHS: 'LAST_6_MONTHS',
-  LAST_12_MONTHS: 'LAST_12_MONTHS',
-  THIS_YEAR: 'THIS_YEAR',
-  LAST_YEAR: 'LAST_YEAR',
-  ALL_TIME: 'ALL_TIME',
-  CUSTOM: 'CUSTOM',
+  TODAY: "TODAY",
+  YESTERDAY: "YESTERDAY",
+  LAST_24_HOURS: "LAST_24_HOURS",
+  LAST_3_DAYS: "LAST_3_DAYS",
+  LAST_7_DAYS: "LAST_7_DAYS",
+  LAST_30_DAYS: "LAST_30_DAYS",
+  THIS_MONTH: "THIS_MONTH",
+  LAST_MONTH: "LAST_MONTH",
+  LAST_6_MONTHS: "LAST_6_MONTHS",
+  LAST_12_MONTHS: "LAST_12_MONTHS",
+  THIS_YEAR: "THIS_YEAR",
+  LAST_YEAR: "LAST_YEAR",
+  ALL_TIME: "ALL_TIME",
+  CUSTOM: "CUSTOM",
 } as const;
