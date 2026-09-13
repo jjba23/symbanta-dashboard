@@ -27,6 +27,7 @@ import { DomainSwitcher } from "./DomainSwitcher.tsx";
 import { useState } from "react";
 import { UserDetails } from "./UserDetails.tsx";
 import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
+import { ThemeProvider } from "./ThemeContext.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,14 +77,18 @@ function LoginLayout() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginLayout />} />
-          <Route path="/" element={<DashboardLayout />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<LoginLayout />} />
+              <Route path="/" element={<DashboardLayout />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

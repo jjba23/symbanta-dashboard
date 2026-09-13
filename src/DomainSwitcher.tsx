@@ -45,7 +45,7 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
 
   if (isLoading) {
     return (
-      <div className="text-xs text-stone-400 animate-pulse px-3 py-2 bg-stone-100 rounded-xl">
+      <div className="text-xs text-stone-400 dark:text-stone-500 animate-pulse px-3 py-2 bg-stone-100 dark:bg-stone-800 rounded-xl">
         Loading properties...
       </div>
     );
@@ -54,13 +54,13 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
   if (isError || properties.length === 0) {
     return (
       <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-stone-500">Domain:</span>
+        <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Domain:</span>
         <input
           type="text"
           value={selectedDomain}
           onChange={(e) => onSelectDomain(e.target.value)}
           placeholder="Enter domain..."
-          className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+          className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
         />
       </div>
     );
@@ -68,14 +68,18 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs font-semibold text-stone-500">Property:</span>
+      <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Property:</span>
       <select
         value={selectedDomain}
         onChange={(e) => onSelectDomain(e.target.value)}
-        className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+        className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
       >
         {properties.map((prop) => (
-          <option key={prop.id} value={prop.domain}>
+          <option
+            key={prop.id}
+            value={prop.domain}
+            className="bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200"
+          >
             {prop.domain}
           </option>
         ))}

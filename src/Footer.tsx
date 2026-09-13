@@ -20,7 +20,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-stone-200/80 pt-8 pb-12 text-stone-500 text-sm">
+    <footer className="mt-20 border-t border-stone-200/80 dark:border-stone-800 pt-8 pb-12 text-stone-500 dark:text-stone-400 text-sm">
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         {/* Left Section: Logo, Copyright & Contact */}
         <div className="flex flex-col gap-1.5">
@@ -30,16 +30,20 @@ function Footer() {
               alt="Symbanta logo"
               className="h-5 w-auto object-contain align-middle"
             />
-            <span className="font-bold text-stone-800 tracking-tight">symbanta</span>
-            <span className="text-stone-300">•</span>
-            <span className="text-stone-600">&copy; {currentYear} Josep Bigorra</span>
+            <span className="font-bold text-stone-800 dark:text-stone-100 tracking-tight">
+              symbanta
+            </span>
+            <span className="text-stone-300 dark:text-stone-700">•</span>
+            <span className="text-stone-600 dark:text-stone-400">
+              &copy; {currentYear} Josep Bigorra
+            </span>
           </div>
 
-          <p className="text-xs text-stone-400">
+          <p className="text-xs text-stone-400 dark:text-stone-500">
             Contact:{" "}
             <a
               href="mailto:jjbigorra@gmail.com"
-              className="hover:text-stone-700 transition-colors underline decoration-stone-300 underline-offset-2"
+              className="hover:text-stone-700 dark:hover:text-stone-300 transition-colors underline decoration-stone-300 dark:decoration-stone-700 underline-offset-2"
             >
               jjbigorra@gmail.com
             </a>
@@ -47,14 +51,14 @@ function Footer() {
         </div>
 
         {/* Right Section: License & Code Repository */}
-        <div className="flex flex-col md:items-end gap-1.5 text-xs text-stone-500">
+        <div className="flex flex-col md:items-end gap-1.5 text-xs text-stone-500 dark:text-stone-400">
           <p className="flex items-center gap-1.5">
             <span>Free Software under the</span>
             <a
               href="https://www.gnu.org/licenses/agpl-3.0.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-stone-700 hover:text-stone-900 transition-colors underline decoration-stone-300 underline-offset-2"
+              className="font-medium text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors underline decoration-stone-300 dark:decoration-stone-700 underline-offset-2"
             >
               GNU AGPLv3+
             </a>
@@ -66,7 +70,7 @@ function Footer() {
               href="https://codeberg.org/jjba23/symbanta-dashboard"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-stone-600 hover:text-stone-900 transition-colors"
+              className="inline-flex items-center gap-1 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-colors"
             >
               codeberg.org/jjba23/symbanta-dashboard
             </a>

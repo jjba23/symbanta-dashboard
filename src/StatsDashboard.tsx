@@ -33,11 +33,13 @@ interface StatsDashboardProps {
 
 function StatCard({ title, value }: { title: string; value: string | number }) {
   return (
-    <div className="flex flex-col justify-between p-4 sm:p-5 bg-stone-50/80 rounded-2xl border border-stone-100 min-w-0 transition-all">
-      <span className="text-xs sm:text-sm font-medium text-stone-500 mb-1.5 truncate">{title}</span>
+    <div className="flex flex-col justify-between p-4 sm:p-5 bg-stone-50/80 dark:bg-stone-800/40 rounded-2xl border border-stone-100 dark:border-stone-800 min-w-0 transition-all">
+      <span className="text-xs sm:text-sm font-medium text-stone-500 dark:text-stone-400 mb-1.5 truncate">
+        {title}
+      </span>
       <div className="w-full overflow-hidden">
         <span
-          className="block text-xl sm:text-2xl xl:text-3xl font-bold text-stone-800 whitespace-nowrap truncate tracking-tight"
+          className="block text-xl sm:text-2xl xl:text-3xl font-bold text-stone-800 dark:text-stone-100 whitespace-nowrap truncate tracking-tight"
           title={String(value)}
         >
           {value}
@@ -54,7 +56,7 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
 
   if (isLoading) {
     return (
-      <div className="p-8 text-stone-500 text-center animate-pulse">
+      <div className="p-8 text-stone-500 dark:text-stone-400 text-center animate-pulse">
         Gathering leaves... (Loading analytics)
       </div>
     );
@@ -65,7 +67,7 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
     const errorMessage =
       errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
     return (
-      <div className="p-8 text-rose-500 bg-rose-50 rounded-3xl">
+      <div className="p-8 text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 rounded-3xl border border-transparent dark:border-rose-900/50">
         Error loading stats: {errorMessage}
       </div>
     );
@@ -85,11 +87,11 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
   const hasNoData = !stats || (pageViews === 0 && visitors === 0);
 
   return (
-    <div className="w-full bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60 ">
+    <div className="w-full bg-white dark:bg-stone-900/60 p-5 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60 dark:border-stone-800">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-4">
-        <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2 flex-wrap">
+        <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2 flex-wrap">
           Overview for
-          <span className="text-stone-200 bg-pink-500 px-3 py-1 rounded-xl text-md border border-rose-100">
+          <span className="text-stone-200 bg-pink-500 dark:bg-pink-600 dark:text-pink-50 px-3 py-1 rounded-xl text-md border border-rose-100 dark:border-pink-500/30">
             {domain}
           </span>
         </h2>
@@ -98,27 +100,31 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value as PeriodType)}
-            className="text-sm font-medium text-stone-700 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+            className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
           >
             {Object.values(Period)
               .filter((p) => p !== Period.CUSTOM)
               .map((p) => (
-                <option key={p} value={p}>
+                <option
+                  key={p}
+                  value={p}
+                  className="bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200"
+                >
                   {periodLabels[p]}
                 </option>
               ))}
           </select>
 
-          <div className="text-xs sm:text-sm font-medium text-stone-500 bg-stone-100 px-3.5 sm:px-4 py-1.5 rounded-full flex items-center gap-2">
-            <span>🗓</span> {formattedDate(from)} <span className="text-stone-300">—</span>{" "}
-            {formattedDate(to)}
+          <div className="text-xs sm:text-sm font-medium text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-stone-800 px-3.5 sm:px-4 py-1.5 rounded-full flex items-center gap-2">
+            <span>🗓</span> {formattedDate(from)}{" "}
+            <span className="text-stone-300 dark:text-stone-600">—</span> {formattedDate(to)}
           </div>
         </div>
       </div>
 
       {hasNoData ? (
-        <div className="w-full py-12 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-2xl bg-stone-50/50">
-          <div className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 border border-stone-200/60 flex items-center justify-center text-stone-400 shadow-sm">
+        <div className="w-full py-12 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 dark:border-stone-800 rounded-2xl bg-stone-50/50 dark:bg-stone-900/30">
+          <div className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200/60 dark:border-stone-700/60 flex items-center justify-center text-stone-400 dark:text-stone-500 shadow-sm">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -134,10 +140,13 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
               />
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-stone-800 mb-1">No summary data available</h3>
-          <p className="text-xs text-stone-500 max-w-xs leading-relaxed">
+          <h3 className="text-base font-semibold text-stone-800 dark:text-stone-200 mb-1">
+            No summary data available
+          </h3>
+          <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs leading-relaxed">
             No traffic activity recorded for{" "}
-            <span className="font-medium text-stone-700">{domain}</span> in this timeframe.
+            <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span> in this
+            timeframe.
           </p>
         </div>
       ) : (

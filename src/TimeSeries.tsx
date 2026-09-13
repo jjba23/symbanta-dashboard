@@ -41,8 +41,8 @@ interface StatsDashboardProps {
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 backdrop-blur-md p-3.5 border border-stone-200/80 shadow-xl rounded-2xl text-xs font-medium min-w-40">
-        <p className="text-stone-400 font-semibold mb-2 text-[11px] uppercase tracking-wider">
+      <div className="bg-white/95 dark:bg-stone-900/95 backdrop-blur-md p-3.5 border border-stone-200/80 dark:border-stone-800 shadow-xl rounded-2xl text-xs font-medium min-w-40">
+        <p className="text-stone-400 dark:text-stone-500 font-semibold mb-2 text-[11px] uppercase tracking-wider">
           {label}
         </p>
         <div className="space-y-1.5">
@@ -50,12 +50,12 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
             <div key={index} className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <span
-                  className="w-2.5 h-2.5 rounded-full ring-2 ring-white shadow-sm"
+                  className="w-2.5 h-2.5 rounded-full ring-2 ring-white dark:ring-stone-900 shadow-sm"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-stone-600 font-medium">{entry.name}</span>
+                <span className="text-stone-600 dark:text-stone-300 font-medium">{entry.name}</span>
               </div>
-              <span className="font-bold text-stone-900 tabular-nums">
+              <span className="font-bold text-stone-900 dark:text-stone-100 tabular-nums">
                 {entry.value?.toLocaleString()}
               </span>
             </div>
@@ -74,7 +74,7 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
 
   if (isLoading) {
     return (
-      <div className="p-8 text-stone-500 text-center animate-pulse font-medium">
+      <div className="p-8 text-stone-500 dark:text-stone-400 text-center animate-pulse font-medium">
         Loading time series...
       </div>
     );
@@ -85,7 +85,7 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
     const errorMessage =
       errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
     return (
-      <div className="p-8 text-rose-500 bg-rose-50 rounded-3xl border border-rose-100 font-medium">
+      <div className="p-8 text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 rounded-3xl border border-rose-100 dark:border-rose-900/50 font-medium">
         Error loading time series: {errorMessage}
       </div>
     );
@@ -106,25 +106,43 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
     return { ...point, label: formattedLabel };
   });
 
+  // Recharts styling values depending on dark mode (can't easily use Tailwind classes directly inside SVG props)
+  const isDarkMode =
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark");
+  const gridColor = isDarkMode ? "#292524" : "#f1f5f9"; // stone-800 vs slate-100
+  const tickColor = isDarkMode ? "#78716c" : "#a8a29e"; // stone-500 vs stone-400
+  const activeDotStroke = isDarkMode ? "#1c1917" : "#ffffff"; // stone-900 vs white
+  const legendColor = isDarkMode ? "#d6d3d1" : "#57534e"; // stone-300 vs stone-600
+
+  // Chart Colors (Using slightly brighter versions for dark mode visibility)
+  const pageViewsColor = isDarkMode ? "#a78bfa" : "#8b5cf6"; // Violet 400 vs Violet 500
+  const visitorsColor = isDarkMode ? "#f472b6" : "#f472b6"; // Pink 400 vs Pink 400
+
   return (
-    <div className="w-full bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60">
+    <div className="w-full bg-white dark:bg-stone-900/60 p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60 dark:border-stone-800">
       {/* Header section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
-          <h2 className="text-xl font-bold text-stone-800 tracking-tight">Traffic Trends</h2>
-          <p className="text-xs text-stone-500 mt-0.5">
+          <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 tracking-tight">
+            Traffic Trends
+          </h2>
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
             Overview of page views and unique visitors
           </p>
         </div>
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value as PeriodType)}
-          className="text-xs font-semibold text-stone-700 bg-stone-100/80 hover:bg-stone-100 transition-colors px-3 py-2 rounded-xl border border-stone-200/80 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+          className="text-xs font-semibold text-stone-700 dark:text-stone-200 bg-stone-100/80 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors px-3 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-400/20"
         >
           {Object.values(Period)
             .filter((p) => p !== Period.CUSTOM)
             .map((p) => (
-              <option key={p} value={p}>
+              <option
+                key={p}
+                value={p}
+                className="bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200"
+              >
                 {periodLabels[p]}
               </option>
             ))}
@@ -133,8 +151,8 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
 
       {/* Render Empty State OR Chart */}
       {hasNoData ? (
-        <div className="w-full h-80 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-2xl bg-stone-50/50">
-          <div className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 border border-stone-200/60 flex items-center justify-center text-stone-400 shadow-sm">
+        <div className="w-full h-80 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 dark:border-stone-800 rounded-2xl bg-stone-50/50 dark:bg-stone-900/30">
+          <div className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200/60 dark:border-stone-700/60 flex items-center justify-center text-stone-400 dark:text-stone-500 shadow-sm">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -144,8 +162,10 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
               />
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-stone-800 mb-1">No traffic recorded</h3>
-          <p className="text-xs text-stone-500 max-w-xs leading-relaxed">
+          <h3 className="text-base font-semibold text-stone-800 dark:text-stone-200 mb-1">
+            No traffic recorded
+          </h3>
+          <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs leading-relaxed">
             There are no page views or unique visitors recorded for this time period.
           </p>
         </div>
@@ -155,59 +175,74 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.0} />
+                  <stop
+                    offset="5%"
+                    stopColor={pageViewsColor}
+                    stopOpacity={isDarkMode ? 0.45 : 0.35}
+                  />
+                  <stop offset="95%" stopColor={pageViewsColor} stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="visitorsGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#f472b6" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="#f472b6" stopOpacity={0.0} />
+                  <stop
+                    offset="5%"
+                    stopColor={visitorsColor}
+                    stopOpacity={isDarkMode ? 0.45 : 0.35}
+                  />
+                  <stop offset="95%" stopColor={visitorsColor} stopOpacity={0.0} />
                 </linearGradient>
               </defs>
 
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
 
               <XAxis
                 dataKey="label"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#a8a29e", fontSize: 12 }}
+                tick={{ fill: tickColor, fontSize: 12 }}
                 dy={10}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#a8a29e", fontSize: 12 }}
+                tick={{ fill: tickColor, fontSize: 12 }}
                 allowDecimals={false}
               />
 
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{
+                  stroke: isDarkMode ? "#44403c" : "#e7e5e4",
+                  strokeWidth: 1,
+                  strokeDasharray: "4 4",
+                }}
+              />
 
               <Legend
                 position="top"
                 height={40}
                 iconType="circle"
-                wrapperStyle={{ fontSize: "13px", fontWeight: 500, color: "#57534e" }}
+                wrapperStyle={{ fontSize: "13px", fontWeight: 500, color: legendColor }}
               />
 
               <Area
                 type="monotone"
                 dataKey="pageViews"
                 name="Page Views"
-                stroke="#8b5cf6"
+                stroke={pageViewsColor}
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#pageViewsGradient)"
-                activeDot={{ r: 6, strokeWidth: 2, stroke: "#ffffff" }}
+                activeDot={{ r: 6, strokeWidth: 2, stroke: activeDotStroke }}
               />
               <Area
                 type="monotone"
                 dataKey="visitors"
                 name="Unique Visitors"
-                stroke="#f472b6"
+                stroke={visitorsColor}
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#visitorsGradient)"
-                activeDot={{ r: 6, strokeWidth: 2, stroke: "#ffffff" }}
+                activeDot={{ r: 6, strokeWidth: 2, stroke: activeDotStroke }}
               />
             </AreaChart>
           </ResponsiveContainer>

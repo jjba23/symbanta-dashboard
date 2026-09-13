@@ -22,3 +22,5 @@
   --font-sans: "Lucida Sans", sans-serif;
   --font-mono: "Intel One Mono", monospace;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

@@ -60,45 +60,51 @@ export function LoginPage() {
       : null;
 
   return (
-    <div className="min-h-120 flex items-center justify-center p-8">
-      <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-sm border border-stone-200/60">
-        <h2 className="text-2xl font-bold text-stone-800 mb-2">Welcome Back</h2>
+    <div className="min-h-120 flex items-center justify-center p-8 bg-stone-100 dark:bg-stone-950 transition-colors">
+      <div className="w-full max-w-md bg-white dark:bg-stone-900 p-8 rounded-3xl shadow-sm border border-stone-200/60 dark:border-stone-800 transition-colors">
+        <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">Welcome Back</h2>
 
-        <p className="text-sm text-stone-500 mb-6 flex items-center gap-1.5">
+        <p className="text-sm text-stone-500 dark:text-stone-400 mb-6 flex items-center gap-1.5">
           Sign in to access analytics
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs font-semibold text-stone-600 mb-1">Username</label>
+            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+              Username
+            </label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full text-sm text-stone-800 bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+              className="w-full text-sm text-stone-800 dark:text-stone-100 bg-stone-50 dark:bg-stone-800 px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-500/40 focus:border-rose-500 transition-colors"
               placeholder="Enter username"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-stone-600 mb-1">Password</label>
+            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+              Password
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full text-sm text-stone-800 bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+              className="w-full text-sm text-stone-800 dark:text-stone-100 bg-stone-50 dark:bg-stone-800 px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-500/40 focus:border-rose-500 transition-colors"
               placeholder="••••••••"
             />
           </div>
 
-          {errorMessage && <p className="text-xs text-rose-500 font-medium">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-xs text-rose-500 dark:text-rose-400 font-medium">{errorMessage}</p>
+          )}
 
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full mt-2 bg-rose-500 hover:bg-rose-600 text-white font-medium text-sm py-2.5 rounded-xl transition-colors disabled:opacity-50"
+            className="w-full mt-2 bg-rose-500 hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500 text-white font-medium text-sm py-2.5 rounded-xl transition-colors disabled:opacity-50"
           >
             {loginMutation.isPending ? "Signing in..." : "Sign In"}
           </button>

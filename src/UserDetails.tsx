@@ -26,8 +26,8 @@ export function UserDetails() {
 
   if (isLoading) {
     return (
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-100/80 border border-stone-200/60 rounded-md animate-pulse text-xs text-stone-400">
-        <div className="w-1.5 h-1.5 rounded-full bg-stone-300" />
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-100/80 dark:bg-stone-900/60 border border-stone-200/60 dark:border-stone-800 rounded-md animate-pulse text-xs text-stone-400 dark:text-stone-500">
+        <div className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
         <span>Loading...</span>
       </div>
     );
@@ -35,22 +35,24 @@ export function UserDetails() {
 
   if (isError || !userResponse) {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 border border-red-200/60 rounded-md text-xs text-red-600 font-medium">
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 dark:bg-red-950/40 border border-red-200/60 dark:border-red-900/50 rounded-md text-xs text-red-600 dark:text-red-400 font-medium">
         <span>Failed to load user</span>
       </div>
     );
   }
 
   return (
-    <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-50/80 hover:bg-stone-100/80 border border-stone-200/80 rounded-md text-xs transition-colors">
+    <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-50/80 hover:bg-stone-100/80 dark:bg-stone-900/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 rounded-md text-xs transition-colors">
       <div className="flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-        <span className="font-semibold text-stone-700">{userResponse.username}</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+        <span className="font-semibold text-stone-700 dark:text-stone-200">
+          {userResponse.username}
+        </span>
       </div>
 
-      <span className="text-stone-300 select-none font-normal">•</span>
+      <span className="text-stone-300 dark:text-stone-700 select-none font-normal">•</span>
 
-      <span className="px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-stone-200/60 text-stone-600 rounded">
+      <span className="px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-stone-200/60 dark:bg-stone-800 dark:text-stone-400 text-stone-600 rounded">
         {userResponse.role}
       </span>
     </div>

@@ -16,11 +16,13 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { ThemeToggle } from "./ThemeToggle.tsx";
+
 function Header() {
   return (
     <header className="mb-10">
       <a href="/">
-        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 flex flex-wrap items-center gap-3">
+        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 flex flex-wrap items-center gap-3">
           <span>symbanta</span>
           <img
             src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
@@ -30,9 +32,10 @@ function Header() {
           <span>Συμβάντα</span>
         </h1>
       </a>
-      <p className="mt-2 text-base text-stone-500">
+      <p className="mt-2 text-base text-stone-500 dark:text-stone-400">
         Your privacy-friendly cozy analytics dashboard.
       </p>
+      <ThemeToggle />
     </header>
   );
 }
