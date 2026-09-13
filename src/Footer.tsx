@@ -66,7 +66,7 @@ function Footer() {
               href="https://codeberg.org/jjba23/symbanta-dashboard"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-mono text-stone-600 hover:text-stone-900 transition-colors bg-stone-100 px-2 py-0.5 rounded border border-stone-200/60"
+              className="inline-flex items-center gap-1 text-stone-600 hover:text-stone-900 transition-colors"
             >
               codeberg.org/jjba23/symbanta-dashboard
             </a>
