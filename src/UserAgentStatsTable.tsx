@@ -26,13 +26,10 @@ interface UserAgentStatsTableProps {
   limit?: number;
 }
 
-export function UserAgentStatsTable({
-  domain = "localhost",
-  limit = 50,
-}: UserAgentStatsTableProps) {
+export function UserAgentStatsTable({ domain = "localhost" }: UserAgentStatsTableProps) {
   const [period, setPeriod] = useState<PeriodType>(Period.LAST_7_DAYS);
 
-  const { data, isLoading, isError, error } = useGetUserAgentStats({ domain, period, limit });
+  const { data, isLoading, isError, error } = useGetUserAgentStats({ domain, period });
 
   if (isLoading) {
     return (

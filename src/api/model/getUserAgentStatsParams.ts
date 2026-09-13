@@ -26,8 +26,4 @@ export type GetUserAgentStatsParams = {
    * Required if period is set to `CUSTOM` (YYYY-MM-DD).
    */
   "end-date"?: string;
-  /**
-   * Maximum number of user agents to return (ordered by top page views).
-   */
-  limit?: number;
 };
