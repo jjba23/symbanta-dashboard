@@ -16,85 +16,82 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {QueryCache, QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {LoginPage} from "./LoginPage";
-import {StatsDashboard} from "./StatsDashboard";
-import {TimeSeries} from "./TimeSeries";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LoginPage } from "./LoginPage";
+import { StatsDashboard } from "./StatsDashboard";
+import { TimeSeries } from "./TimeSeries";
 import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
-import {DomainSwitcher} from "./DomainSwitcher.tsx";
-import {useState} from "react";
-import {UserDetails} from "./UserDetails.tsx";
-import {UserAgentStatsTable} from "./UserAgentStatsTable.tsx";
-import {ThemeProvider} from "./ThemeContext.tsx";
-import {ScreenSizeStatsTable} from "./ScreenSizeStatsTable.tsx";
+import { DomainSwitcher } from "./DomainSwitcher.tsx";
+import { useState } from "react";
+import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
+import { ThemeProvider } from "./ThemeContext.tsx";
+import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: 2,
-            retryDelay: (attemptIndex: number) => Math.min(400 * 2 ** attemptIndex, 1000),
-        },
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      retryDelay: (attemptIndex: number) => Math.min(400 * 2 ** attemptIndex, 1000),
     },
-    queryCache: new QueryCache({
-        onError: (error: any) => {
-            const status = error?.status || error?.response?.status;
-            if (status === 401 || status === 403) {
-                if (window.location.pathname !== "/login") {
-                    window.location.href = "/login";
-                }
-            } else if (status === 500) {
-                console.error(error);
-            }
-        },
-    }),
+  },
+  queryCache: new QueryCache({
+    onError: (error: any) => {
+      const status = error?.status || error?.response?.status;
+      if (status === 401 || status === 403) {
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      } else if (status === 500) {
+        console.error(error);
+      }
+    },
+  }),
 });
 
 function DashboardLayout() {
-    const [selectedDomain, setSelectedDomain] = useState("");
-    return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8">
-            <Header/>
-            <UserDetails/>
-            <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain}/>
-            <StatsDashboard domain={selectedDomain}/>
-            <TimeSeries domain={selectedDomain}/>
-            <div className="flex flex-row flex-wrap gap-3 align-center items-center">
-                <UserAgentStatsTable domain={selectedDomain}/>
-                <ScreenSizeStatsTable domain={selectedDomain}/>
-            </div>
-            <Footer/>
-        </div>
-    );
+  const [selectedDomain, setSelectedDomain] = useState("");
+  return (
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
+      <Header />
+      <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain} />
+      <StatsDashboard domain={selectedDomain} />
+      <TimeSeries domain={selectedDomain} />
+      <div className="flex flex-row flex-wrap gap-3 align-center items-center">
+        <UserAgentStatsTable domain={selectedDomain} />
+        <ScreenSizeStatsTable domain={selectedDomain} />
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 function LoginLayout() {
-    return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8">
-            <Header/>
-            <LoginPage/>
-            <Footer/>
-        </div>
-    );
+  return (
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
+      <Header />
+      <LoginPage />
+      <Footer />
+    </div>
+  );
 }
 
 function App() {
-    return (
-        <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-                <div
-                    className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors">
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/login" element={<LoginLayout/>}/>
-                            <Route path="/" element={<DashboardLayout/>}/>
-                        </Routes>
-                    </BrowserRouter>
-                </div>
-            </QueryClientProvider>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<LoginLayout />} />
+              <Route path="/" element={<DashboardLayout />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </QueryClientProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

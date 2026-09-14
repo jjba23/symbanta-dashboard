@@ -17,6 +17,7 @@
  */
 
 import { ThemeToggle } from "./ThemeToggle.tsx";
+import { UserDetails } from "./UserDetails.tsx";
 
 function Header() {
   return (
@@ -35,7 +36,10 @@ function Header() {
       <p className="mt-2 text-base text-stone-500 dark:text-stone-400">
         Your privacy-friendly cozy analytics dashboard.
       </p>
-      <ThemeToggle />
+      <div className="flex flex-wrap items-center gap-3">
+        <UserDetails />
+        <ThemeToggle />
+      </div>
     </header>
   );
 }
