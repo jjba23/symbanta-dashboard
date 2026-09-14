@@ -64,3 +64,16 @@ export const periodLabels: Record<PeriodType, string> = {
   [Period.ALL_TIME]: "All time",
   [Period.CUSTOM]: "Custom",
 };
+
+export function getCookie(name: string): string {
+  const match: RegExpMatchArray | null = document.cookie.match(
+    new RegExp("(^| )" + name + "=([^;]+)"),
+  );
+  // @ts-ignore
+  return match ? decodeURIComponent(match[2]) : "";
+}
+
+export function setCookie(name: string, value: string, days = 365): void {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}

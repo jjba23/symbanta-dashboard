@@ -30,7 +30,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { periodLabels, type PeriodType } from "./Prelude.ts";
+import { getCookie, periodLabels, type PeriodType, setCookie } from "./Prelude.ts";
+
+const PERIOD_COOKIE_KEY = "symbanta_selected_period";
 
 interface StatsDashboardProps {
   domain?: string;
@@ -68,7 +70,17 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
 };
 
 export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
-  const [period, setPeriod] = useState<PeriodType>(Period.LAST_7_DAYS);
+  const [period, setPeriodState] = useState<PeriodType>(() => {
+    const cookiePeriod = getCookie(PERIOD_COOKIE_KEY) as PeriodType;
+    return Object.values(Period).includes(cookiePeriod as Period)
+      ? cookiePeriod
+      : Period.LAST_7_DAYS;
+  });
+
+  const handlePeriodChange = (newPeriod: PeriodType) => {
+    setPeriodState(newPeriod);
+    setCookie(PERIOD_COOKIE_KEY, newPeriod);
+  };
 
   const { data, isLoading, isError, error } = useGetTimeSeriesStats({ domain, period });
 
@@ -132,7 +144,7 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
         </div>
         <select
           value={period}
-          onChange={(e) => setPeriod(e.target.value as PeriodType)}
+          onChange={(e) => handlePeriodChange(e.target.value as PeriodType)}
           className="text-xs font-semibold text-stone-700 dark:text-stone-200 bg-stone-100/80 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors px-3 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-400/20"
         >
           {Object.values(Period)

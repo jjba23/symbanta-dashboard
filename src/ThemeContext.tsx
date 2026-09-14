@@ -17,6 +17,7 @@
  */
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { getCookie, setCookie } from "./Prelude.ts";
 
 type Theme = "light" | "dark" | "system";
 
@@ -26,10 +27,18 @@ interface ThemeContextType {
   resolvedTheme: "light" | "dark";
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const THEME_COOKIE_KEY = "symbanta_theme";
+
+const ThemeContext: React.Context<ThemeContextType | undefined> = createContext<
+  ThemeContextType | undefined
+>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
+    const cookieTheme = getCookie(THEME_COOKIE_KEY) as Theme;
+    if (cookieTheme && ["light", "dark", "system"].includes(cookieTheme)) {
+      return cookieTheme;
+    }
     return (localStorage.getItem("theme") as Theme) || "system";
   });
 
@@ -38,6 +47,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem("theme", newTheme);
+    setCookie(THEME_COOKIE_KEY, newTheme);
   };
 
   // @ts-ignore

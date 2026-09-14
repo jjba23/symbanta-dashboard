@@ -28,6 +28,21 @@ import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
 import { ThemeProvider } from "./ThemeContext.tsx";
 import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
 
+const DOMAIN_COOKIE_KEY = "symbanta_selected_domain";
+
+function getCookie(name: string): string {
+  const match: RegExpMatchArray | null = document.cookie.match(
+    new RegExp("(^| )" + name + "=([^;]+)"),
+  );
+  // @ts-ignore
+  return match ? decodeURIComponent(match[2]) : "";
+}
+
+function setCookie(name: string, value: string, days = 365): void {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -50,11 +65,18 @@ const queryClient = new QueryClient({
 });
 
 function DashboardLayout() {
-  const [selectedDomain, setSelectedDomain] = useState("");
+  const [selectedDomain, setSelectedDomainState] = useState<string>(() =>
+    getCookie(DOMAIN_COOKIE_KEY),
+  );
+
+  const handleSelectDomain = (domain: string) => {
+    setSelectedDomainState(domain);
+    setCookie(DOMAIN_COOKIE_KEY, domain);
+  };
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <Header selectedDomain={selectedDomain} onSelectDomain={setSelectedDomain} />
+      <Header selectedDomain={selectedDomain} onSelectDomain={handleSelectDomain} />
       <StatsDashboard domain={selectedDomain} />
       <TimeSeries domain={selectedDomain} />
       <div className="flex flex-row flex-wrap gap-3 align-center items-center">

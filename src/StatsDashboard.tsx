@@ -21,11 +21,15 @@ import { useGetStatsSummary } from "./api/symbanta.ts";
 import {
   formatDuration,
   formattedDate,
+  getCookie,
   periodLabels,
   type PeriodType,
   roundToTwoPlaces,
+  setCookie,
 } from "./Prelude.ts";
 import { Period, type V1StatsSummaryResponse } from "./api/model";
+
+const PERIOD_COOKIE_KEY = "symbanta_selected_period";
 
 interface StatsDashboardProps {
   domain?: string;
@@ -50,7 +54,17 @@ function StatCard({ title, value }: { title: string; value: string | number }) {
 }
 
 export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
-  const [period, setPeriod] = useState<PeriodType>(Period.LAST_7_DAYS);
+  const [period, setPeriodState] = useState<PeriodType>(() => {
+    const cookiePeriod = getCookie(PERIOD_COOKIE_KEY) as PeriodType;
+    return Object.values(Period).includes(cookiePeriod as Period)
+      ? cookiePeriod
+      : Period.LAST_7_DAYS;
+  });
+
+  const handlePeriodChange = (newPeriod: PeriodType) => {
+    setPeriodState(newPeriod);
+    setCookie(PERIOD_COOKIE_KEY, newPeriod);
+  };
 
   const { data, isLoading, isError, error } = useGetStatsSummary({ domain, period });
 
@@ -99,7 +113,7 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
         <div className="flex flex-wrap items-center gap-3">
           <select
             value={period}
-            onChange={(e) => setPeriod(e.target.value as PeriodType)}
+            onChange={(e) => handlePeriodChange(e.target.value as PeriodType)}
             className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
           >
             {Object.values(Period)

@@ -18,8 +18,10 @@
 
 import { useState } from "react";
 import { useGetScreenSizeStats } from "./api/symbanta.ts";
-import { formattedDate, periodLabels, type PeriodType } from "./Prelude.ts";
+import { formattedDate, getCookie, periodLabels, type PeriodType, setCookie } from "./Prelude.ts";
 import { Period, type V1ScreenSizeStat, type V1ScreenSizeStatsResponse } from "./api/model";
+
+const PERIOD_COOKIE_KEY = "symbanta_selected_period";
 
 interface ScreenSizeStatsTableProps {
   domain?: string;
@@ -27,7 +29,17 @@ interface ScreenSizeStatsTableProps {
 }
 
 export function ScreenSizeStatsTable({ domain = "localhost" }: ScreenSizeStatsTableProps) {
-  const [period, setPeriod] = useState<PeriodType>(Period.LAST_7_DAYS);
+  const [period, setPeriodState] = useState<PeriodType>(() => {
+    const cookiePeriod = getCookie(PERIOD_COOKIE_KEY) as PeriodType;
+    return Object.values(Period).includes(cookiePeriod as Period)
+      ? cookiePeriod
+      : Period.LAST_7_DAYS;
+  });
+
+  const handlePeriodChange = (newPeriod: PeriodType) => {
+    setPeriodState(newPeriod);
+    setCookie(PERIOD_COOKIE_KEY, newPeriod);
+  };
 
   const { data, isLoading, isError, error } = useGetScreenSizeStats({ domain, period });
 
@@ -72,7 +84,7 @@ export function ScreenSizeStatsTable({ domain = "localhost" }: ScreenSizeStatsTa
         <div className="flex flex-wrap items-center gap-3">
           <select
             value={period}
-            onChange={(e) => setPeriod(e.target.value as PeriodType)}
+            onChange={(e) => handlePeriodChange(e.target.value as PeriodType)}
             className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
           >
             {Object.values(Period)
@@ -132,7 +144,11 @@ export function ScreenSizeStatsTable({ domain = "localhost" }: ScreenSizeStatsTa
                 const views = item.pageViews ?? 0;
                 const percentage =
                   totalPageViews > 0 ? ((views / totalPageViews) * 100).toFixed(1) : "0.0";
-                const resolutionLabel = item.size ? `${item.size}` : "Unknown";
+                const resolutionLabel = item.size
+                  ? `${item.size}`
+                  : (item as any).size
+                    ? `${(item as any).size}`
+                    : "Unknown";
 
                 return (
                   <tr
