@@ -28,6 +28,7 @@ import { useState } from "react";
 import { UserDetails } from "./UserDetails.tsx";
 import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
 import { ThemeProvider } from "./ThemeContext.tsx";
+import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,7 +60,10 @@ function DashboardLayout() {
       <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain} />
       <StatsDashboard domain={selectedDomain} />
       <TimeSeries domain={selectedDomain} />
-      <UserAgentStatsTable domain={selectedDomain} />
+      <div className="flex flex-row flex-wrap align-center items-center">
+        <UserAgentStatsTable domain={selectedDomain} />
+        <ScreenSizeStatsTable domain={selectedDomain} />
+      </div>
       <Footer />
     </div>
   );

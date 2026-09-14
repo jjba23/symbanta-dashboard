@@ -9,6 +9,7 @@
  */
 
 export * from "./authResponse";
+export * from "./getScreenSizeStatsParams";
 export * from "./getStatsSummaryParams";
 export * from "./getTimeSeriesStatsParams";
 export * from "./getUserAgentStatsParams";
@@ -22,6 +23,8 @@ export * from "./v1EventResponse";
 export * from "./v1ProblemDetails";
 export * from "./v1PropertiesResponse";
 export * from "./v1Property";
+export * from "./v1ScreenSizeStat";
+export * from "./v1ScreenSizeStatsResponse";
 export * from "./v1StatsSummaryResponse";
 export * from "./v1TimeSeriesStatsResponse";
 export * from "./v1TimeSeriesStatsResponseGranularity";

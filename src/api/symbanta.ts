@@ -25,6 +25,7 @@ import type {
 
 import type {
   AuthResponse,
+  GetScreenSizeStatsParams,
   GetStatsSummaryParams,
   GetTimeSeriesStatsParams,
   GetUserAgentStatsParams,
@@ -34,6 +35,7 @@ import type {
   V1EventResponse,
   V1ProblemDetails,
   V1PropertiesResponse,
+  V1ScreenSizeStatsResponse,
   V1StatsSummaryResponse,
   V1TimeSeriesStatsResponse,
   V1UserAgentStatsResponse,
@@ -356,6 +358,168 @@ export function useGetCurrentUser<
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetCurrentUserQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type getScreenSizeStatsResponse200 = {
+  data: V1ScreenSizeStatsResponse;
+  status: 200;
+};
+
+export type getScreenSizeStatsResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getScreenSizeStatsResponseSuccess = getScreenSizeStatsResponse200 & {
+  headers: Headers;
+};
+export type getScreenSizeStatsResponseError = getScreenSizeStatsResponse401 & {
+  headers: Headers;
+};
+
+export type getScreenSizeStatsResponse =
+  | getScreenSizeStatsResponseSuccess
+  | getScreenSizeStatsResponseError;
+
+export const getGetScreenSizeStatsUrl = (params: GetScreenSizeStatsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/stats/screen-sizes?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/stats/screen-sizes`;
+};
+
+/**
+ * Retrieve aggregated metrics (page views and unique visitors) grouped by screen resolution for a given domain.
+ * @summary Get screen size breakdown statistics
+ */
+export const getScreenSizeStats = async (
+  params: GetScreenSizeStatsParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getScreenSizeStatsResponse> => {
+  return customFetch<getScreenSizeStatsResponse>(getGetScreenSizeStatsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetScreenSizeStatsQueryKey = (params?: GetScreenSizeStatsParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/screen-sizes`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetScreenSizeStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getScreenSizeStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetScreenSizeStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getScreenSizeStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetScreenSizeStatsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getScreenSizeStats>>> = ({ signal }) =>
+    getScreenSizeStats(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getScreenSizeStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetScreenSizeStatsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getScreenSizeStats>>
+>;
+export type GetScreenSizeStatsQueryError = V1ProblemDetails;
+
+export function useGetScreenSizeStats<
+  TData = Awaited<ReturnType<typeof getScreenSizeStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetScreenSizeStatsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getScreenSizeStats>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getScreenSizeStats>>,
+          TError,
+          Awaited<ReturnType<typeof getScreenSizeStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetScreenSizeStats<
+  TData = Awaited<ReturnType<typeof getScreenSizeStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetScreenSizeStatsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getScreenSizeStats>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getScreenSizeStats>>,
+          TError,
+          Awaited<ReturnType<typeof getScreenSizeStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetScreenSizeStats<
+  TData = Awaited<ReturnType<typeof getScreenSizeStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetScreenSizeStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getScreenSizeStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Get screen size breakdown statistics
+ */
+
+export function useGetScreenSizeStats<
+  TData = Awaited<ReturnType<typeof getScreenSizeStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetScreenSizeStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getScreenSizeStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetScreenSizeStatsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
