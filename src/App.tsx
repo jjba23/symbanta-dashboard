@@ -16,6 +16,7 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LoginPage } from "./LoginPage";
@@ -23,8 +24,6 @@ import { StatsDashboard } from "./StatsDashboard";
 import { TimeSeries } from "./TimeSeries";
 import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
-import { DomainSwitcher } from "./DomainSwitcher.tsx";
-import { useState } from "react";
 import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
 import { ThemeProvider } from "./ThemeContext.tsx";
 import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
@@ -52,10 +51,10 @@ const queryClient = new QueryClient({
 
 function DashboardLayout() {
   const [selectedDomain, setSelectedDomain] = useState("");
+
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <Header />
-      <DomainSwitcher onSelectDomain={setSelectedDomain} selectedDomain={selectedDomain} />
+      <Header selectedDomain={selectedDomain} onSelectDomain={setSelectedDomain} />
       <StatsDashboard domain={selectedDomain} />
       <TimeSeries domain={selectedDomain} />
       <div className="flex flex-row flex-wrap gap-3 align-center items-center">

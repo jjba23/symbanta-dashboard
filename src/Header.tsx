@@ -18,8 +18,14 @@
 
 import { ThemeToggle } from "./ThemeToggle.tsx";
 import { UserDetails } from "./UserDetails.tsx";
+import { DomainSwitcher } from "./DomainSwitcher.tsx";
 
-function Header() {
+interface HeaderProps {
+  selectedDomain?: string;
+  onSelectDomain?: (domain: string) => void;
+}
+
+function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
   return (
     <header className="mb-10">
       <a href="/">
@@ -36,8 +42,11 @@ function Header() {
       <p className="mt-2 text-base text-stone-500 dark:text-stone-400">
         Your privacy-friendly cozy analytics dashboard.
       </p>
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 mt-4">
         <UserDetails />
+        {onSelectDomain && (
+          <DomainSwitcher onSelectDomain={onSelectDomain} selectedDomain={selectedDomain} />
+        )}
         <ThemeToggle />
       </div>
     </header>
