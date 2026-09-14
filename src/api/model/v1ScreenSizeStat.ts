@@ -9,10 +9,8 @@
  */
 
 export interface V1ScreenSizeStat {
-  /** Screen width in pixels. */
-  width: number;
-  /** Screen height in pixels. */
-  height: number;
+  /** Screen size. */
+  size: string;
   /** Total page views associated with this screen size. */
   pageViews: number;
   /** Distinct session visitors using this screen size. */

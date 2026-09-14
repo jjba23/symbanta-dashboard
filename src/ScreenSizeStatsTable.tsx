@@ -132,8 +132,7 @@ export function ScreenSizeStatsTable({ domain = "localhost" }: ScreenSizeStatsTa
                 const views = item.pageViews ?? 0;
                 const percentage =
                   totalPageViews > 0 ? ((views / totalPageViews) * 100).toFixed(1) : "0.0";
-                const resolutionLabel =
-                  item.width && item.height ? `${item.width} × ${item.height}` : "Unknown";
+                const resolutionLabel = item.size ? `${item.size}` : "Unknown";
 
                 return (
                   <tr
