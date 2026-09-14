@@ -67,7 +67,7 @@ export function UserAgentStatsTable({domain = "localhost"}: UserAgentStatsTableP
                 <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2 flex-wrap">
                     User Agents for
                     <span
-                        className="text-stone-200 bg-pink-300 dark:bg-pink-300 dark:text-pink-50 px-3 py-1 rounded-xl text-md border border-rose-100 dark:border-pink-500/30">
+                        className="text-stone-100 bg-pink-400 dark:bg-pink-400 px-3 py-1 rounded-xl text-md border border-rose-100 dark:border-pink-500/30">
             {domain}
           </span>
                 </h2>
