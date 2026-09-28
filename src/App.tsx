@@ -27,6 +27,7 @@ import Footer from "./Footer.tsx";
 import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
 import { ThemeProvider } from "./ThemeContext.tsx";
 import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
+import { RouteStatsTable } from "./RouteStatsTable.tsx";
 
 const DOMAIN_COOKIE_KEY = "symbanta_selected_domain";
 
@@ -82,6 +83,7 @@ function DashboardLayout() {
       <div className="flex flex-row flex-wrap gap-3 align-center items-center">
         <UserAgentStatsTable domain={selectedDomain} />
         <ScreenSizeStatsTable domain={selectedDomain} />
+        <RouteStatsTable domain={selectedDomain} />
       </div>
       <Footer />
     </div>

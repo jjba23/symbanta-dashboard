@@ -25,6 +25,7 @@ import type {
 
 import type {
   AuthResponse,
+  GetRouteStatsParams,
   GetScreenSizeStatsParams,
   GetStatsSummaryParams,
   GetTimeSeriesStatsParams,
@@ -35,6 +36,7 @@ import type {
   V1EventResponse,
   V1ProblemDetails,
   V1PropertiesResponse,
+  V1RouteStatsResponse,
   V1ScreenSizeStatsResponse,
   V1StatsSummaryResponse,
   V1TimeSeriesStatsResponse,
@@ -358,6 +360,162 @@ export function useGetCurrentUser<
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetCurrentUserQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type getRouteStatsResponse200 = {
+  data: V1RouteStatsResponse;
+  status: 200;
+};
+
+export type getRouteStatsResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getRouteStatsResponseSuccess = getRouteStatsResponse200 & {
+  headers: Headers;
+};
+export type getRouteStatsResponseError = getRouteStatsResponse401 & {
+  headers: Headers;
+};
+
+export type getRouteStatsResponse = getRouteStatsResponseSuccess | getRouteStatsResponseError;
+
+export const getGetRouteStatsUrl = (params: GetRouteStatsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/stats/routes?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/stats/routes`;
+};
+
+/**
+ * Retrieve aggregated metrics (page views, unique visitors) grouped by route for a given domain.
+ * @summary Get route visit statistics
+ */
+export const getRouteStats = async (
+  params: GetRouteStatsParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getRouteStatsResponse> => {
+  return customFetch<getRouteStatsResponse>(getGetRouteStatsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetRouteStatsQueryKey = (params?: GetRouteStatsParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/routes`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetRouteStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRouteStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetRouteStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetRouteStatsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteStats>>> = ({ signal }) =>
+    getRouteStats(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRouteStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetRouteStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteStats>>>;
+export type GetRouteStatsQueryError = V1ProblemDetails;
+
+export function useGetRouteStats<
+  TData = Awaited<ReturnType<typeof getRouteStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetRouteStatsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteStats>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteStats>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRouteStats<
+  TData = Awaited<ReturnType<typeof getRouteStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetRouteStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteStats>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteStats>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRouteStats<
+  TData = Awaited<ReturnType<typeof getRouteStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetRouteStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Get route visit statistics
+ */
+
+export function useGetRouteStats<
+  TData = Awaited<ReturnType<typeof getRouteStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetRouteStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetRouteStatsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -1133,7 +1291,7 @@ export const getGetTimeSeriesStatsUrl = (params: GetTimeSeriesStatsParams) => {
 };
 
 /**
- * Retrieve time-bucketed analytics (hourly or daily) formatted for populating bar/line charts.
+ * Retrieve time-bucketed analytics formatted for bar/line charts.
  * @summary Get time-series statistics for chart rendering
  */
 export const getTimeSeriesStats = async (
