@@ -16,9 +16,6 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState } from "react";
-import { useGetTimeSeriesStats } from "./api/symbanta.ts";
-import { Period, type V1TimeSeriesStatsResponse } from "./api/model";
 import {
   Area,
   AreaChart,
@@ -26,85 +23,68 @@ import {
   Legend,
   ResponsiveContainer,
   Tooltip,
-  type TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
-import { getCookie, periodLabels, type PeriodType, setCookie } from "./Prelude.ts";
+import { useGetTimeSeriesStats } from "./api/symbanta.ts";
+import type { V1TimeSeriesStatsResponse } from "./api/model";
+import { usePeriod } from "./PeriodContext.tsx";
+import { useTheme } from "./ThemeContext.tsx";
+import { Card, CardHeader, cardPaddingClass, ChartIcon, EmptyState, ErrorState } from "./ui.tsx";
 
-const PERIOD_COOKIE_KEY = "symbanta_selected_period";
-
-interface StatsDashboardProps {
+interface TimeSeriesProps {
   domain?: string;
 }
 
-// Custom polished tooltip component with backdrop blur
-// @ts-ignore
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-white/95 dark:bg-stone-900/95 backdrop-blur-md p-3.5 border border-stone-200/80 dark:border-stone-800 shadow-xl rounded-2xl text-xs font-medium min-w-40">
-        <p className="text-stone-400 dark:text-stone-500 font-semibold mb-2 text-[11px] uppercase tracking-wider">
-          {label}
-        </p>
-        <div className="space-y-1.5">
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-2.5 h-2.5 rounded-full ring-2 ring-white dark:ring-stone-900 shadow-sm"
-                  style={{ backgroundColor: entry.color }}
-                />
-                <span className="text-stone-600 dark:text-stone-300 font-medium">{entry.name}</span>
-              </div>
-              <span className="font-bold text-stone-900 dark:text-stone-100 tabular-nums">
-                {entry.value?.toLocaleString()}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+interface TooltipEntry {
+  name?: string | number;
+  value?: string | number;
+  color?: string;
+}
+
+interface ChartTooltipProps {
+  active?: boolean;
+  payload?: TooltipEntry[];
+  label?: string | number;
+}
+
+const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
+  if (!active || !payload || payload.length === 0) {
+    return null;
   }
-  return null;
+
+  return (
+    <div className="min-w-40 rounded-2xl border border-stone-200/80 bg-white/95 p-3 text-xs font-medium shadow-xl backdrop-blur-md dark:border-stone-800 dark:bg-stone-900/95">
+      <p className="mb-2 text-[11px] font-semibold tracking-wider text-stone-400 uppercase dark:text-stone-500">
+        {label}
+      </p>
+      <div className="space-y-1.5">
+        {payload.map((entry, index) => (
+          <div key={index} className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span
+                className="h-2.5 w-2.5 rounded-full shadow-sm ring-2 ring-white dark:ring-stone-900"
+                style={{ backgroundColor: entry.color }}
+              />
+              <span className="font-medium text-stone-600 dark:text-stone-300">{entry.name}</span>
+            </div>
+            <span className="font-bold tabular-nums text-stone-900 dark:text-stone-100">
+              {typeof entry.value === "number" ? entry.value.toLocaleString() : entry.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
-  const [period, setPeriodState] = useState<PeriodType>(() => {
-    const cookiePeriod = getCookie(PERIOD_COOKIE_KEY) as PeriodType;
-    return Object.values(Period).includes(cookiePeriod as Period)
-      ? cookiePeriod
-      : Period.LAST_7_DAYS;
-  });
-
-  const handlePeriodChange = (newPeriod: PeriodType) => {
-    setPeriodState(newPeriod);
-    setCookie(PERIOD_COOKIE_KEY, newPeriod);
-  };
-
+export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
+  const { period } = usePeriod();
+  const { resolvedTheme } = useTheme();
   const { data, isLoading, isError, error } = useGetTimeSeriesStats({ domain, period });
 
-  if (isLoading) {
-    return (
-      <div className="p-8 text-stone-500 dark:text-stone-400 text-center animate-pulse font-medium">
-        Loading time series...
-      </div>
-    );
-  }
-
-  if (isError) {
-    const errObj = error as { detail?: string; title?: string; message?: string };
-    const errorMessage =
-      errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
-    return (
-      <div className="p-8 text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 rounded-3xl border border-rose-100 dark:border-rose-900/50 font-medium">
-        Error loading time series: {errorMessage}
-      </div>
-    );
-  }
-
   const stats = data?.data as V1TimeSeriesStatsResponse | undefined;
-  const points = stats?.points || [];
+  const points = stats?.points ?? [];
 
   const hasNoData =
     points.length === 0 || points.every((p) => (p.pageViews || 0) === 0 && (p.visitors || 0) === 0);
@@ -118,148 +98,127 @@ export function TimeSeries({ domain = "localhost" }: StatsDashboardProps) {
     return { ...point, label: formattedLabel };
   });
 
-  // Recharts styling values depending on dark mode (can't easily use Tailwind classes directly inside SVG props)
-  const isDarkMode =
-    typeof document !== "undefined" && document.documentElement.classList.contains("dark");
-  const gridColor = isDarkMode ? "#292524" : "#f1f5f9"; // stone-800 vs slate-100
+  // Recharts needs raw colour values for SVG attributes; derive them from the
+  // *resolved* theme so the chart repaints when the user toggles light/dark.
+  const isDarkMode = resolvedTheme === "dark";
+  const gridColor = isDarkMode ? "#292524" : "#eef2f6"; // stone-800 vs light slate
   const tickColor = isDarkMode ? "#78716c" : "#a8a29e"; // stone-500 vs stone-400
   const activeDotStroke = isDarkMode ? "#1c1917" : "#ffffff"; // stone-900 vs white
   const legendColor = isDarkMode ? "#d6d3d1" : "#57534e"; // stone-300 vs stone-600
+  const cursorColor = isDarkMode ? "#44403c" : "#e7e5e4"; // stone-700 vs stone-200
 
-  // Chart Colors (Using slightly brighter versions for dark mode visibility)
-  const pageViewsColor = isDarkMode ? "#a78bfa" : "#8b5cf6"; // Violet 400 vs Violet 500
-  const visitorsColor = isDarkMode ? "#f472b6" : "#f472b6"; // Pink 400 vs Pink 400
+  const pageViewsColor = isDarkMode ? "#a78bfa" : "#8b5cf6"; // violet-400 vs violet-500
+  const visitorsColor = "#f472b6"; // pink-400
+
+  const errObj = error as { detail?: string; title?: string; message?: string } | null;
+  const errorMessage =
+    errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
 
   return (
-    <div className="w-full bg-white dark:bg-stone-900/60 p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200/60 dark:border-stone-800">
-      {/* Header section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-        <div>
-          <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 tracking-tight">
-            Traffic Trends
-          </h2>
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-            Overview of page views and unique visitors
-          </p>
-        </div>
-        <select
-          value={period}
-          onChange={(e) => handlePeriodChange(e.target.value as PeriodType)}
-          className="text-xs font-semibold text-stone-700 dark:text-stone-200 bg-stone-100/80 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors px-3 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-400/20"
-        >
-          {Object.values(Period)
-            .filter((p) => p !== Period.CUSTOM)
-            .map((p) => (
-              <option
-                key={p}
-                value={p}
-                className="bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200"
-              >
-                {periodLabels[p]}
-              </option>
-            ))}
-        </select>
-      </div>
+    <Card>
+      <div className={cardPaddingClass}>
+        <CardHeader
+          title="Traffic Trends"
+          subtitle="Page views and unique visitors over time"
+          icon={<ChartIcon className="h-4.5 w-4.5" />}
+        />
 
-      {/* Render Empty State OR Chart */}
-      {hasNoData ? (
-        <div className="w-full h-80 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 dark:border-stone-800 rounded-2xl bg-stone-50/50 dark:bg-stone-900/30">
-          <div className="w-12 h-12 mb-3 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200/60 dark:border-stone-700/60 flex items-center justify-center text-stone-400 dark:text-stone-500 shadow-sm">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
-              />
-            </svg>
+        {isLoading ? (
+          <div
+            className="h-64 w-full animate-pulse rounded-2xl bg-stone-100/90 sm:h-80 lg:h-96 dark:bg-stone-800/50"
+            role="status"
+            aria-live="polite"
+          >
+            <span className="sr-only">Loading time series…</span>
           </div>
-          <h3 className="text-base font-semibold text-stone-800 dark:text-stone-200 mb-1">
-            No traffic recorded
-          </h3>
-          <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs leading-relaxed">
-            There are no page views or unique visitors recorded for this time period.
-          </p>
-        </div>
-      ) : (
-        <div className="w-full h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <defs>
-                <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={pageViewsColor}
-                    stopOpacity={isDarkMode ? 0.45 : 0.35}
-                  />
-                  <stop offset="95%" stopColor={pageViewsColor} stopOpacity={0.0} />
-                </linearGradient>
-                <linearGradient id="visitorsGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={visitorsColor}
-                    stopOpacity={isDarkMode ? 0.45 : 0.35}
-                  />
-                  <stop offset="95%" stopColor={visitorsColor} stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
+        ) : isError ? (
+          <ErrorState title="Could not load the time series" message={errorMessage} />
+        ) : hasNoData ? (
+          <EmptyState
+            icon={<ChartIcon className="h-5 w-5" />}
+            title="No traffic recorded"
+            description="There are no page views or unique visitors recorded for this time period."
+          />
+        ) : (
+          <div className="h-64 w-full sm:h-80 lg:h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor={pageViewsColor}
+                      stopOpacity={isDarkMode ? 0.45 : 0.35}
+                    />
+                    <stop offset="95%" stopColor={pageViewsColor} stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="visitorsGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor={visitorsColor}
+                      stopOpacity={isDarkMode ? 0.45 : 0.35}
+                    />
+                    <stop offset="95%" stopColor={visitorsColor} stopOpacity={0} />
+                  </linearGradient>
+                </defs>
 
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
 
-              <XAxis
-                dataKey="label"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: tickColor, fontSize: 12 }}
-                dy={10}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: tickColor, fontSize: 12 }}
-                allowDecimals={false}
-              />
+                <XAxis
+                  dataKey="label"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: tickColor, fontSize: 11 }}
+                  minTickGap={16}
+                  interval="preserveStartEnd"
+                  dy={8}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: tickColor, fontSize: 11 }}
+                  width={48}
+                  allowDecimals={false}
+                />
 
-              <Tooltip
-                content={<CustomTooltip />}
-                cursor={{
-                  stroke: isDarkMode ? "#44403c" : "#e7e5e4",
-                  strokeWidth: 1,
-                  strokeDasharray: "4 4",
-                }}
-              />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ stroke: cursorColor, strokeWidth: 1, strokeDasharray: "4 4" }}
+                />
 
-              <Legend
-                position="top"
-                height={40}
-                iconType="circle"
-                wrapperStyle={{ fontSize: "13px", fontWeight: 500, color: legendColor }}
-              />
+                <Legend
+                  verticalAlign="top"
+                  height={36}
+                  iconType="circle"
+                  iconSize={8}
+                  wrapperStyle={{ fontSize: "12px", fontWeight: 500, color: legendColor }}
+                />
 
-              <Area
-                type="monotone"
-                dataKey="pageViews"
-                name="Page Views"
-                stroke={pageViewsColor}
-                strokeWidth={2.5}
-                fillOpacity={1}
-                fill="url(#pageViewsGradient)"
-                activeDot={{ r: 6, strokeWidth: 2, stroke: activeDotStroke }}
-              />
-              <Area
-                type="monotone"
-                dataKey="visitors"
-                name="Unique Visitors"
-                stroke={visitorsColor}
-                strokeWidth={2.5}
-                fillOpacity={1}
-                fill="url(#visitorsGradient)"
-                activeDot={{ r: 6, strokeWidth: 2, stroke: activeDotStroke }}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-    </div>
+                <Area
+                  type="monotone"
+                  dataKey="pageViews"
+                  name="Page Views"
+                  stroke={pageViewsColor}
+                  strokeWidth={2.5}
+                  fillOpacity={1}
+                  fill="url(#pageViewsGradient)"
+                  activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="visitors"
+                  name="Unique Visitors"
+                  stroke={visitorsColor}
+                  strokeWidth={2.5}
+                  fillOpacity={1}
+                  fill="url(#visitorsGradient)"
+                  activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+    </Card>
   );
 }

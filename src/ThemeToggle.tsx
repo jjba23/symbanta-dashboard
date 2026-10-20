@@ -33,14 +33,21 @@ export function ThemeToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      className="p-2 cursor-pointer rounded-xl bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
+      className="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-stone-200/80 bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700/70"
       title={`Current mode: ${theme} (${resolvedTheme})`}
-      aria-label="Toggle dark mode"
+      aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
     >
       {resolvedTheme === "dark" ? (
         /* Sun Icon */
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg
+          className="h-4.5 w-4.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -50,7 +57,13 @@ export function ThemeToggle() {
         </svg>
       ) : (
         /* Moon Icon */
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg
+          className="h-4.5 w-4.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"

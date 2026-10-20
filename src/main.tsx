@@ -21,21 +21,26 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 
-// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-document.documentElement.classList.toggle(
-  "dark",
-  localStorage["theme"] === "dark" ||
-    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
-);
+/**
+ * Apply the persisted theme before the first paint to avoid a flash of the
+ * wrong colour scheme. The theme is stored in the `symbanta_theme` cookie
+ * (source of truth for `ThemeProvider`) with `localStorage` as a fallback.
+ */
+function applyInitialTheme(): void {
+  const cookieMatch = document.cookie.match(/(?:^| )symbanta_theme=([^;]+)/);
+  const cookieTheme = cookieMatch?.[1] ? decodeURIComponent(cookieMatch[1]) : null;
+  const storedTheme = cookieTheme ?? localStorage.getItem("theme");
+  const theme =
+    storedTheme && ["light", "dark", "system"].includes(storedTheme) ? storedTheme : "system";
 
-// Whenever the user explicitly chooses light mode
-localStorage["theme"] = "light";
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = theme === "dark" || (theme === "system" && prefersDark);
 
-// Whenever the user explicitly chooses dark mode
-localStorage["theme"] = "dark";
+  document.documentElement.classList.toggle("dark", isDark);
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+}
 
-// Whenever the user explicitly chooses to respect the OS preference
-localStorage.removeItem("theme");
+applyInitialTheme();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -27,22 +27,30 @@ interface HeaderProps {
 
 function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
   return (
-    <header className="mb-10">
-      <a href="/">
-        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 flex flex-wrap items-center gap-3">
-          <span>symbanta</span>
+    <header className="flex flex-col gap-4 border-b border-stone-200/70 pb-5 sm:gap-5 sm:pb-6 lg:flex-row lg:items-center lg:justify-between dark:border-stone-800">
+      <div className="min-w-0">
+        <a
+          href="/"
+          className="inline-flex max-w-full items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
+        >
           <img
             src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
             alt="Symbanta logo"
-            className="h-10 w-auto inline-block align-middle object-contain"
+            className="h-8 w-8 shrink-0 object-contain sm:h-9 sm:w-9"
           />
-          <span>Συμβάντα</span>
-        </h1>
-      </a>
-      <p className="mt-2 text-base text-stone-500 dark:text-stone-400">
-        Your privacy-friendly cozy analytics dashboard.
-      </p>
-      <div className="flex flex-wrap items-center gap-3 mt-4">
+          <span className="truncate text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl lg:text-4xl dark:text-stone-100">
+            symbanta
+          </span>
+          <span className="hidden shrink-0 text-lg font-semibold text-stone-400 sm:inline lg:text-xl dark:text-stone-500">
+            Συμβάντα
+          </span>
+        </a>
+        <p className="mt-1.5 text-xs text-stone-500 sm:text-sm dark:text-stone-400">
+          Your privacy-friendly cozy analytics dashboard.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
         <UserDetails />
         {onSelectDomain && (
           <DomainSwitcher onSelectDomain={onSelectDomain} selectedDomain={selectedDomain} />

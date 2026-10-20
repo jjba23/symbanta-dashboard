@@ -26,33 +26,35 @@ export function UserDetails() {
 
   if (isLoading) {
     return (
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-100/80 dark:bg-stone-900/60 border border-stone-200/60 dark:border-stone-800 rounded-md animate-pulse text-xs text-stone-400 dark:text-stone-500">
-        <div className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
-        <span>Loading...</span>
+      <div className="inline-flex h-9 animate-pulse items-center gap-2 rounded-xl border border-stone-200/60 bg-stone-100/80 px-2.5 text-xs text-stone-400 dark:border-stone-800 dark:bg-stone-900/60 dark:text-stone-500">
+        <div className="h-1.5 w-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
+        <span className="hidden sm:inline">Loading…</span>
+        <span className="sr-only sm:hidden">Loading user</span>
       </div>
     );
   }
 
   if (isError || !userResponse) {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 dark:bg-red-950/40 border border-red-200/60 dark:border-red-900/50 rounded-md text-xs text-red-600 dark:text-red-400 font-medium">
-        <span>Failed to load user</span>
+      <div className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-red-200/60 bg-red-50 px-2.5 text-xs font-medium text-red-600 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400">
+        <span className="hidden sm:inline">Failed to load user</span>
+        <span className="sr-only sm:hidden">Failed to load user</span>
       </div>
     );
   }
 
   return (
-    <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-50/80 hover:bg-stone-100/80 dark:bg-stone-900/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 rounded-md text-xs transition-colors">
-      <div className="flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-        <span className="font-semibold text-stone-700 dark:text-stone-200">
+    <div className="inline-flex h-9 min-w-0 items-center gap-2 rounded-xl border border-stone-200/80 bg-stone-50/80 px-2.5 text-xs transition-colors hover:bg-stone-100/80 dark:border-stone-800 dark:bg-stone-900/60 dark:hover:bg-stone-800/60">
+      <span className="flex min-w-0 items-center gap-1.5">
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+        <span className="max-w-[7rem] truncate font-semibold text-stone-700 sm:max-w-[10rem] dark:text-stone-200">
           {userResponse.username}
         </span>
-      </div>
+      </span>
 
-      <span className="text-stone-300 dark:text-stone-700 select-none font-normal">•</span>
+      <span className="font-normal text-stone-300 select-none dark:text-stone-700">•</span>
 
-      <span className="px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-stone-200/60 dark:bg-stone-800 dark:text-stone-400 text-stone-600 rounded">
+      <span className="hidden rounded bg-stone-200/60 px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-stone-600 uppercase sm:inline dark:bg-stone-800 dark:text-stone-400">
         {userResponse.role}
       </span>
     </div>

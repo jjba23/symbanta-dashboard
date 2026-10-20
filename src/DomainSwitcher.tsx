@@ -19,6 +19,7 @@
 import { useEffect, useMemo } from "react";
 import { useGetProperties } from "./api/symbanta";
 import type { V1PropertiesResponse, V1Property } from "./api/model";
+import { controlClass } from "./ui.tsx";
 
 interface DomainSwitcherProps {
   selectedDomain: string;
@@ -45,40 +46,52 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
 
   if (isLoading) {
     return (
-      <div className="text-xs text-stone-400 dark:text-stone-500 animate-pulse px-3 py-2 bg-stone-100 dark:bg-stone-800 rounded-xl">
-        Loading properties...
+      <div className="animate-pulse rounded-xl bg-stone-100 px-3 py-2 text-xs text-stone-400 dark:bg-stone-800 dark:text-stone-500">
+        Loading properties…
       </div>
     );
   }
 
   if (isError || properties.length === 0) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Domain:</span>
+      <div className="flex min-w-0 items-center gap-1.5">
+        <label
+          htmlFor="domain-input"
+          className="shrink-0 text-[11px] font-semibold text-stone-500 dark:text-stone-400"
+        >
+          Domain
+        </label>
         <input
+          id="domain-input"
           type="text"
           value={selectedDomain}
           onChange={(e) => onSelectDomain(e.target.value)}
-          placeholder="Enter domain..."
-          className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
+          placeholder="Enter domain…"
+          className={`${controlClass} w-32 min-w-0 px-2.5 sm:w-48`}
         />
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Property:</span>
+    <div className="flex min-w-0 items-center gap-1.5">
+      <label
+        htmlFor="domain-select"
+        className="shrink-0 text-[11px] font-semibold text-stone-500 dark:text-stone-400"
+      >
+        Property
+      </label>
       <select
+        id="domain-select"
         value={selectedDomain}
         onChange={(e) => onSelectDomain(e.target.value)}
-        className="text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-400/20"
+        className={`${controlClass} max-w-[11rem] min-w-0 truncate px-2.5 sm:max-w-xs`}
       >
         {properties.map((prop) => (
           <option
             key={prop.id}
             value={prop.domain}
-            className="bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200"
+            className="bg-white text-stone-800 dark:bg-stone-800 dark:text-stone-200"
           >
             {prop.domain}
           </option>

@@ -24,6 +24,22 @@ export const formattedDate = (date: Date) =>
     timeStyle: "short", // e.g., "8:52 AM" or "08:52"
   });
 
+/** Short, mobile friendly date: "Sep 7" (adds the year when it is not the current one). */
+export const formattedDateShort = (date: Date) =>
+  date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: date.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
+  });
+
+/** "Sep 7, 2026, 8:52 AM – Sep 14, 2026, 9:00 AM" */
+export const formattedDateRange = (from: Date, to: Date) =>
+  `${formattedDate(from)} – ${formattedDate(to)}`;
+
+/** "Sep 7 – Sep 14", compact enough for narrow screens. */
+export const formattedDateRangeShort = (from: Date, to: Date) =>
+  `${formattedDateShort(from)} – ${formattedDateShort(to)}`;
+
 export const roundToTwoPlaces = (num: number): number => {
   return Math.round((num + Number.EPSILON) * 100) / 100;
 };

@@ -28,6 +28,8 @@ import { UserAgentStatsTable } from "./UserAgentStatsTable.tsx";
 import { ThemeProvider } from "./ThemeContext.tsx";
 import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
 import { RouteStatsTable } from "./RouteStatsTable.tsx";
+import { PeriodProvider } from "./PeriodContext.tsx";
+import { DashboardToolbar } from "./DashboardToolbar.tsx";
 
 const DOMAIN_COOKIE_KEY = "symbanta_selected_domain";
 
@@ -76,23 +78,26 @@ function DashboardLayout() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <Header selectedDomain={selectedDomain} onSelectDomain={handleSelectDomain} />
-      <StatsDashboard domain={selectedDomain} />
-      <TimeSeries domain={selectedDomain} />
-      <div className="flex flex-row flex-wrap gap-3 align-center items-center">
-        <UserAgentStatsTable domain={selectedDomain} />
-        <ScreenSizeStatsTable domain={selectedDomain} />
-        <RouteStatsTable domain={selectedDomain} />
+    <PeriodProvider>
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pt-5 pb-6 sm:gap-5 sm:px-6 sm:pt-7 lg:gap-6 lg:px-8 lg:pt-8">
+        <Header selectedDomain={selectedDomain} onSelectDomain={handleSelectDomain} />
+        <DashboardToolbar />
+        <StatsDashboard domain={selectedDomain} />
+        <TimeSeries domain={selectedDomain} />
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2 lg:gap-6">
+          <UserAgentStatsTable domain={selectedDomain} />
+          <ScreenSizeStatsTable domain={selectedDomain} />
+          <RouteStatsTable domain={selectedDomain} className="xl:col-span-2" />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </PeriodProvider>
   );
 }
 
 function LoginLayout() {
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 pt-5 pb-6 sm:px-6 sm:pt-7 lg:px-8 lg:pt-8">
       <Header />
       <LoginPage />
       <Footer />
@@ -104,13 +109,20 @@ function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<LoginLayout />} />
-              <Route path="/" element={<DashboardLayout />} />
-            </Routes>
-          </BrowserRouter>
+        <div className="relative min-h-dvh bg-stone-50 text-stone-900 transition-colors dark:bg-stone-950 dark:text-stone-100">
+          {/* Soft ambient wash so the flat panels have something to sit on */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-rose-100/50 via-stone-50/0 to-transparent dark:from-rose-500/5 dark:via-stone-950/0"
+          />
+          <div className="relative">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/login" element={<LoginLayout />} />
+                <Route path="/" element={<DashboardLayout />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
         </div>
       </QueryClientProvider>
     </ThemeProvider>

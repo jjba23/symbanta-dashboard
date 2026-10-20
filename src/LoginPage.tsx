@@ -60,53 +60,72 @@ export function LoginPage() {
       : null;
 
   return (
-    <div className="min-h-120 flex items-center justify-center p-8 bg-stone-100 dark:bg-stone-950 transition-colors">
-      <div className="w-full max-w-md bg-white dark:bg-stone-900 p-8 rounded-3xl shadow-sm border border-stone-200/60 dark:border-stone-800 transition-colors">
-        <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">Welcome Back</h2>
-
-        <p className="text-sm text-stone-500 dark:text-stone-400 mb-6 flex items-center gap-1.5">
-          Sign in to access analytics
-        </p>
+    <div className="flex flex-1 items-center justify-center py-8 sm:py-14">
+      <div className="w-full max-w-md rounded-3xl border border-stone-200/70 bg-white p-6 shadow-sm shadow-stone-200/50 transition-colors sm:p-8 dark:border-stone-800 dark:bg-stone-900 dark:shadow-none">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold tracking-tight text-stone-800 sm:text-2xl dark:text-stone-100">
+            Welcome back
+          </h2>
+          <p className="mt-1 text-xs text-stone-500 sm:text-sm dark:text-stone-400">
+            Sign in to access your analytics.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+            <label
+              htmlFor="username"
+              className="mb-1.5 block text-xs font-semibold text-stone-600 dark:text-stone-400"
+            >
               Username
             </label>
             <input
+              id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full text-sm text-stone-800 dark:text-stone-100 bg-stone-50 dark:bg-stone-800 px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-500/40 focus:border-rose-500 transition-colors"
+              autoComplete="username"
+              autoFocus
+              className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-stone-800 transition-colors placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:placeholder:text-stone-500 dark:focus:ring-rose-500/40"
               placeholder="Enter username"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+            <label
+              htmlFor="password"
+              className="mb-1.5 block text-xs font-semibold text-stone-600 dark:text-stone-400"
+            >
               Password
             </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full text-sm text-stone-800 dark:text-stone-100 bg-stone-50 dark:bg-stone-800 px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-rose-500/40 focus:border-rose-500 transition-colors"
+              autoComplete="current-password"
+              className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-stone-800 transition-colors placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:placeholder:text-stone-500 dark:focus:ring-rose-500/40"
               placeholder="••••••••"
             />
           </div>
 
           {errorMessage && (
-            <p className="text-xs text-rose-500 dark:text-rose-400 font-medium">{errorMessage}</p>
+            <p
+              role="alert"
+              className="rounded-xl border border-rose-200/70 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-600 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-400"
+            >
+              {errorMessage}
+            </p>
           )}
 
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full mt-2 bg-rose-500 hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500 text-white font-medium text-sm py-2.5 rounded-xl transition-colors disabled:opacity-50"
+            className="mt-1 w-full rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-rose-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 dark:bg-rose-600 dark:focus-visible:ring-offset-stone-900 dark:hover:bg-rose-500"
           >
-            {loginMutation.isPending ? "Signing in..." : "Sign In"}
+            {loginMutation.isPending ? "Signing in…" : "Sign in"}
           </button>
         </form>
       </div>
