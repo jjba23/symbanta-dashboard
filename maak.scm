@@ -18,7 +18,7 @@
 (define-module (maak)
   #:declarative? #t
   #:use-module (maak maak)
-  #:export (build deploy default))
+  #:export (build test deploy default))
 
 ;; ====== Maak constants ======
 
@@ -35,12 +35,20 @@
            "npm run build" "'")
      #:verbose? #t))
 
+(define (test)
+  "Run the automated test suite."
+  ($ (list "nix --extra-experimental-features 'flakes nix-command'"
+           "develop -c bash -c 'npm install && "
+           "npm test" "'")
+     #:verbose? #t))
+
 (define (default)
   "Default task to be run, list available tasks."
   ($ '("maak --list")))
 
 (define (deploy)
-  "Deploy the project."
+  "Deploy the project, refusing to continue when the test suite fails."
+  (test)
   (build)
   (delete-file-recursively (~ "~a/*" deploy-dir))
   ($ (list "cp -rfv dist/*"

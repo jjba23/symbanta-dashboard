@@ -42,6 +42,8 @@ steps:
         from_secret: BYGGSTEG_PASSWORD
       BYGGSTEG_URL: *jointhefreeworld_byggsteg_url
 
+  # maak-deploy (maak.scm) runs the test suite before building, so a failing
+  # suite aborts the deployment instead of shipping a broken dashboard.
   submit-byggsteg-job:
     name: "💼 Submit job @ Byggsteg"
     image: *submit_job_image

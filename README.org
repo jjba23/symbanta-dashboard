@@ -39,7 +39,11 @@ are remembered in cookies.
 The dashboard is tested with [[https://vitest.dev][Vitest]] and
 [[https://testing-library.com/docs/react-testing-library/intro][React Testing Library]] on a
 =jsdom= environment. The suite runs with =npm test= (=npm run test:watch= while developing,
-=npm run test:coverage= for a coverage report).
+=npm run test:coverage= for a coverage report), or =maak test= to run it inside the Nix
+development shell exactly as CI does.
+
+Tests gate the deployment: =maak deploy=, the task Byggsteg runs for every push to =trunk=,
+starts with =maak test= and aborts before building or copying =dist= when the suite fails.
 
 What is covered:
 
