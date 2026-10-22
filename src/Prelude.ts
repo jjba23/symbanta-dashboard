@@ -81,6 +81,31 @@ export const periodLabels: Record<PeriodType, string> = {
   [Period.CUSTOM]: "Custom",
 };
 
+/**
+ * Best-effort message for a failed request: the API answers with RFC 7807 problem details
+ * (`detail` / `title`), while transport errors only carry a `message`.
+ */
+export function errorMessage(error: unknown): string {
+  const candidate = error as
+    | {
+        detail?: string;
+        title?: string;
+        message?: string;
+        data?: { detail?: string; title?: string } | null;
+      }
+    | null
+    | undefined;
+
+  return (
+    candidate?.data?.detail ||
+    candidate?.data?.title ||
+    candidate?.detail ||
+    candidate?.title ||
+    candidate?.message ||
+    "An unknown error occurred"
+  );
+}
+
 export function getCookie(name: string): string {
   const match: RegExpMatchArray | null = document.cookie.match(
     new RegExp("(^| )" + name + "=([^;]+)"),

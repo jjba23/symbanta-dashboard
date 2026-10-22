@@ -19,6 +19,21 @@ This project serves as a dashboard to interactively and easily visualize analyti
 
 Built with React, Vite, TailwindCSS, Tanstack Query, Orval + OpenAPI
 
+* What the dashboard covers
+
+The dashboard consumes the API of the symbanta core (the generated client in =src/api= is produced
+by Orval from its OpenAPI document with =npm run api-gen=):
+
+- *summary* (=GET /v1/stats/summary=): page views, visitors, bounce rate and average active duration.
+- *time series* (=GET /v1/stats/timeseries=): hourly or daily buckets rendered as a chart.
+- *events* (=GET /v1/stats/events=): occurrences and visitors per event name, custom events included.
+- *routes*, *screen sizes*, *countries* and *user agents* (=GET /v1/stats/...=): breakdown tables.
+- *console logs* (=GET /v1/logs=): console output forwarded by instrumented applications, filterable by level and limit.
+- *event types* (=GET /v1/event-types=, =POST /v1/event-types=): registry of the event names an application emits.
+
+Authentication uses the session cookie set by =POST /auth/login=; the selected domain and period
+are remembered in cookies.
+
 ----------------
 
 [[https://jointhefreeworld.org/static-assets/symbanta/symbanta.gif]]

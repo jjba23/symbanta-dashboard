@@ -110,6 +110,34 @@ export const MonitorIcon = ({ className }: IconProps) => (
   />
 );
 
+export const GlobeIcon = ({ className }: IconProps) => (
+  <Icon
+    className={className}
+    d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3 7.5 7.03 7.5 12s2.015 9 4.5 9zM3.6 9h16.8M3.6 15h16.8"
+  />
+);
+
+export const TagIcon = ({ className }: IconProps) => (
+  <Icon
+    className={className}
+    d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z M6 6h.008v.008H6V6z"
+  />
+);
+
+export const TerminalIcon = ({ className }: IconProps) => (
+  <Icon
+    className={className}
+    d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
+  />
+);
+
+export const BookmarkIcon = ({ className }: IconProps) => (
+  <Icon
+    className={className}
+    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+  />
+);
+
 export const BrowserIcon = ({ className }: IconProps) => (
   <Icon
     className={className}
@@ -420,11 +448,13 @@ export function StatsTable({
   labelHeader,
   emptyLabel = "Unknown",
   maxHeightClass = "max-h-[22rem]",
+  viewsHeader = "Views",
 }: {
   rows: StatRow[];
   labelHeader: string;
   emptyLabel?: string;
   maxHeightClass?: string;
+  viewsHeader?: string;
 }) {
   const total = rows.reduce((sum, row) => sum + row.pageViews, 0);
 
@@ -440,7 +470,7 @@ export function StatsTable({
               scope="col"
               className="w-20 px-2 py-2.5 text-right font-semibold whitespace-nowrap sm:w-24"
             >
-              Views
+              {viewsHeader}
             </th>
             <th
               scope="col"

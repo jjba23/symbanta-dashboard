@@ -25,6 +25,10 @@ import type {
 
 import type {
   AuthResponse,
+  GetConsoleLogsParams,
+  GetCountryStatsParams,
+  GetEventStatsParams,
+  GetEventTypesParams,
   GetRouteStatsParams,
   GetScreenSizeStatsParams,
   GetStatsSummaryParams,
@@ -32,8 +36,14 @@ import type {
   GetUserAgentStatsParams,
   LoginRequest,
   MessageResponse,
+  V1ConsoleLogsResponse,
+  V1CountryStatsResponse,
   V1EventPayload,
   V1EventResponse,
+  V1EventStatsResponse,
+  V1EventType,
+  V1EventTypeRegistrationRequest,
+  V1EventTypesResponse,
   V1ProblemDetails,
   V1PropertiesResponse,
   V1RouteStatsResponse,
@@ -1407,6 +1417,776 @@ export function useGetTimeSeriesStats<
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTimeSeriesStatsQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type getEventStatsResponse200 = {
+  data: V1EventStatsResponse;
+  status: 200;
+};
+
+export type getEventStatsResponse400 = {
+  data: V1ProblemDetails;
+  status: 400;
+};
+
+export type getEventStatsResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getEventStatsResponseSuccess = getEventStatsResponse200 & {
+  headers: Headers;
+};
+export type getEventStatsResponseError = (getEventStatsResponse400 | getEventStatsResponse401) & {
+  headers: Headers;
+};
+
+export type getEventStatsResponse = getEventStatsResponseSuccess | getEventStatsResponseError;
+
+export const getGetEventStatsUrl = (params: GetEventStatsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/stats/events?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/stats/events`;
+};
+
+/**
+ * Retrieve occurrence counts per event name (page-view, click, signup, custom events).
+ * @summary Get event type statistics
+ */
+export const getEventStats = async (
+  params: GetEventStatsParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getEventStatsResponse> => {
+  return customFetch<getEventStatsResponse>(getGetEventStatsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetEventStatsQueryKey = (params?: GetEventStatsParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/events`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetEventStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEventStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetEventStatsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventStats>>> = ({ signal }) =>
+    getEventStats(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getEventStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEventStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getEventStats>>>;
+export type GetEventStatsQueryError = V1ProblemDetails;
+
+export function useGetEventStats<
+  TData = Awaited<ReturnType<typeof getEventStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventStatsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventStats>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventStats>>,
+          TError,
+          Awaited<ReturnType<typeof getEventStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetEventStats<
+  TData = Awaited<ReturnType<typeof getEventStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventStats>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventStats>>,
+          TError,
+          Awaited<ReturnType<typeof getEventStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetEventStats<
+  TData = Awaited<ReturnType<typeof getEventStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Get event type statistics
+ */
+
+export function useGetEventStats<
+  TData = Awaited<ReturnType<typeof getEventStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetEventStatsQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type getCountryStatsResponse200 = {
+  data: V1CountryStatsResponse;
+  status: 200;
+};
+
+export type getCountryStatsResponse400 = {
+  data: V1ProblemDetails;
+  status: 400;
+};
+
+export type getCountryStatsResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getCountryStatsResponseSuccess = getCountryStatsResponse200 & {
+  headers: Headers;
+};
+export type getCountryStatsResponseError = (
+  | getCountryStatsResponse400
+  | getCountryStatsResponse401
+) & {
+  headers: Headers;
+};
+
+export type getCountryStatsResponse = getCountryStatsResponseSuccess | getCountryStatsResponseError;
+
+export const getGetCountryStatsUrl = (params: GetCountryStatsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/stats/countries?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/stats/countries`;
+};
+
+/**
+ * Retrieve page views and visitors grouped by the coarse country of the client.
+ * @summary Get country breakdown statistics
+ */
+export const getCountryStats = async (
+  params: GetCountryStatsParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getCountryStatsResponse> => {
+  return customFetch<getCountryStatsResponse>(getGetCountryStatsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetCountryStatsQueryKey = (params?: GetCountryStatsParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/stats/countries`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetCountryStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCountryStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetCountryStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountryStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCountryStatsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCountryStats>>> = ({ signal }) =>
+    getCountryStats(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCountryStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCountryStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getCountryStats>>>;
+export type GetCountryStatsQueryError = V1ProblemDetails;
+
+export function useGetCountryStats<
+  TData = Awaited<ReturnType<typeof getCountryStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetCountryStatsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountryStats>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCountryStats>>,
+          TError,
+          Awaited<ReturnType<typeof getCountryStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetCountryStats<
+  TData = Awaited<ReturnType<typeof getCountryStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetCountryStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountryStats>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCountryStats>>,
+          TError,
+          Awaited<ReturnType<typeof getCountryStats>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetCountryStats<
+  TData = Awaited<ReturnType<typeof getCountryStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetCountryStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountryStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Get country breakdown statistics
+ */
+
+export function useGetCountryStats<
+  TData = Awaited<ReturnType<typeof getCountryStats>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetCountryStatsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountryStats>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetCountryStatsQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type getEventTypesResponse200 = {
+  data: V1EventTypesResponse;
+  status: 200;
+};
+
+export type getEventTypesResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getEventTypesResponseSuccess = getEventTypesResponse200 & {
+  headers: Headers;
+};
+export type getEventTypesResponseError = getEventTypesResponse401 & {
+  headers: Headers;
+};
+
+export type getEventTypesResponse = getEventTypesResponseSuccess | getEventTypesResponseError;
+
+export const getGetEventTypesUrl = (params: GetEventTypesParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/event-types?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/event-types`;
+};
+
+/**
+ * Retrieve the event names registered for an application (domain).
+ * @summary List registered event types
+ */
+export const getEventTypes = async (
+  params: GetEventTypesParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getEventTypesResponse> => {
+  return customFetch<getEventTypesResponse>(getGetEventTypesUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetEventTypesQueryKey = (params?: GetEventTypesParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/event-types`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetEventTypesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEventTypes>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventTypesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventTypes>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetEventTypesQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventTypes>>> = ({ signal }) =>
+    getEventTypes(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getEventTypes>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEventTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getEventTypes>>>;
+export type GetEventTypesQueryError = V1ProblemDetails;
+
+export function useGetEventTypes<
+  TData = Awaited<ReturnType<typeof getEventTypes>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventTypesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventTypes>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getEventTypes>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetEventTypes<
+  TData = Awaited<ReturnType<typeof getEventTypes>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventTypesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventTypes>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getEventTypes>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetEventTypes<
+  TData = Awaited<ReturnType<typeof getEventTypes>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventTypesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventTypes>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary List registered event types
+ */
+
+export function useGetEventTypes<
+  TData = Awaited<ReturnType<typeof getEventTypes>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetEventTypesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventTypes>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetEventTypesQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type registerEventTypeResponse201 = {
+  data: V1EventType;
+  status: 201;
+};
+
+export type registerEventTypeResponse400 = {
+  data: V1ProblemDetails;
+  status: 400;
+};
+
+export type registerEventTypeResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type registerEventTypeResponse404 = {
+  data: V1ProblemDetails;
+  status: 404;
+};
+
+export type registerEventTypeResponseSuccess = registerEventTypeResponse201 & {
+  headers: Headers;
+};
+export type registerEventTypeResponseError = (
+  | registerEventTypeResponse400
+  | registerEventTypeResponse401
+  | registerEventTypeResponse404
+) & {
+  headers: Headers;
+};
+
+export type registerEventTypeResponse =
+  | registerEventTypeResponseSuccess
+  | registerEventTypeResponseError;
+
+export const getRegisterEventTypeUrl = () => {
+  return `https://api.symbanta.jointhefreeworld.org/v1/event-types`;
+};
+
+/**
+ * Declares an event name for an application before it is emitted. Registration is
+ * idempotent: registering an existing name returns the existing definition.
+ * @summary Register an event type
+ */
+export const registerEventType = async (
+  v1EventTypeRegistrationRequest: V1EventTypeRegistrationRequest,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<registerEventTypeResponse> => {
+  const getHeaders = (
+    h?: NonNullable<RequestInit["headers"]>,
+  ): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
+  return customFetch<registerEventTypeResponse>(getRegisterEventTypeUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
+    body: JSON.stringify(v1EventTypeRegistrationRequest),
+  });
+};
+
+export const getRegisterEventTypeMutationKey = () => ["registerEventType"] as const;
+
+export const getRegisterEventTypeMutationOptions = <
+  TError = V1ProblemDetails,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof registerEventType>>,
+    TError,
+    RegisterEventTypeMutationVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof registerEventType>>,
+  TError,
+  RegisterEventTypeMutationVariables,
+  TContext
+> => {
+  const mutationKey = getRegisterEventTypeMutationKey();
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof registerEventType>>,
+    RegisterEventTypeMutationVariables
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return registerEventType(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RegisterEventTypeMutationResult = NonNullable<
+  Awaited<ReturnType<typeof registerEventType>>
+>;
+export type RegisterEventTypeMutationBody = V1EventTypeRegistrationRequest;
+export type RegisterEventTypeMutationError = V1ProblemDetails;
+export type RegisterEventTypeMutationVariables = { data: V1EventTypeRegistrationRequest };
+
+/**
+ * @summary Register an event type
+ */
+export const useRegisterEventType = <TError = V1ProblemDetails, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof registerEventType>>,
+      TError,
+      RegisterEventTypeMutationVariables,
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof registerEventType>>,
+  TError,
+  RegisterEventTypeMutationVariables,
+  TContext
+> => {
+  return useMutation(getRegisterEventTypeMutationOptions(options), queryClient);
+};
+
+export type getConsoleLogsResponse200 = {
+  data: V1ConsoleLogsResponse;
+  status: 200;
+};
+
+export type getConsoleLogsResponse401 = {
+  data: V1ProblemDetails;
+  status: 401;
+};
+
+export type getConsoleLogsResponseSuccess = getConsoleLogsResponse200 & {
+  headers: Headers;
+};
+export type getConsoleLogsResponseError = getConsoleLogsResponse401 & {
+  headers: Headers;
+};
+
+export type getConsoleLogsResponse = getConsoleLogsResponseSuccess | getConsoleLogsResponseError;
+
+export const getGetConsoleLogsUrl = (params: GetConsoleLogsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api.symbanta.jointhefreeworld.org/v1/logs?${stringifiedParams}`
+    : `https://api.symbanta.jointhefreeworld.org/v1/logs`;
+};
+
+/**
+ * Retrieve console output forwarded by instrumented applications (`console.log` and
+ * `console.error` capture). Newest entries first.
+ * @summary Get recent console logs
+ */
+export const getConsoleLogs = async (
+  params: GetConsoleLogsParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<getConsoleLogsResponse> => {
+  return customFetch<getConsoleLogsResponse>(getGetConsoleLogsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetConsoleLogsQueryKey = (params?: GetConsoleLogsParams) => {
+  return [
+    `https://api.symbanta.jointhefreeworld.org/v1/logs`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetConsoleLogsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getConsoleLogs>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetConsoleLogsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConsoleLogs>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetConsoleLogsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getConsoleLogs>>> = ({ signal }) =>
+    getConsoleLogs(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getConsoleLogs>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetConsoleLogsQueryResult = NonNullable<Awaited<ReturnType<typeof getConsoleLogs>>>;
+export type GetConsoleLogsQueryError = V1ProblemDetails;
+
+export function useGetConsoleLogs<
+  TData = Awaited<ReturnType<typeof getConsoleLogs>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetConsoleLogsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConsoleLogs>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getConsoleLogs>>,
+          TError,
+          Awaited<ReturnType<typeof getConsoleLogs>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetConsoleLogs<
+  TData = Awaited<ReturnType<typeof getConsoleLogs>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetConsoleLogsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConsoleLogs>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getConsoleLogs>>,
+          TError,
+          Awaited<ReturnType<typeof getConsoleLogs>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetConsoleLogs<
+  TData = Awaited<ReturnType<typeof getConsoleLogs>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetConsoleLogsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConsoleLogs>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Get recent console logs
+ */
+
+export function useGetConsoleLogs<
+  TData = Awaited<ReturnType<typeof getConsoleLogs>>,
+  TError = V1ProblemDetails,
+>(
+  params: GetConsoleLogsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConsoleLogs>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetConsoleLogsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;

@@ -30,6 +30,10 @@ import { ScreenSizeStatsTable } from "./ScreenSizeStatsTable.tsx";
 import { RouteStatsTable } from "./RouteStatsTable.tsx";
 import { PeriodProvider } from "./PeriodContext.tsx";
 import { DashboardToolbar } from "./DashboardToolbar.tsx";
+import { EventStatsTable } from "./EventStatsTable.tsx";
+import { CountryStatsTable } from "./CountryStatsTable.tsx";
+import { ConsoleLogs } from "./ConsoleLogs.tsx";
+import { EventTypesPanel } from "./EventTypesPanel.tsx";
 
 const DOMAIN_COOKIE_KEY = "symbanta_selected_domain";
 
@@ -87,8 +91,12 @@ function DashboardLayout() {
         <div className="grid grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2 lg:gap-6">
           <UserAgentStatsTable domain={selectedDomain} />
           <ScreenSizeStatsTable domain={selectedDomain} />
+          <EventStatsTable domain={selectedDomain} />
+          <CountryStatsTable domain={selectedDomain} />
           <RouteStatsTable domain={selectedDomain} className="xl:col-span-2" />
         </div>
+        <ConsoleLogs domain={selectedDomain} />
+        <EventTypesPanel domain={selectedDomain} />
         <Footer />
       </div>
     </PeriodProvider>

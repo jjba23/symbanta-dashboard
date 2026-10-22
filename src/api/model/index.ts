@@ -9,6 +9,11 @@
  */
 
 export * from "./authResponse";
+export * from "./consoleLogLevel";
+export * from "./getConsoleLogsParams";
+export * from "./getCountryStatsParams";
+export * from "./getEventStatsParams";
+export * from "./getEventTypesParams";
 export * from "./getRouteStatsParams";
 export * from "./getScreenSizeStatsParams";
 export * from "./getStatsSummaryParams";
@@ -18,9 +23,18 @@ export * from "./loginRequest";
 export * from "./messageResponse";
 export * from "./period";
 export * from "./timeSeriesPoint";
+export * from "./v1ConsoleLogEntry";
+export * from "./v1ConsoleLogsResponse";
+export * from "./v1CountryStat";
+export * from "./v1CountryStatsResponse";
 export * from "./v1EventPayload";
 export * from "./v1EventPayloadProps";
 export * from "./v1EventResponse";
+export * from "./v1EventStat";
+export * from "./v1EventStatsResponse";
+export * from "./v1EventType";
+export * from "./v1EventTypeRegistrationRequest";
+export * from "./v1EventTypesResponse";
 export * from "./v1ProblemDetails";
 export * from "./v1PropertiesResponse";
 export * from "./v1Property";
