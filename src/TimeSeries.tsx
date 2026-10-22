@@ -30,6 +30,7 @@ import { useGetTimeSeriesStats } from "./api/symbanta.ts";
 import type { V1TimeSeriesStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { useTheme } from "./ThemeContext.tsx";
+import { usePrefersReducedMotion } from "./a11y/usePrefersReducedMotion.ts";
 import { errorMessage } from "./Prelude.ts";
 import { Card, CardHeader, cardPaddingClass, ChartIcon, EmptyState, ErrorState } from "./ui.tsx";
 
@@ -55,8 +56,8 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
   }
 
   return (
-    <div className="glass min-w-40 rounded-2xl p-3 text-xs font-medium">
-      <p className="mb-2 text-[11px] font-semibold tracking-wider text-stone-400 uppercase dark:text-stone-500">
+    <div className="glass-popover min-w-40 rounded-2xl p-3 text-xs font-medium">
+      <p className="mb-2 text-[11px] font-semibold tracking-wider text-stone-500 uppercase dark:text-stone-400">
         {label}
       </p>
       <div className="space-y-1.5">
@@ -82,6 +83,7 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
 export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
   const { period } = usePeriod();
   const { resolvedTheme } = useTheme();
+  const reduceMotion = usePrefersReducedMotion();
   const { data, isLoading, isError, error } = useGetTimeSeriesStats({ domain, period });
 
   const stats = data?.data as V1TimeSeriesStatsResponse | undefined;
@@ -137,83 +139,121 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
             description="There are no page views or unique visitors recorded for this time period."
           />
         ) : (
-          <div className="h-64 w-full sm:h-80 lg:h-96">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor={pageViewsColor}
-                      stopOpacity={isDarkMode ? 0.45 : 0.35}
-                    />
-                    <stop offset="95%" stopColor={pageViewsColor} stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="visitorsGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor={visitorsColor}
-                      stopOpacity={isDarkMode ? 0.45 : 0.35}
-                    />
-                    <stop offset="95%" stopColor={visitorsColor} stopOpacity={0} />
-                  </linearGradient>
-                </defs>
+          <>
+            <div
+              role="img"
+              aria-label={`Traffic trends chart: page views and unique visitors across ${chartData.length} time buckets. The same numbers are available in the table that follows.`}
+              className="h-64 w-full sm:h-80 lg:h-96"
+            >
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+                initialDimension={{ width: 800, height: 320 }}
+              >
+                <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop
+                        offset="5%"
+                        stopColor={pageViewsColor}
+                        stopOpacity={isDarkMode ? 0.45 : 0.35}
+                      />
+                      <stop offset="95%" stopColor={pageViewsColor} stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="visitorsGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop
+                        offset="5%"
+                        stopColor={visitorsColor}
+                        stopOpacity={isDarkMode ? 0.45 : 0.35}
+                      />
+                      <stop offset="95%" stopColor={visitorsColor} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
 
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
 
-                <XAxis
-                  dataKey="label"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: tickColor, fontSize: 11 }}
-                  minTickGap={16}
-                  interval="preserveStartEnd"
-                  dy={8}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: tickColor, fontSize: 11 }}
-                  width={48}
-                  allowDecimals={false}
-                />
+                  <XAxis
+                    dataKey="label"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: tickColor, fontSize: 11 }}
+                    minTickGap={16}
+                    interval="preserveStartEnd"
+                    dy={8}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: tickColor, fontSize: 11 }}
+                    width={48}
+                    allowDecimals={false}
+                  />
 
-                <Tooltip
-                  content={<CustomTooltip />}
-                  cursor={{ stroke: cursorColor, strokeWidth: 1, strokeDasharray: "4 4" }}
-                />
+                  <Tooltip
+                    content={<CustomTooltip />}
+                    cursor={{ stroke: cursorColor, strokeWidth: 1, strokeDasharray: "4 4" }}
+                  />
 
-                <Legend
-                  verticalAlign="top"
-                  height={36}
-                  iconType="circle"
-                  iconSize={8}
-                  wrapperStyle={{ fontSize: "12px", fontWeight: 500, color: legendColor }}
-                />
+                  <Legend
+                    verticalAlign="top"
+                    height={36}
+                    iconType="circle"
+                    iconSize={8}
+                    wrapperStyle={{ fontSize: "12px", fontWeight: 500, color: legendColor }}
+                  />
 
-                <Area
-                  type="monotone"
-                  dataKey="pageViews"
-                  name="Page Views"
-                  stroke={pageViewsColor}
-                  strokeWidth={2.5}
-                  fillOpacity={1}
-                  fill="url(#pageViewsGradient)"
-                  activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="visitors"
-                  name="Unique Visitors"
-                  stroke={visitorsColor}
-                  strokeWidth={2.5}
-                  fillOpacity={1}
-                  fill="url(#visitorsGradient)"
-                  activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+                  <Area
+                    type="monotone"
+                    dataKey="pageViews"
+                    name="Page Views"
+                    stroke={pageViewsColor}
+                    strokeWidth={2.5}
+                    fillOpacity={1}
+                    fill="url(#pageViewsGradient)"
+                    isAnimationActive={!reduceMotion}
+                    animationDuration={600}
+                    activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="visitors"
+                    name="Unique Visitors"
+                    stroke={visitorsColor}
+                    strokeWidth={2.5}
+                    fillOpacity={1}
+                    fill="url(#visitorsGradient)"
+                    isAnimationActive={!reduceMotion}
+                    animationDuration={600}
+                    activeDot={{ r: 5, strokeWidth: 2, stroke: activeDotStroke }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Screen-reader equivalent of the chart (WCAG 1.1.1): the same
+                series as a real table, exposed only to assistive technology. */}
+            {chartData.length > 0 && (
+              <table className="sr-only">
+                <caption>Traffic trends for the selected period</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Page views</th>
+                    <th scope="col">Unique visitors</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {chartData.map((point) => (
+                    <tr key={point.timestamp}>
+                      <th scope="row">{point.label}</th>
+                      <td>{point.pageViews}</td>
+                      <td>{point.visitors}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>
         )}
       </div>
     </Card>

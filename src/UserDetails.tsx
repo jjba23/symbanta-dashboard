@@ -26,7 +26,7 @@ export function UserDetails() {
 
   if (isLoading) {
     return (
-      <div className="glass-inset inline-flex h-9 animate-pulse items-center gap-2 rounded-xl px-2.5 text-xs text-stone-400 dark:text-stone-500">
+      <div className="glass-inset inline-flex h-9 animate-pulse items-center gap-2 rounded-xl px-2.5 text-xs text-stone-500 dark:text-stone-400">
         <div className="h-1.5 w-1.5 rounded-full bg-stone-400/60 dark:bg-stone-600" />
         <span className="hidden sm:inline">Loading…</span>
         <span className="sr-only sm:hidden">Loading user</span>
@@ -52,7 +52,12 @@ export function UserDetails() {
         </span>
       </span>
 
-      <span className="font-normal text-stone-300 select-none dark:text-stone-600">•</span>
+      <span
+        aria-hidden="true"
+        className="font-normal text-stone-400 select-none dark:text-stone-600"
+      >
+        •
+      </span>
 
       <span className="hidden rounded-md bg-white/60 px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-stone-600 uppercase ring-1 ring-white/70 ring-inset sm:inline dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
         {userResponse.role}

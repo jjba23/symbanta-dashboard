@@ -17,7 +17,7 @@
  */
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { customFetch } from "./custom-fetch.ts";
+import { API_ORIGIN, customFetch, resolveApiUrl } from "./custom-fetch.ts";
 
 interface FakeResponseInit {
   status?: number;
@@ -136,5 +136,56 @@ describe("customFetch", () => {
       status: 502,
       data: "Bad Gateway",
     });
+  });
+});
+
+describe("resolveApiUrl", () => {
+  const generated = `${API_ORIGIN}/v1/stats/summary?domain=example.com&period=LAST_7_DAYS`;
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("keeps the generated URL when no base URL is configured", () => {
+    vi.stubEnv("VITE_API_BASE_URL", "");
+
+    expect(resolveApiUrl(generated)).toBe(generated);
+  });
+
+  it("re-roots generated URLs onto the configured base", () => {
+    vi.stubEnv("VITE_API_BASE_URL", "/mock-api");
+
+    expect(resolveApiUrl(generated)).toBe(
+      "/mock-api/v1/stats/summary?domain=example.com&period=LAST_7_DAYS",
+    );
+  });
+
+  it("trims trailing slashes from the base", () => {
+    vi.stubEnv("VITE_API_BASE_URL", "http://127.0.0.1:8787/");
+
+    expect(resolveApiUrl(generated)).toBe(
+      "http://127.0.0.1:8787/v1/stats/summary?domain=example.com&period=LAST_7_DAYS",
+    );
+  });
+
+  it("leaves URLs that do not belong to the generated client alone", () => {
+    vi.stubEnv("VITE_API_BASE_URL", "/mock-api");
+
+    expect(resolveApiUrl("/health")).toBe("/health");
+    expect(resolveApiUrl("https://example.org/v1/stats/summary")).toBe(
+      "https://example.org/v1/stats/summary",
+    );
+  });
+
+  it("is applied by customFetch", async () => {
+    vi.stubEnv("VITE_API_BASE_URL", "/mock-api");
+    const fetchMock = stubFetch(fakeResponse({ body: "{}" }));
+
+    await customFetch(generated);
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/mock-api/v1/stats/summary?domain=example.com&period=LAST_7_DAYS",
+      { credentials: "include" },
+    );
   });
 });

@@ -46,7 +46,7 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
 
   if (isLoading) {
     return (
-      <div className="glass-inset animate-pulse rounded-xl px-3 py-2 text-xs text-stone-400 dark:text-stone-500">
+      <div className="glass-inset animate-pulse rounded-xl px-3 py-2 text-xs text-stone-500 dark:text-stone-400">
         Loading properties…
       </div>
     );

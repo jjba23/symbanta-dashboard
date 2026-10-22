@@ -50,7 +50,7 @@ const levelFilters: Array<{ value: LevelFilter; label: string }> = [
 const levelBadgeClass: Record<ConsoleLogLevel, string> = {
   log: "bg-stone-500/10 text-stone-600 ring-stone-500/20 dark:bg-white/10 dark:text-stone-200 dark:ring-white/15",
   info: "bg-sky-500/10 text-sky-700 ring-sky-500/25 dark:bg-sky-400/10 dark:text-sky-300 dark:ring-sky-400/25",
-  warn: "bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/25",
+  warn: "bg-amber-500/15 text-amber-800 ring-amber-500/30 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/25",
   error:
     "bg-rose-500/10 text-rose-700 ring-rose-500/25 dark:bg-rose-400/10 dark:text-rose-300 dark:ring-rose-400/25",
   debug:
@@ -77,7 +77,7 @@ function LogEntry({ entry }: { entry: V1ConsoleLogEntry }) {
           </span>
         )}
         {entry.url && (
-          <span className="min-w-0 max-w-full truncate font-mono text-stone-400 dark:text-stone-500">
+          <span className="min-w-0 max-w-full truncate font-mono text-stone-500 dark:text-stone-400">
             {entry.url}
           </span>
         )}
@@ -170,7 +170,12 @@ export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProp
             }
           />
         ) : (
-          <div className="-mx-4 max-h-[28rem] overflow-y-auto sm:-mx-6 lg:-mx-7">
+          <div
+            role="region"
+            aria-label="Console log entries"
+            tabIndex={0}
+            className="-mx-4 max-h-[28rem] overflow-y-auto sm:-mx-6 lg:-mx-7"
+          >
             <ul className="divide-y divide-stone-500/10 dark:divide-white/5">
               {entries.map((entry, index) => (
                 <LogEntry key={`${entry.timestamp}-${index}`} entry={entry} />

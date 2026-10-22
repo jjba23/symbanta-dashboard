@@ -27,19 +27,21 @@ function Footer() {
           <div className="flex flex-wrap items-center gap-2">
             <img
               src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
-              alt="Symbanta logo"
+              alt=""
               className="h-5 w-5 shrink-0 object-contain"
             />
             <span className="font-bold tracking-tight text-stone-800 dark:text-stone-100">
               symbanta
             </span>
-            <span className="text-stone-300 dark:text-stone-700">•</span>
+            <span aria-hidden="true" className="text-stone-400 dark:text-stone-600">
+              •
+            </span>
             <span className="text-stone-600 dark:text-stone-400">
               &copy; {currentYear} Josep Bigorra
             </span>
           </div>
 
-          <p className="text-xs text-stone-400 dark:text-stone-500">
+          <p className="text-xs text-stone-500 dark:text-stone-400">
             Contact:{" "}
             <a
               href="mailto:jjbigorra@gmail.com"

@@ -136,7 +136,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                       </span>
                       <time
                         dateTime={eventType.createdAt}
-                        className="text-[11px] whitespace-nowrap text-stone-400 dark:text-stone-500"
+                        className="text-[11px] whitespace-nowrap text-stone-500 dark:text-stone-400"
                       >
                         {formattedDate(new Date(eventType.createdAt))}
                       </time>
@@ -201,7 +201,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
             </button>
 
             {register.isError && (
-              <p role="alert" className="text-xs break-words text-rose-600 dark:text-rose-400">
+              <p role="alert" className="text-xs break-words text-rose-700 dark:text-rose-400">
                 {errorMessage(register.error)}
               </p>
             )}

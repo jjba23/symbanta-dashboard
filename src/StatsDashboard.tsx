@@ -52,7 +52,7 @@ function StatCard({
   accent: string;
 }) {
   return (
-    <div className="glass-inset group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl p-4 transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-14px_rgb(41_37_36_/_0.45)] sm:p-5">
+    <div className="glass-inset glass-lift group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl p-4 sm:p-5">
       <div className="mb-3 flex items-center gap-2">
         <span
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg shadow-sm ring-1 ring-white/60 ring-inset ${accent}`}
@@ -142,7 +142,7 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
               title="Bounce Rate"
               value={`${roundToTwoPlaces(bounceRate)}%`}
               icon={<BounceIcon className="h-4 w-4" />}
-              accent="bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300"
+              accent="bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300"
             />
           </div>
         )}
