@@ -34,6 +34,21 @@ by Orval from its OpenAPI document with =npm run api-gen=):
 Authentication uses the session cookie set by =POST /auth/login=; the selected domain and period
 are remembered in cookies.
 
+* Testing
+
+The dashboard is tested with [[https://vitest.dev][Vitest]] and
+[[https://testing-library.com/docs/react-testing-library/intro][React Testing Library]] on a
+=jsdom= environment. The suite runs with =npm test= (=npm run test:watch= while developing,
+=npm run test:coverage= for a coverage report).
+
+What is covered:
+
+- *pure helpers* (=Prelude.ts=): duration and percentage formatting, RFC 7807 error extraction, cookie round-trips.
+- *API layer* (=api/custom-fetch.ts=): JSON and text bodies, 204 responses, cookie credentials, error status/problem details.
+- *state* (=PeriodContext=, =ThemeContext=): cookie and localStorage restore, invalid stored values, OS colour-scheme changes.
+- *shared UI* (=ui.tsx=): table shares and labels, date range badges, period select, empty/error/loading states.
+- *panels* (=StatsDashboard=, breakdown tables, =ConsoleLogs=, =DomainSwitcher=): loading, empty, error and success rendering, plus filter and auto-selection behaviour. The generated API hooks are mocked, so no backend is needed.
+
 ----------------
 
 [[https://jointhefreeworld.org/static-assets/symbanta/symbanta.gif]]

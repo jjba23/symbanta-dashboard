@@ -35,11 +35,13 @@ const ThemeContext: React.Context<ThemeContextType | undefined> = createContext<
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
+    const themes: Theme[] = ["light", "dark", "system"];
     const cookieTheme = getCookie(THEME_COOKIE_KEY) as Theme;
-    if (cookieTheme && ["light", "dark", "system"].includes(cookieTheme)) {
+    if (themes.includes(cookieTheme)) {
       return cookieTheme;
     }
-    return (localStorage.getItem("theme") as Theme) || "system";
+    const storedTheme = localStorage.getItem("theme") as Theme;
+    return themes.includes(storedTheme) ? storedTheme : "system";
   });
 
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");

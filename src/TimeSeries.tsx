@@ -30,6 +30,7 @@ import { useGetTimeSeriesStats } from "./api/symbanta.ts";
 import type { V1TimeSeriesStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { useTheme } from "./ThemeContext.tsx";
+import { errorMessage } from "./Prelude.ts";
 import { Card, CardHeader, cardPaddingClass, ChartIcon, EmptyState, ErrorState } from "./ui.tsx";
 
 interface TimeSeriesProps {
@@ -110,10 +111,6 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
   const pageViewsColor = isDarkMode ? "#a78bfa" : "#8b5cf6"; // violet-400 vs violet-500
   const visitorsColor = "#f472b6"; // pink-400
 
-  const errObj = error as { detail?: string; title?: string; message?: string } | null;
-  const errorMessage =
-    errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
-
   return (
     <Card>
       <div className={cardPaddingClass}>
@@ -132,7 +129,7 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
             <span className="sr-only">Loading time series…</span>
           </div>
         ) : isError ? (
-          <ErrorState title="Could not load the time series" message={errorMessage} />
+          <ErrorState title="Could not load the time series" message={errorMessage(error)} />
         ) : hasNoData ? (
           <EmptyState
             icon={<ChartIcon className="h-5 w-5" />}

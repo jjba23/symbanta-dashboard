@@ -19,6 +19,7 @@
 import { useGetRouteStats } from "./api/symbanta.ts";
 import type { V1RouteStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
+import { errorMessage } from "./Prelude.ts";
 import {
   Card,
   CardHeader,
@@ -52,10 +53,6 @@ export function RouteStatsTable({ domain = "localhost", className }: RouteStatsT
   const from = response?.from ? new Date(response.from) : undefined;
   const to = response?.to ? new Date(response.to) : undefined;
 
-  const errObj = error as { detail?: string; title?: string; message?: string } | null;
-  const errorMessage =
-    errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
-
   return (
     <Card className={className}>
       <div className={cardPaddingClass}>
@@ -69,7 +66,7 @@ export function RouteStatsTable({ domain = "localhost", className }: RouteStatsT
         {isLoading ? (
           <TableSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load routes" message={errorMessage} />
+          <ErrorState title="Could not load routes" message={errorMessage(error)} />
         ) : rows.length === 0 ? (
           <EmptyState
             icon={<RouteIcon className="h-5 w-5" />}

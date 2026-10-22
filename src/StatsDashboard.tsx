@@ -18,7 +18,7 @@
 
 import type { ReactNode } from "react";
 import { useGetStatsSummary } from "./api/symbanta.ts";
-import { formatDuration, roundToTwoPlaces } from "./Prelude.ts";
+import { errorMessage, formatDuration, roundToTwoPlaces } from "./Prelude.ts";
 import type { V1StatsSummaryResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import {
@@ -90,9 +90,6 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
   const to = stats?.to ? new Date(stats.to) : undefined;
 
   const hasNoData = !stats || (pageViews === 0 && visitors === 0);
-  const errObj = error as { detail?: string; title?: string; message?: string } | null;
-  const errorMessage =
-    errObj?.detail || errObj?.title || errObj?.message || "An unknown error occurred";
 
   return (
     <Card>
@@ -108,7 +105,7 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
         {isLoading ? (
           <StatsSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load the overview" message={errorMessage} />
+          <ErrorState title="Could not load the overview" message={errorMessage(error)} />
         ) : hasNoData ? (
           <EmptyState
             icon={<ChartIcon className="h-5 w-5" />}
