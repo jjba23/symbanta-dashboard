@@ -20,6 +20,7 @@ import { useGetUserAgentStats } from "./api/symbanta.ts";
 import type { V1UserAgentStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { errorMessage } from "./Prelude.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   BrowserIcon,
   Card,
@@ -39,6 +40,7 @@ interface UserAgentStatsTableProps {
 }
 
 export function UserAgentStatsTable({ domain = "localhost", className }: UserAgentStatsTableProps) {
+  const { t } = useI18n();
   const { period } = usePeriod();
   const { data, isLoading, isError, error } = useGetUserAgentStats({ domain, period });
 
@@ -56,7 +58,7 @@ export function UserAgentStatsTable({ domain = "localhost", className }: UserAge
     <Card className={className}>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="User agents"
+          title={t("User agents")}
           domain={domain}
           icon={<BrowserIcon className="h-4.5 w-4.5" />}
           action={from && to ? <DateRangeBadge from={from} to={to} /> : null}
@@ -65,21 +67,20 @@ export function UserAgentStatsTable({ domain = "localhost", className }: UserAge
         {isLoading ? (
           <TableSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load user agents" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load user agents")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : rows.length === 0 ? (
           <EmptyState
             icon={<BrowserIcon className="h-5 w-5" />}
-            title="No user agent data available"
-            description={
-              <>
-                No user agent records found for{" "}
-                <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span> in
-                this timeframe.
-              </>
-            }
+            title={t("No user agent data available")}
+            description={t("No user agent records found for {domain} in this timeframe.", {
+              domain,
+            })}
           />
         ) : (
-          <StatsTable rows={rows} labelHeader="User agent" />
+          <StatsTable rows={rows} labelHeader={t("User agent")} emptyLabel={t("Unknown")} />
         )}
       </div>
     </Card>

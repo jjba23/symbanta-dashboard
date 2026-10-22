@@ -103,7 +103,9 @@ describe("StatsDashboard", () => {
 
     renderDashboard();
 
-    expect(screen.getByTitle(formattedDateRange(new Date(from), new Date(to)))).toBeInTheDocument();
+    expect(
+      screen.getByTitle(formattedDateRange(new Date(from), new Date(to), "en")),
+    ).toBeInTheDocument();
   });
 
   it("renders an error state with the API problem details", () => {

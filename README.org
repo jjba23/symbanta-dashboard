@@ -4,13 +4,13 @@
 #+language: en
 #+options: toc:nil num:nil
 
-[[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]    [[https://img.shields.io/badge/tests-183_passing-6f42c1.svg]]    [[https://img.shields.io/badge/WCAG_2.1-AA-2ea44f.svg]]    [[https://img.shields.io/badge/development-no_backend_needed-ff69b4.svg]]    [[https://img.shields.io/badge/stack-React_19_+_Vite_8_+_Tailwind_4-38bdf8.svg]]
+[[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]    [[https://img.shields.io/badge/tests-303_passing-6f42c1.svg]]    [[https://img.shields.io/badge/WCAG_2.1-AA-2ea44f.svg]]    [[https://img.shields.io/badge/development-no_backend_needed-ff69b4.svg]]    [[https://img.shields.io/badge/stack-React_19_+_Vite_8_+_Tailwind_4-38bdf8.svg]]    [[https://img.shields.io/badge/i18n-8_languages_GNU_gettext-a86454.svg]]
 
 #+begin_quote
 *Symbanta* is the dashboard for the [[https://codeberg.org/jjba23/symbanta][symbanta analytics core]]: a fast, beautifully frosted interface that answers one question — /what happened on my site, and is it getting better?/ — without ads, without visitor profiles, and without a single byte of personal data leaving your server.
 #+end_quote
 
-#+caption: Eight seconds inside the dashboard, entirely served by the bundled mock API: hover the traffic curve for a glass tooltip, scroll past the sticky filter bar, widen the reporting period to 30 days, flip to the dusk theme, and turn on the high-contrast material.
+#+caption: Ten seconds inside the dashboard, entirely served by the bundled mock API: hover the traffic curve for a glass tooltip, scroll past the sticky filter bar, widen the reporting period to 30 days, flip to the dusk theme, turn on the high-contrast material, and finish in Spanish.
 [[./docs/demo.gif]]
 
 * In a hurry?
@@ -78,6 +78,13 @@ Built with [[https://react.dev][React]], [[https://vite.dev][Vite]], [[https://t
 - *Skip link*, one =<h1>=, named regions, focusable scroll containers, captions and scoped headers on every table.
 - *Charts expose a visually hidden data table*, so the same story is available to screen readers.
 - Honours =prefers-reduced-motion=, =prefers-reduced-transparency=, =prefers-contrast= and =forced-colors=.
+
+** Speaks your language
+
+- *Eight languages out of the box* — English (source), German, Spanish, French, Italian, Japanese, Dutch and Portuguese — each with a real GNU gettext catalog, no key/value soup.
+- *Source strings are the msgids*, extracted from the TypeScript AST, so a translation stays attached to the code it belongs to.
+- *Plural rules are evaluated from the catalog's own =Plural-Forms= header*, which means Polish, Russian or Arabic drop in without code changes.
+- *Dates, numbers and =<html lang>= follow the active locale*, and the choice is remembered between visits.
 
 ** Develop offline, forever
 
@@ -202,6 +209,7 @@ The dashboard stores only interface preferences — never analytics data:
 | =symbanta_theme=            | =light=, =dark= or =system= (with =localStorage= as fallback). |
 | =symbanta_contrast=         | =system= or =more= — the "increase contrast" toggle. |
 | =symbanta_selected_domain=  | The property currently being viewed.            |
+| =symbanta_locale=           | =en=, =es=, … — the interface language.          |
 
 The theme is applied before the first paint (see =src/main.tsx=), so navigating never flashes the wrong colour scheme.
 
@@ -221,6 +229,8 @@ The theme is applied before the first paint (see =src/main.tsx=), so navigating 
 | =npm run mock:api=     | Standalone mock API on =http://127.0.0.1:8787=.                     |
 | =npm run lint=         | Format with =oxfmt=, then lint and autofix with =oxlint=.           |
 | =npm run api-gen=      | Regenerate =src/api/= from the core's OpenAPI document via Orval.    |
+| =npm run i18n:extract= | Re-extract translatable strings into the gettext template and catalogs. |
+| =npm run i18n:check=   | Fail when a catalog or the template is out of date (CI-friendly).   |
 
 ** Theming tokens
 
@@ -349,6 +359,7 @@ What is covered:
 - *panels* (=StatsDashboard=, breakdown tables, =ConsoleLogs=, =DomainSwitcher=): loading, empty, error and success rendering, plus filter and auto-selection behaviour. The generated API hooks are mocked, so no backend is needed.
 - *mock API* (=mock-api/routes.test.ts=): every route, problem details, idempotent event-type registration, log filtering, determinism, the fault/empty switches and the Node HTTP layer.
 - *accessibility and contrast* (=src/a11y/=): the colour contract, the component colour scan, the structural audit, the contrast preference and a full axe-core pass over the rendered dashboard.
+- *internationalisation* (=src/i18n/=): the Plural-Forms evaluator for eight real-world language rules, the translator, locale detection, the gettext catalogs themselves and a Spanish render of a real panel.
 
 Handy subsets while iterating:
 
@@ -356,7 +367,65 @@ Handy subsets while iterating:
 npx vitest run src/StatsDashboard.test.tsx   # one file
 npx vitest run -t "share"                    # one test name
 npm run test:a11y && npm run test:api        # the two specialist suites
+npm run i18n:check                           # are the gettext catalogs up to date?
 #+end_src
+
+* Internationalisation
+
+The dashboard ships English (the source language) plus **German, Spanish,
+French, Italian, Japanese, Dutch and Portuguese**, and adding another language
+means adding one file.
+
+** How it works
+
+- Source strings *are* the msgids: components call =t("Top routes")=,
+  =tn("{count} entry", "{count} entries", n)=, or =tContext("log level", "Log")= —
+  exactly the gettext model. There is no key/value indirection to keep in sync.
+- =src/i18n/locales/symbanta.pot= is the template, =es.po= is a real GNU
+  gettext catalog. Both are extracted from the TypeScript AST, so TSX is fine.
+- =i18n/vite-plugin.ts= compiles =*.po= into plain objects at build time:
+  =gettext-parser= never reaches the browser bundle.
+- Plural forms come from the catalog's own =Plural-Forms= header, evaluated by
+  a small, tested expression interpreter (=src/i18n/plural.ts=) — no =eval=.
+  Real headers for Polish, Russian, Czech and Arabic are covered in the tests.
+- =<html lang>=, =Intl= date/number formatting and the chart axis labels all
+  follow the active locale. The choice is remembered in =symbanta_locale=.
+
+** Adding or updating a translation
+
+#+begin_src sh
+npm run i18n:extract             # 1. re-scan src/, update the .pot and every .po
+$EDITOR src/i18n/locales/es.po   # 2. translate the new msgids
+npm run i18n:check               # 3. fails if a catalog is out of date
+npm test                         # 4. validates placeholders, plural counts, coverage
+#+end_src
+
+To add a language, copy the template and declare its plural rule:
+
+#+begin_src sh
+cp src/i18n/locales/symbanta.pot src/i18n/locales/sv.po
+# set "Language: sv" and the rule from the GNU gettext manual, here:
+#   "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+npm run i18n:extract
+#+end_src
+
+The language appears in the header switcher automatically (catalogs are
+discovered with =import.meta.glob=). Add its endonym to =LOCALE_NAMES= in
+=src/i18n/locale.ts= if it is not there yet.
+
+** Rules the suite enforces
+
+The catalog tests (=src/i18n/catalog.test.ts=) refuse to ship:
+
+- a catalog that is out of date with the source (run =i18n:extract=);
+- an empty =msgstr= — a shipped catalog must be complete;
+- a translation that drops or renames a ={placeholder}= of its source string;
+- a plural entry with a number of forms that disagrees with =nplurals=;
+- an obsolete entry that no longer exists in the code.
+
+Because these run inside =npm test=, CI cannot deploy a half-translated
+release. GNU =gettext= itself is in the Nix shell (=msgfmt=, =msgmerge=,
+=msgcat=), so the catalogs also work with Poedit, Weblate or any gettext tool.
 
 * Project layout
 
@@ -378,7 +447,9 @@ symbanta-dashboard/
     PeriodContext.tsx            # the global reporting period
     index.css                    # the four-layer glass token system
     a11y/                        # contrast maths, tokens, audits, skip link, preferences
+    i18n/                        # gettext runtime + locales/*.po (8 languages; en is the source)
     api/                         # Orval client + customFetch base-URL rewrite
+  i18n/                          # node-side tooling: PO compiler plugin, extractor, catalogs
   mock-api/                      # deterministic local API (Vite plugin + server)
   docs/                          # demo.gif and the screenshots above
   flake.nix                      # Nix dev shell (Node + tooling)

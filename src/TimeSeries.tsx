@@ -31,6 +31,7 @@ import type { V1TimeSeriesStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { useTheme } from "./ThemeContext.tsx";
 import { usePrefersReducedMotion } from "./a11y/usePrefersReducedMotion.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import { errorMessage } from "./Prelude.ts";
 import { Card, CardHeader, cardPaddingClass, ChartIcon, EmptyState, ErrorState } from "./ui.tsx";
 
@@ -48,9 +49,10 @@ interface ChartTooltipProps {
   active?: boolean;
   payload?: TooltipEntry[];
   label?: string | number;
+  formatNumber: (value: number) => string;
 }
 
-const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
+const CustomTooltip = ({ active, payload, label, formatNumber: format }: ChartTooltipProps) => {
   if (!active || !payload || payload.length === 0) {
     return null;
   }
@@ -71,7 +73,7 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
               <span className="font-medium text-stone-600 dark:text-stone-300">{entry.name}</span>
             </div>
             <span className="font-bold tabular-nums text-stone-900 dark:text-stone-100">
-              {typeof entry.value === "number" ? entry.value.toLocaleString() : entry.value}
+              {typeof entry.value === "number" ? format(entry.value) : entry.value}
             </span>
           </div>
         ))}
@@ -83,6 +85,7 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
 export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
   const { period } = usePeriod();
   const { resolvedTheme } = useTheme();
+  const { t, tn, locale } = useI18n();
   const reduceMotion = usePrefersReducedMotion();
   const { data, isLoading, isError, error } = useGetTimeSeriesStats({ domain, period });
 
@@ -96,8 +99,8 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
     const date = new Date(point.timestamp);
     const formattedLabel =
       stats?.granularity === "DAY"
-        ? date.toLocaleDateString(undefined, { month: "short", day: "numeric" })
-        : date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+        ? date.toLocaleDateString(locale, { month: "short", day: "numeric" })
+        : date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
     return { ...point, label: formattedLabel };
   });
 
@@ -117,8 +120,8 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
     <Card>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Traffic Trends"
-          subtitle="Page views and unique visitors over time"
+          title={t("Traffic Trends")}
+          subtitle={t("Page views and unique visitors over time")}
           icon={<ChartIcon className="h-4.5 w-4.5" />}
         />
 
@@ -128,21 +131,29 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
             role="status"
             aria-live="polite"
           >
-            <span className="sr-only">Loading time series…</span>
+            <span className="sr-only">{t("Loading time series…")}</span>
           </div>
         ) : isError ? (
-          <ErrorState title="Could not load the time series" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load the time series")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : hasNoData ? (
           <EmptyState
             icon={<ChartIcon className="h-5 w-5" />}
-            title="No traffic recorded"
-            description="There are no page views or unique visitors recorded for this time period."
+            title={t("No traffic recorded")}
+            description={t(
+              "There are no page views or unique visitors recorded for this time period.",
+            )}
           />
         ) : (
           <>
             <div
               role="img"
-              aria-label={`Traffic trends chart: page views and unique visitors across ${chartData.length} time buckets. The same numbers are available in the table that follows.`}
+              aria-label={t(
+                "Traffic trends chart: page views and unique visitors across {buckets}. The same numbers are available in the table that follows.",
+                { buckets: tn("{count} time bucket", "{count} time buckets", chartData.length) },
+              )}
               className="h-64 w-full sm:h-80 lg:h-96"
             >
               <ResponsiveContainer
@@ -190,7 +201,9 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
                   />
 
                   <Tooltip
-                    content={<CustomTooltip />}
+                    content={
+                      <CustomTooltip formatNumber={(value) => value.toLocaleString(locale)} />
+                    }
                     cursor={{ stroke: cursorColor, strokeWidth: 1, strokeDasharray: "4 4" }}
                   />
 
@@ -205,7 +218,7 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
                   <Area
                     type="monotone"
                     dataKey="pageViews"
-                    name="Page Views"
+                    name={t("Page Views")}
                     stroke={pageViewsColor}
                     strokeWidth={2.5}
                     fillOpacity={1}
@@ -217,7 +230,7 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
                   <Area
                     type="monotone"
                     dataKey="visitors"
-                    name="Unique Visitors"
+                    name={t("Unique Visitors")}
                     stroke={visitorsColor}
                     strokeWidth={2.5}
                     fillOpacity={1}
@@ -234,12 +247,12 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
                 series as a real table, exposed only to assistive technology. */}
             {chartData.length > 0 && (
               <table className="sr-only">
-                <caption>Traffic trends for the selected period</caption>
+                <caption>{t("Traffic trends for the selected period")}</caption>
                 <thead>
                   <tr>
-                    <th scope="col">Time</th>
-                    <th scope="col">Page views</th>
-                    <th scope="col">Unique visitors</th>
+                    <th scope="col">{t("Time")}</th>
+                    <th scope="col">{t("Page views")}</th>
+                    <th scope="col">{t("Unique visitors")}</th>
                   </tr>
                 </thead>
                 <tbody>

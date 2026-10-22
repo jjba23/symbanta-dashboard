@@ -25,6 +25,7 @@ import {
 } from "./api/symbanta.ts";
 import type { V1EventTypesResponse } from "./api/model";
 import { errorMessage, formattedDate } from "./Prelude.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   BookmarkIcon,
   Card,
@@ -54,6 +55,7 @@ const eventNamePattern = "[A-Za-z0-9._:\\-]{1,120}";
  * Not period-scoped: this is configuration, not analytics.
  */
 export function EventTypesPanel({ domain = "localhost", className }: EventTypesPanelProps) {
+  const { t, tn, locale } = useI18n();
   const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useGetEventTypes({ domain });
 
@@ -91,13 +93,17 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
     <Card className={className}>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Event types"
+          title={t("Event types")}
           domain={domain}
-          subtitle="Declare the event names this application emits."
+          subtitle={t("Declare the event names this application emits.")}
           icon={<BookmarkIcon className="h-4.5 w-4.5" />}
           action={
             <span className="glass-inset rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-600 dark:text-stone-300">
-              {eventTypes.length} registered
+              {tn(
+                "{count} registered event type",
+                "{count} registered event types",
+                eventTypes.length,
+              )}
             </span>
           }
         />
@@ -107,18 +113,18 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
             {isLoading ? (
               <TableSkeleton rows={4} columns={3} />
             ) : isError ? (
-              <ErrorState title="Could not load event types" message={errorMessage(error)} />
+              <ErrorState
+                title={t("Could not load event types")}
+                message={errorMessage(error, t("An unknown error occurred"))}
+              />
             ) : eventTypes.length === 0 ? (
               <EmptyState
                 icon={<BookmarkIcon className="h-5 w-5" />}
-                title="No event types registered"
-                description={
-                  <>
-                    Nothing has been declared for{" "}
-                    <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span>{" "}
-                    yet. Page views appear here automatically as they are ingested.
-                  </>
-                }
+                title={t("No event types registered")}
+                description={t(
+                  "Nothing has been declared for {domain} yet. Page views appear here automatically as they are ingested.",
+                  { domain },
+                )}
               />
             ) : (
               <ul className="-mx-4 max-h-[22rem] divide-y divide-stone-500/10 overflow-y-auto sm:-mx-6 dark:divide-white/5">
@@ -138,7 +144,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                         dateTime={eventType.createdAt}
                         className="text-[11px] whitespace-nowrap text-stone-500 dark:text-stone-400"
                       >
-                        {formattedDate(new Date(eventType.createdAt))}
+                        {formattedDate(new Date(eventType.createdAt), locale)}
                       </time>
                     </div>
                     {eventType.description && (
@@ -158,7 +164,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                 htmlFor="event-type-name"
                 className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase dark:text-stone-400"
               >
-                Event name
+                {t("Event name")}
               </label>
               <input
                 id="event-type-name"
@@ -168,7 +174,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                 required
                 maxLength={120}
                 pattern={eventNamePattern}
-                title="1-120 letters, digits or - _ . : characters"
+                title={t("1-120 letters, digits or - _ . : characters")}
                 className={`${controlClass} cursor-text font-mono`}
               />
             </div>
@@ -178,13 +184,13 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                 htmlFor="event-type-description"
                 className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase dark:text-stone-400"
               >
-                Description <span className="normal-case">(optional)</span>
+                {t("Description")} <span className="normal-case">{t("(optional)")}</span>
               </label>
               <input
                 id="event-type-description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                placeholder="User completed the signup form"
+                placeholder={t("User completed the signup form")}
                 maxLength={500}
                 className={`${controlClass} cursor-text`}
               />
@@ -197,21 +203,17 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
               className="btn-primary inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50"
             >
               {register.isPending && <Spinner className="h-3.5 w-3.5" />}
-              <span>{register.isPending ? "Registering…" : "Register event type"}</span>
+              <span>{register.isPending ? t("Registering…") : t("Register event type")}</span>
             </button>
 
             {register.isError && (
               <p role="alert" className="text-xs break-words text-rose-700 dark:text-rose-400">
-                {errorMessage(register.error)}
+                {errorMessage(register.error, t("An unknown error occurred"))}
               </p>
             )}
             {register.isSuccess && register.data && "name" in register.data.data && (
               <p className="text-xs text-stone-500 dark:text-stone-400">
-                Registered{" "}
-                <span className="font-mono font-medium text-stone-700 dark:text-stone-300">
-                  {register.data.data.name}
-                </span>
-                .
+                {t("Registered {name}.", { name: register.data.data.name })}
               </p>
             )}
           </form>

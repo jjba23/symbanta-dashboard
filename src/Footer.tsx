@@ -16,7 +16,9 @@
  * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useI18n } from "./i18n/I18nContext.tsx";
 function Footer() {
+  const { t } = useI18n();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -37,12 +39,12 @@ function Footer() {
               •
             </span>
             <span className="text-stone-600 dark:text-stone-400">
-              &copy; {currentYear} Josep Bigorra
+              {t("© {year} Josep Bigorra", { year: currentYear })}
             </span>
           </div>
 
           <p className="text-xs text-stone-500 dark:text-stone-400">
-            Contact:{" "}
+            {t("Contact:")}{" "}
             <a
               href="mailto:jjbigorra@gmail.com"
               className="underline decoration-stone-300 underline-offset-2 transition-colors hover:text-stone-700 dark:decoration-stone-700 dark:hover:text-stone-300"
@@ -55,7 +57,7 @@ function Footer() {
         {/* Right Section: License & Code Repository */}
         <div className="flex flex-col gap-1.5 text-xs text-stone-500 md:items-end dark:text-stone-400">
           <p className="flex flex-wrap items-center gap-1.5">
-            <span>Free Software under the</span>
+            <span>{t("Free Software under the")}</span>
             <a
               href="https://www.gnu.org/licenses/agpl-3.0.html"
               target="_blank"
@@ -67,7 +69,7 @@ function Footer() {
           </p>
 
           <p className="flex flex-wrap items-center gap-1.5">
-            <span>Source code:</span>
+            <span>{t("Source code:")}</span>
             <a
               href="https://codeberg.org/jjba23/symbanta-dashboard"
               target="_blank"

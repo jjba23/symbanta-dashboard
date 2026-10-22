@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useGetConsoleLogs } from "./api/symbanta.ts";
 import { ConsoleLogLevel, type V1ConsoleLogEntry, type V1ConsoleLogsResponse } from "./api/model";
 import { errorMessage, formattedDate } from "./Prelude.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   Card,
   CardHeader,
@@ -38,13 +39,33 @@ interface ConsoleLogsProps {
 
 type LevelFilter = ConsoleLogLevel | "all";
 
-const levelFilters: Array<{ value: LevelFilter; label: string }> = [
-  { value: "all", label: "All levels" },
-  { value: ConsoleLogLevel.log, label: "Log" },
-  { value: ConsoleLogLevel.info, label: "Info" },
-  { value: ConsoleLogLevel.warn, label: "Warn" },
-  { value: ConsoleLogLevel.error, label: "Error" },
-  { value: ConsoleLogLevel.debug, label: "Debug" },
+/** Filter labels are translated where they are rendered, with static msgids. */
+function levelFilter(level: LevelFilter, t: ReturnType<typeof useI18n>["t"]): string {
+  switch (level) {
+    case "all":
+      return t("All levels");
+    case ConsoleLogLevel.log:
+      return t("Log");
+    case ConsoleLogLevel.info:
+      return t("Info");
+    case ConsoleLogLevel.warn:
+      return t("Warn");
+    case ConsoleLogLevel.error:
+      return t("Error");
+    case ConsoleLogLevel.debug:
+      return t("Debug");
+    default:
+      return level;
+  }
+}
+
+const LEVEL_FILTERS: LevelFilter[] = [
+  "all",
+  ConsoleLogLevel.log,
+  ConsoleLogLevel.info,
+  ConsoleLogLevel.warn,
+  ConsoleLogLevel.error,
+  ConsoleLogLevel.debug,
 ];
 
 const levelBadgeClass: Record<ConsoleLogLevel, string> = {
@@ -60,6 +81,8 @@ const levelBadgeClass: Record<ConsoleLogLevel, string> = {
 const limitOptions = [50, 100, 250, 500];
 
 function LogEntry({ entry }: { entry: V1ConsoleLogEntry }) {
+  const { locale } = useI18n();
+
   return (
     <li className="flex flex-col gap-1.5 px-4 py-3 sm:px-6 lg:px-7">
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] text-stone-500 dark:text-stone-400">
@@ -70,7 +93,7 @@ function LogEntry({ entry }: { entry: V1ConsoleLogEntry }) {
         >
           {entry.level}
         </span>
-        <time dateTime={entry.timestamp}>{formattedDate(new Date(entry.timestamp))}</time>
+        <time dateTime={entry.timestamp}>{formattedDate(new Date(entry.timestamp), locale)}</time>
         {entry.country && entry.country !== "ZZ" && (
           <span className="rounded-md bg-white/60 px-1.5 py-0.5 font-medium ring-1 ring-white/70 ring-inset dark:bg-white/10 dark:ring-white/10">
             {entry.country}
@@ -95,6 +118,7 @@ function LogEntry({ entry }: { entry: V1ConsoleLogEntry }) {
  * the reporting period: logs are diagnostics rather than analytics.
  */
 export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProps) {
+  const { t, tn } = useI18n();
   const [level, setLevel] = useState<LevelFilter>("all");
   const [limit, setLimit] = useState(100);
 
@@ -111,30 +135,30 @@ export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProp
     <Card className={className}>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Console logs"
+          title={t("Console logs")}
           domain={domain}
-          subtitle="Latest console output forwarded by the instrumented application."
+          subtitle={t("Latest console output forwarded by the instrumented application.")}
           icon={<TerminalIcon className="h-4.5 w-4.5" />}
           action={
             <div className="flex items-center gap-2">
               <select
-                aria-label="Log level"
+                aria-label={t("Log level")}
                 value={level}
                 onChange={(event) => setLevel(event.target.value as LevelFilter)}
                 className={controlClass}
               >
-                {levelFilters.map((filter) => (
+                {LEVEL_FILTERS.map((filter) => (
                   <option
-                    key={filter.value}
-                    value={filter.value}
+                    key={filter}
+                    value={filter}
                     className="bg-white text-stone-800 dark:bg-stone-800 dark:text-stone-200"
                   >
-                    {filter.label}
+                    {levelFilter(filter, t)}
                   </option>
                 ))}
               </select>
               <select
-                aria-label="Number of log entries"
+                aria-label={t("Number of log entries")}
                 value={limit}
                 onChange={(event) => setLimit(Number(event.target.value))}
                 className={controlClass}
@@ -145,7 +169,7 @@ export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProp
                     value={option}
                     className="bg-white text-stone-800 dark:bg-stone-800 dark:text-stone-200"
                   >
-                    {option} entries
+                    {tn("{count} entry", "{count} entries", option)}
                   </option>
                 ))}
               </select>
@@ -156,23 +180,27 @@ export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProp
         {isLoading ? (
           <TableSkeleton rows={6} columns={3} />
         ) : isError ? (
-          <ErrorState title="Could not load console logs" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load console logs")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : entries.length === 0 ? (
           <EmptyState
             icon={<TerminalIcon className="h-5 w-5" />}
-            title="No console logs"
+            title={t("No console logs")}
             description={
-              <>
-                No console output was forwarded for{" "}
-                <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span>
-                {level === "all" ? "" : ` at level ${level}`}.
-              </>
+              level === "all"
+                ? t("No console output was forwarded for {domain}.", { domain })
+                : t("No console output was forwarded for {domain} at level {level}.", {
+                    domain,
+                    level,
+                  })
             }
           />
         ) : (
           <div
             role="region"
-            aria-label="Console log entries"
+            aria-label={t("Console log entries")}
             tabIndex={0}
             className="-mx-4 max-h-[28rem] overflow-y-auto sm:-mx-6 lg:-mx-7"
           >

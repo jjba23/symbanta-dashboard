@@ -18,9 +18,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
-import { periodLabels } from "./Prelude.ts";
+import { periodLabel } from "./i18n/periods.ts";
 import { usePeriod } from "./PeriodContext.tsx";
 import { RefreshIcon, Spinner, controlClass, PeriodSelect } from "./ui.tsx";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 /**
  * Global filter bar for the dashboard: a single period selector drives every
@@ -32,6 +33,7 @@ import { RefreshIcon, Spinner, controlClass, PeriodSelect } from "./ui.tsx";
  */
 export function DashboardToolbar() {
   const { period, setPeriod } = usePeriod();
+  const { t } = useI18n();
   const queryClient = useQueryClient();
   const isFetching = useIsFetching() > 0;
 
@@ -47,23 +49,25 @@ export function DashboardToolbar() {
     if (wasFetching.current) {
       wasFetching.current = false;
       setAnnouncement(
-        `Analytics updated at ${new Date().toLocaleTimeString(undefined, {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}`,
+        t("Analytics updated at {time}", {
+          time: new Date().toLocaleTimeString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        }),
       );
     }
     // The live region tracks an async transition (network → idle), which is
     // exactly what an effect is for; the linter assumes derived state.
     // oxlint-disable-next-line react/set-state-in-effect
-  }, [isFetching]);
+  }, [isFetching, t]);
 
-  const liveMessage = isFetching ? "Refreshing analytics…" : announcement;
+  const liveMessage = isFetching ? t("Refreshing analytics…") : announcement;
 
   return (
     <div
       role="group"
-      aria-label="Reporting filters"
+      aria-label={t("Reporting filters")}
       className="glass glass-toolbar sticky top-3 z-30 flex flex-col gap-3 rounded-[1.15rem] px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.35rem] sm:px-4"
     >
       <div className="flex min-w-0 items-center gap-2 sm:gap-3">
@@ -71,11 +75,11 @@ export function DashboardToolbar() {
           aria-hidden="true"
           className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase sm:text-[11px] dark:text-stone-400"
         >
-          Period
+          {t("Period")}
         </span>
         <PeriodSelect value={period} onChange={setPeriod} className="min-w-0 flex-1 sm:flex-none" />
         <span className="hidden truncate text-xs text-stone-600 lg:inline dark:text-stone-400">
-          {periodLabels[period]}
+          {periodLabel(period, t)}
         </span>
       </div>
 
@@ -95,7 +99,7 @@ export function DashboardToolbar() {
           ) : (
             <RefreshIcon className="h-3.5 w-3.5" />
           )}
-          <span>{isFetching ? "Refreshing…" : "Refresh"}</span>
+          <span>{isFetching ? t("Refreshing…") : t("Refresh")}</span>
         </button>
       </div>
     </div>

@@ -129,8 +129,8 @@ describe("DateRangeBadge", () => {
 
     render(<DateRangeBadge from={from} to={to} />);
 
-    expect(screen.getByText(formattedDate(from))).toBeInTheDocument();
-    expect(screen.getByTitle(formattedDateRange(from, to))).toBeInTheDocument();
+    expect(screen.getByText(formattedDate(from, "en"))).toBeInTheDocument();
+    expect(screen.getByTitle(formattedDateRange(from, to, "en"))).toBeInTheDocument();
   });
 
   it("shows a compact range across several days", () => {
@@ -139,7 +139,7 @@ describe("DateRangeBadge", () => {
 
     render(<DateRangeBadge from={from} to={to} />);
 
-    expect(screen.getByText(formattedDateRangeShort(from, to))).toBeInTheDocument();
+    expect(screen.getByText(formattedDateRangeShort(from, to, "en"))).toBeInTheDocument();
   });
 });
 

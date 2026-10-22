@@ -18,11 +18,12 @@
 
 import { createContext, useContext, useId, type ReactNode } from "react";
 import { Period } from "./api/model";
+import { useI18n } from "./i18n/I18nContext.tsx";
+import { periodLabel } from "./i18n/periods.ts";
 import {
   formattedDate,
   formattedDateRange,
   formattedDateRangeShort,
-  periodLabels,
   type PeriodType,
 } from "./Prelude.ts";
 
@@ -289,10 +290,12 @@ export function PeriodSelect({
   id?: string;
   className?: string;
 }) {
+  const { t } = useI18n();
+
   return (
     <select
       id={id}
-      aria-label="Reporting period"
+      aria-label={t("Reporting period")}
       value={value}
       onChange={(event) => onChange(event.target.value as PeriodType)}
       className={`${controlClass} ${className}`}
@@ -305,7 +308,7 @@ export function PeriodSelect({
             value={period}
             className="bg-white text-stone-800 dark:bg-stone-800 dark:text-stone-200"
           >
-            {periodLabels[period]}
+            {periodLabel(period, t)}
           </option>
         ))}
     </select>
@@ -314,15 +317,17 @@ export function PeriodSelect({
 
 /** Compact date range pill; the full timestamps are available on hover. */
 export function DateRangeBadge({ from, to }: { from: Date; to: Date }) {
+  const { locale } = useI18n();
+
   // Within a single day the exact timestamps matter, otherwise the date span
   // is what people care about (and it keeps the header from wrapping).
   const sameDay = from.toDateString() === to.toDateString();
-  const label = sameDay ? formattedDate(from) : formattedDateRangeShort(from, to);
+  const label = sameDay ? formattedDate(from, locale) : formattedDateRangeShort(from, to, locale);
 
   return (
     <div
       className="glass-inset inline-flex min-w-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-medium text-stone-600 sm:text-xs dark:text-stone-300"
-      title={formattedDateRange(from, to)}
+      title={formattedDateRange(from, to, locale)}
     >
       <CalendarIcon />
       <span className="truncate whitespace-nowrap">{label}</span>
@@ -361,13 +366,9 @@ export function EmptyState({
   );
 }
 
-export function ErrorState({
-  title = "Something went wrong",
-  message,
-}: {
-  title?: string;
-  message: string;
-}) {
+export function ErrorState({ title, message }: { title?: string; message: string }) {
+  const { t } = useI18n();
+
   return (
     <div
       role="alert"
@@ -375,7 +376,7 @@ export function ErrorState({
     >
       <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
       <div className="min-w-0">
-        <p className="font-semibold">{title}</p>
+        <p className="font-semibold">{title ?? t("Something went wrong")}</p>
         <p className="mt-0.5 text-xs break-words opacity-90">{message}</p>
       </div>
     </div>
@@ -384,9 +385,11 @@ export function ErrorState({
 
 /** Shimmer placeholder used while a panel is loading (keeps the layout stable). */
 export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
+  const { t } = useI18n();
+
   return (
     <div className="animate-pulse space-y-3" role="status" aria-live="polite">
-      <span className="sr-only">Loading analytics…</span>
+      <span className="sr-only">{t("Loading analytics…")}</span>
       <div className="flex gap-3">
         {Array.from({ length: columns }).map((_, index) => (
           <div
@@ -411,13 +414,15 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
 }
 
 export function StatsSkeleton({ count = 4 }: { count?: number }) {
+  const { t } = useI18n();
+
   return (
     <div
       className="grid animate-pulse grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
       role="status"
       aria-live="polite"
     >
-      <span className="sr-only">Loading summary…</span>
+      <span className="sr-only">{t("Loading summary…")}</span>
       {Array.from({ length: count }).map((_, index) => (
         <div key={index} className="glass-inset rounded-2xl p-4 sm:p-5">
           <div className="mb-3 h-3 w-2/3 rounded-full bg-stone-400/25 dark:bg-white/10" />
@@ -475,18 +480,22 @@ export function StatsTable({
   maxHeightClass?: string;
   viewsHeader?: string;
 }) {
+  const { t } = useI18n();
   const total = rows.reduce((sum, row) => sum + row.pageViews, 0);
 
   return (
     <div
       role="region"
-      aria-label={`${labelHeader} breakdown`}
+      aria-label={t("{label} breakdown", { label: labelHeader })}
       tabIndex={0}
       className={`-mx-4 overflow-y-auto sm:-mx-6 lg:-mx-7 ${maxHeightClass}`}
     >
       <table className="w-full table-fixed border-collapse text-left text-sm">
         <caption className="sr-only">
-          {`${labelHeader} breakdown, ${viewsHeader.toLowerCase()}, visitors and share of all ${viewsHeader.toLowerCase()}.`}
+          {t("{label} breakdown: {views}, visitors and share of total.", {
+            label: labelHeader,
+            views: viewsHeader,
+          })}
         </caption>
         <thead className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:bg-stone-900/80 dark:supports-[backdrop-filter]:bg-stone-900/60">
           <tr className="border-y border-white/70 text-[10px] font-semibold tracking-wider text-stone-500 uppercase sm:text-[11px] dark:border-white/[0.07] dark:text-stone-400">
@@ -503,13 +512,13 @@ export function StatsTable({
               scope="col"
               className="hidden w-24 px-2 py-2.5 text-right font-semibold whitespace-nowrap sm:table-cell"
             >
-              Visitors
+              {t("Visitors")}
             </th>
             <th
               scope="col"
               className="w-20 px-4 py-2.5 text-right font-semibold whitespace-nowrap sm:w-28 sm:px-6 lg:w-32 lg:px-7"
             >
-              Share
+              {t("Share")}
             </th>
           </tr>
         </thead>

@@ -20,6 +20,8 @@ import { ThemeToggle } from "./ThemeToggle.tsx";
 import { UserDetails } from "./UserDetails.tsx";
 import { DomainSwitcher } from "./DomainSwitcher.tsx";
 import { ContrastToggle } from "./a11y/ContrastToggle.tsx";
+import { LocaleSwitcher } from "./i18n/LocaleSwitcher.tsx";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 interface HeaderProps {
   selectedDomain?: string;
@@ -28,11 +30,13 @@ interface HeaderProps {
 
 /** Frosted title bar: app icon, wordmark and the global controls. */
 function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
+  const { t } = useI18n();
+
   return (
     <header className="glass glass-toolbar flex flex-col gap-3.5 rounded-[1.25rem] px-3.5 py-3 sm:gap-4 sm:rounded-[1.5rem] sm:px-4 sm:py-3.5 lg:flex-row lg:items-center lg:justify-between">
       <a
         href="/"
-        aria-label="symbanta — go to the analytics dashboard"
+        aria-label={t("symbanta — go to the analytics dashboard")}
         className="group flex min-w-0 items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
       >
         <span className="glass-inset flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-[1.03] sm:h-11 sm:w-11">
@@ -55,7 +59,7 @@ function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
             </span>
           </span>
           <span className="mt-0.5 block truncate text-[11px] text-stone-600 sm:text-xs dark:text-stone-400">
-            Your privacy-friendly cozy analytics dashboard.
+            {t("Your privacy-friendly cozy analytics dashboard.")}
           </span>
         </span>
       </a>
@@ -65,6 +69,7 @@ function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
         {onSelectDomain && (
           <DomainSwitcher onSelectDomain={onSelectDomain} selectedDomain={selectedDomain} />
         )}
+        <LocaleSwitcher />
         <ContrastToggle />
         <ThemeToggle />
       </div>

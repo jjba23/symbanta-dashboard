@@ -36,6 +36,7 @@ import { ConsoleLogs } from "./ConsoleLogs.tsx";
 import { EventTypesPanel } from "./EventTypesPanel.tsx";
 import { ContrastProvider } from "./a11y/ContrastContext.tsx";
 import { SkipLink } from "./a11y/SkipLink.tsx";
+import { I18nProvider, useI18n } from "./i18n/I18nContext.tsx";
 import { useDocumentTitle } from "./a11y/useDocumentTitle.ts";
 
 const DOMAIN_COOKIE_KEY = "symbanta_selected_domain";
@@ -78,8 +79,9 @@ function DashboardLayout() {
   const [selectedDomain, setSelectedDomainState] = useState<string>(() =>
     getCookie(DOMAIN_COOKIE_KEY),
   );
+  const { t } = useI18n();
 
-  useDocumentTitle("Analytics");
+  useDocumentTitle(t("Analytics"));
 
   const handleSelectDomain = (domain: string) => {
     setSelectedDomainState(domain);
@@ -97,7 +99,9 @@ function DashboardLayout() {
         >
           {/* The wordmark is the site banner; the page itself needs one h1. */}
           <h1 className="sr-only">
-            {selectedDomain ? `Analytics for ${selectedDomain}` : "Analytics dashboard"}
+            {selectedDomain
+              ? t("Analytics for {domain}", { domain: selectedDomain })
+              : t("Analytics dashboard")}
           </h1>
           <DashboardToolbar />
           <StatsDashboard domain={selectedDomain} />
@@ -119,7 +123,9 @@ function DashboardLayout() {
 }
 
 function LoginLayout() {
-  useDocumentTitle("Sign in");
+  const { t } = useI18n();
+
+  useDocumentTitle(t("Sign in"));
 
   return (
     <div className="mx-auto flex w-full max-w-[86rem] flex-col gap-5 px-4 pt-4 pb-6 sm:px-6 sm:pt-6 lg:px-8 lg:pt-7">
@@ -134,25 +140,27 @@ function LoginLayout() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <ContrastProvider>
-        <QueryClientProvider client={queryClient}>
-          <div className="relative min-h-dvh text-stone-900 transition-colors dark:text-stone-100">
-            {/* Wallpaper the frosted panels refract */}
-            <div aria-hidden="true" className="app-wallpaper" />
-            <div className="relative z-10">
-              <SkipLink />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/login" element={<LoginLayout />} />
-                  <Route path="/" element={<DashboardLayout />} />
-                </Routes>
-              </BrowserRouter>
+    <I18nProvider>
+      <ThemeProvider>
+        <ContrastProvider>
+          <QueryClientProvider client={queryClient}>
+            <div className="relative min-h-dvh text-stone-900 transition-colors dark:text-stone-100">
+              {/* Wallpaper the frosted panels refract */}
+              <div aria-hidden="true" className="app-wallpaper" />
+              <div className="relative z-10">
+                <SkipLink />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/login" element={<LoginLayout />} />
+                    <Route path="/" element={<DashboardLayout />} />
+                  </Routes>
+                </BrowserRouter>
+              </div>
             </div>
-          </div>
-        </QueryClientProvider>
-      </ContrastProvider>
-    </ThemeProvider>
+          </QueryClientProvider>
+        </ContrastProvider>
+      </ThemeProvider>
+    </I18nProvider>
   );
 }
 

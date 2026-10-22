@@ -20,8 +20,10 @@ import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "./api/symbanta";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 export function LoginPage() {
+  const { t } = useI18n();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const queryClient = useQueryClient();
@@ -54,7 +56,7 @@ export function LoginPage() {
   const errorMessage = isUnauthorized
     ? (loginMutation.data?.data as { detail?: string; title?: string })?.detail ||
       (loginMutation.data?.data as { detail?: string; title?: string })?.title ||
-      "Invalid username or password"
+      t("Invalid username or password")
     : loginMutation.isError
       ? (loginMutation.error as unknown as Error).message
       : null;
@@ -64,10 +66,10 @@ export function LoginPage() {
       <div className="glass w-full max-w-sm rounded-3xl p-6 transition-shadow sm:p-8">
         <div className="mb-6">
           <h1 className="text-xl font-semibold tracking-tight text-stone-900 sm:text-2xl dark:text-stone-50">
-            Welcome back
+            {t("Welcome back")}
           </h1>
           <p className="mt-1 text-xs text-stone-600 sm:text-sm dark:text-stone-400">
-            Sign in to access your analytics.
+            {t("Sign in to access your analytics.")}
           </p>
         </div>
 
@@ -77,7 +79,7 @@ export function LoginPage() {
               htmlFor="username"
               className="mb-1.5 block text-[11px] font-semibold tracking-wide text-stone-500 uppercase dark:text-stone-400"
             >
-              Username
+              {t("Username")}
             </label>
             <input
               id="username"
@@ -88,7 +90,7 @@ export function LoginPage() {
               autoComplete="username"
               autoFocus
               className="glass-control w-full cursor-text rounded-xl px-3.5 py-2.5 text-sm text-stone-800 transition-[background,box-shadow] placeholder:text-stone-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-100 dark:placeholder:text-stone-400"
-              placeholder="Enter username"
+              placeholder={t("Enter username")}
             />
           </div>
 
@@ -97,7 +99,7 @@ export function LoginPage() {
               htmlFor="password"
               className="mb-1.5 block text-[11px] font-semibold tracking-wide text-stone-500 uppercase dark:text-stone-400"
             >
-              Password
+              {t("Password")}
             </label>
             <input
               id="password"
@@ -125,7 +127,7 @@ export function LoginPage() {
             disabled={loginMutation.isPending}
             className="btn-primary mt-1 w-full rounded-xl py-2.5 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
           >
-            {loginMutation.isPending ? "Signing in…" : "Sign in"}
+            {loginMutation.isPending ? t("Signing in…") : t("Sign in")}
           </button>
         </form>
       </div>

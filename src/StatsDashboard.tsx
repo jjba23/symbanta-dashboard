@@ -21,6 +21,7 @@ import { useGetStatsSummary } from "./api/symbanta.ts";
 import { errorMessage, formatDuration, roundToTwoPlaces } from "./Prelude.ts";
 import type { V1StatsSummaryResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   BounceIcon,
   Card,
@@ -76,6 +77,7 @@ function StatCard({
 
 export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
   const { period } = usePeriod();
+  const { t, locale } = useI18n();
   const { data, isLoading, isError, error } = useGetStatsSummary({ domain, period });
 
   const stats = data?.data as V1StatsSummaryResponse | undefined;
@@ -95,9 +97,9 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
     <Card>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Overview"
+          title={t("Overview")}
           domain={domain}
-          subtitle="Traffic highlights for the selected period"
+          subtitle={t("Traffic highlights for the selected period")}
           icon={<ChartIcon className="h-4.5 w-4.5" />}
           action={from && to ? <DateRangeBadge from={from} to={to} /> : null}
         />
@@ -105,41 +107,40 @@ export function StatsDashboard({ domain = "localhost" }: StatsDashboardProps) {
         {isLoading ? (
           <StatsSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load the overview" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load the overview")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : hasNoData ? (
           <EmptyState
             icon={<ChartIcon className="h-5 w-5" />}
-            title="No summary data available"
-            description={
-              <>
-                No traffic activity recorded for{" "}
-                <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span> in
-                this timeframe.
-              </>
-            }
+            title={t("No summary data available")}
+            description={t("No traffic activity recorded for {domain} in this timeframe.", {
+              domain,
+            })}
           />
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             <StatCard
-              title="Page Views"
-              value={pageViews.toLocaleString()}
+              title={t("Page Views")}
+              value={pageViews.toLocaleString(locale)}
               icon={<EyeIcon className="h-4 w-4" />}
               accent="bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300"
             />
             <StatCard
-              title="Unique Visitors"
-              value={visitors.toLocaleString()}
+              title={t("Unique Visitors")}
+              value={visitors.toLocaleString(locale)}
               icon={<UsersIcon className="h-4 w-4" />}
               accent="bg-pink-100 text-pink-600 dark:bg-pink-500/15 dark:text-pink-300"
             />
             <StatCard
-              title="Avg. Visit"
+              title={t("Avg. Visit")}
               value={formatDuration(averageDurationSeconds)}
               icon={<ClockIcon className="h-4 w-4" />}
               accent="bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300"
             />
             <StatCard
-              title="Bounce Rate"
+              title={t("Bounce Rate")}
               value={`${roundToTwoPlaces(bounceRate)}%`}
               icon={<BounceIcon className="h-4 w-4" />}
               accent="bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300"

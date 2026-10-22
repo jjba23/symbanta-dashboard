@@ -22,7 +22,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { V1ConsoleLogEntry } from "./api/model";
 import { useGetConsoleLogs } from "./api/symbanta.ts";
 import { ConsoleLogs } from "./ConsoleLogs.tsx";
-import { formattedDate } from "./Prelude.ts";
+import { formattedDate, setCookie } from "./Prelude.ts";
+import { I18nProvider, LOCALE_COOKIE_KEY } from "./i18n/I18nContext.tsx";
 
 vi.mock("./api/symbanta.ts", () => ({
   useGetConsoleLogs: vi.fn(),
@@ -89,7 +90,9 @@ describe("ConsoleLogs", () => {
 
     expect(screen.getByText("error")).toBeInTheDocument();
     expect(screen.getByText("log")).toBeInTheDocument();
-    expect(screen.getByText(formattedDate(new Date("2026-09-07T08:52:00Z")))).toBeInTheDocument();
+    expect(
+      screen.getByText(formattedDate(new Date("2026-09-07T08:52:00Z"), "en")),
+    ).toBeInTheDocument();
     expect(screen.getByText("/checkout")).toBeInTheDocument();
     expect(screen.getByText("ES")).toBeInTheDocument();
   });
@@ -123,6 +126,22 @@ describe("ConsoleLogs", () => {
       limit: 100,
       level: "error",
     });
+  });
+
+  it("renders in Spanish, including pluralised option labels", () => {
+    setCookie(LOCALE_COOKIE_KEY, "es");
+    mockQuery({ isLoading: true });
+
+    render(
+      <I18nProvider>
+        <ConsoleLogs domain="example.com" />
+      </I18nProvider>,
+    );
+
+    expect(screen.getByRole("heading", { name: "Registros de consola" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Nivel del registro" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "50 entradas" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "1 entrada" })).not.toBeInTheDocument();
   });
 
   it("requests the selected number of entries", async () => {

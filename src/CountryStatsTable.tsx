@@ -20,6 +20,7 @@ import { useGetCountryStats } from "./api/symbanta.ts";
 import type { V1CountryStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { errorMessage } from "./Prelude.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   Card,
   CardHeader,
@@ -55,6 +56,7 @@ function countryLabel(code: string): string {
 }
 
 export function CountryStatsTable({ domain = "localhost", className }: CountryStatsTableProps) {
+  const { t } = useI18n();
   const { period } = usePeriod();
   const { data, isLoading, isError, error } = useGetCountryStats({ domain, period });
 
@@ -72,7 +74,7 @@ export function CountryStatsTable({ domain = "localhost", className }: CountrySt
     <Card className={className}>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Countries"
+          title={t("Countries")}
           domain={domain}
           icon={<GlobeIcon className="h-4.5 w-4.5" />}
           action={from && to ? <DateRangeBadge from={from} to={to} /> : null}
@@ -81,21 +83,21 @@ export function CountryStatsTable({ domain = "localhost", className }: CountrySt
         {isLoading ? (
           <TableSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load countries" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load countries")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : rows.length === 0 ? (
           <EmptyState
             icon={<GlobeIcon className="h-5 w-5" />}
-            title="No country data available"
-            description={
-              <>
-                No visitors with a resolvable country for{" "}
-                <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span> in
-                this timeframe.
-              </>
-            }
+            title={t("No country data available")}
+            description={t(
+              "No visitors with a resolvable country for {domain} in this timeframe.",
+              { domain },
+            )}
           />
         ) : (
-          <StatsTable rows={rows} labelHeader="Country" />
+          <StatsTable rows={rows} labelHeader={t("Country")} emptyLabel={t("Unknown")} />
         )}
       </div>
     </Card>

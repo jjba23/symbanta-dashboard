@@ -22,5 +22,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "mock-api"]
+  "include": ["vite.config.ts", "mock-api", "i18n"]
 }

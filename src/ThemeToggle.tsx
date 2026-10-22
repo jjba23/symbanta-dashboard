@@ -17,9 +17,11 @@
  */
 
 import { useTheme } from "./ThemeContext";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 export function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { t } = useI18n();
 
   const toggleTheme = () => {
     if (theme === "system") {
@@ -31,13 +33,15 @@ export function ThemeToggle() {
     }
   };
 
+  const label = resolvedTheme === "dark" ? t("Switch to light mode") : t("Switch to dark mode");
+
   return (
     <button
       type="button"
       onClick={toggleTheme}
       className="glass-control inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-stone-700 transition-[background,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-200"
-      title={`Current mode: ${theme} (${resolvedTheme})`}
-      aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+      title={t("Current mode: {mode}", { mode: theme })}
+      aria-label={label}
     >
       {resolvedTheme === "dark" ? (
         /* Sun Icon */

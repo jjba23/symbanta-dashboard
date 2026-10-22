@@ -20,6 +20,7 @@ import { useEffect, useMemo } from "react";
 import { useGetProperties } from "./api/symbanta";
 import type { V1PropertiesResponse, V1Property } from "./api/model";
 import { controlClass } from "./ui.tsx";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 interface DomainSwitcherProps {
   selectedDomain: string;
@@ -27,6 +28,7 @@ interface DomainSwitcherProps {
 }
 
 export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitcherProps) {
+  const { t } = useI18n();
   const { data, isLoading, isError } = useGetProperties();
 
   const propertiesResponse = data?.data as V1PropertiesResponse | undefined;
@@ -47,7 +49,7 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
   if (isLoading) {
     return (
       <div className="glass-inset animate-pulse rounded-xl px-3 py-2 text-xs text-stone-500 dark:text-stone-400">
-        Loading properties…
+        {t("Loading properties…")}
       </div>
     );
   }
@@ -59,14 +61,14 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
           htmlFor="domain-input"
           className="shrink-0 text-[11px] font-semibold text-stone-500 dark:text-stone-400"
         >
-          Domain
+          {t("Domain")}
         </label>
         <input
           id="domain-input"
           type="text"
           value={selectedDomain}
           onChange={(e) => onSelectDomain(e.target.value)}
-          placeholder="Enter domain…"
+          placeholder={t("Enter domain…")}
           className={`${controlClass} w-32 min-w-0 px-2.5 sm:w-48`}
         />
       </div>
@@ -79,7 +81,7 @@ export function DomainSwitcher({ selectedDomain, onSelectDomain }: DomainSwitche
         htmlFor="domain-select"
         className="shrink-0 text-[11px] font-semibold text-stone-500 dark:text-stone-400"
       >
-        Property
+        {t("Property")}
       </label>
       <select
         id="domain-select"

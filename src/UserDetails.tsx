@@ -18,8 +18,10 @@
 
 import { useGetCurrentUser } from "./api/symbanta";
 import type { AuthResponse } from "./api/model";
+import { useI18n } from "./i18n/I18nContext.tsx";
 
 export function UserDetails() {
+  const { t } = useI18n();
   const { data, isLoading, isError } = useGetCurrentUser();
 
   const userResponse = data?.data as AuthResponse | undefined;
@@ -28,8 +30,8 @@ export function UserDetails() {
     return (
       <div className="glass-inset inline-flex h-9 animate-pulse items-center gap-2 rounded-xl px-2.5 text-xs text-stone-500 dark:text-stone-400">
         <div className="h-1.5 w-1.5 rounded-full bg-stone-400/60 dark:bg-stone-600" />
-        <span className="hidden sm:inline">Loading…</span>
-        <span className="sr-only sm:hidden">Loading user</span>
+        <span className="hidden sm:inline">{t("Loading…")}</span>
+        <span className="sr-only sm:hidden">{t("Loading user")}</span>
       </div>
     );
   }
@@ -37,8 +39,8 @@ export function UserDetails() {
   if (isError || !userResponse) {
     return (
       <div className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-red-300/50 bg-red-50/80 px-2.5 text-xs font-medium text-red-600 backdrop-blur-sm dark:border-red-500/25 dark:bg-red-950/40 dark:text-red-300">
-        <span className="hidden sm:inline">Failed to load user</span>
-        <span className="sr-only sm:hidden">Failed to load user</span>
+        <span className="hidden sm:inline">{t("Failed to load user")}</span>
+        <span className="sr-only sm:hidden">{t("Failed to load user")}</span>
       </div>
     );
   }

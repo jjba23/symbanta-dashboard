@@ -20,6 +20,7 @@ import { useGetRouteStats } from "./api/symbanta.ts";
 import type { V1RouteStatsResponse } from "./api/model";
 import { usePeriod } from "./PeriodContext.tsx";
 import { errorMessage } from "./Prelude.ts";
+import { useI18n } from "./i18n/I18nContext.tsx";
 import {
   Card,
   CardHeader,
@@ -39,6 +40,7 @@ interface RouteStatsTableProps {
 }
 
 export function RouteStatsTable({ domain = "localhost", className }: RouteStatsTableProps) {
+  const { t } = useI18n();
   const { period } = usePeriod();
   const { data, isLoading, isError, error } = useGetRouteStats({ domain, period });
 
@@ -57,7 +59,7 @@ export function RouteStatsTable({ domain = "localhost", className }: RouteStatsT
     <Card className={className}>
       <div className={cardPaddingClass}>
         <CardHeader
-          title="Top routes"
+          title={t("Top routes")}
           domain={domain}
           icon={<RouteIcon className="h-4.5 w-4.5" />}
           action={from && to ? <DateRangeBadge from={from} to={to} /> : null}
@@ -66,21 +68,18 @@ export function RouteStatsTable({ domain = "localhost", className }: RouteStatsT
         {isLoading ? (
           <TableSkeleton />
         ) : isError ? (
-          <ErrorState title="Could not load routes" message={errorMessage(error)} />
+          <ErrorState
+            title={t("Could not load routes")}
+            message={errorMessage(error, t("An unknown error occurred"))}
+          />
         ) : rows.length === 0 ? (
           <EmptyState
             icon={<RouteIcon className="h-5 w-5" />}
-            title="No route data available"
-            description={
-              <>
-                No route records found for{" "}
-                <span className="font-medium text-stone-700 dark:text-stone-300">{domain}</span> in
-                this timeframe.
-              </>
-            }
+            title={t("No route data available")}
+            description={t("No route records found for {domain} in this timeframe.", { domain })}
           />
         ) : (
-          <StatsTable rows={rows} labelHeader="Route" emptyLabel="/" />
+          <StatsTable rows={rows} labelHeader={t("Route")} emptyLabel="/" />
         )}
       </div>
     </Card>

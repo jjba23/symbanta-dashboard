@@ -17,6 +17,7 @@
  */
 
 import { useContrast } from "./ContrastContext.tsx";
+import { useI18n } from "../i18n/I18nContext.tsx";
 
 /**
  * Toggle for the "Increase contrast" material set.
@@ -26,6 +27,7 @@ import { useContrast } from "./ContrastContext.tsx";
  */
 export function ContrastToggle() {
   const { resolvedContrast, setPreference } = useContrast();
+  const { t } = useI18n();
   const isMore = resolvedContrast === "more";
 
   return (
@@ -33,8 +35,8 @@ export function ContrastToggle() {
       type="button"
       onClick={() => setPreference(isMore ? "system" : "more")}
       aria-pressed={isMore}
-      aria-label="Increase contrast"
-      title={isMore ? "Contrast: increased" : "Contrast: standard"}
+      aria-label={t("Increase contrast")}
+      title={isMore ? t("Contrast: increased") : t("Contrast: standard")}
       className="glass-control inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-stone-700 transition-[background,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-200"
     >
       <svg

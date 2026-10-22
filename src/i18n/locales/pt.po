@@ -1,0 +1,599 @@
+# symbanta-dashboard — Tradução portuguesa.
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
+# 
+# This catalog is free documentation under the GNU FDL v1.3 or later.
+# Placeholders such as {count} or {domain} must be kept verbatim.
+msgid ""
+msgstr ""
+"Project-Id-Version: symbanta-dashboard\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/EventTypesPanel.tsx:187
+msgid "(optional)"
+msgstr "(opcional)"
+
+#: src/ConsoleLogs.tsx:172
+msgid "{count} entry"
+msgid_plural "{count} entries"
+msgstr[0] "{count} entrada"
+msgstr[1] "{count} entradas"
+
+#: src/EventTypesPanel.tsx:102
+msgid "{count} registered event type"
+msgid_plural "{count} registered event types"
+msgstr[0] "{count} tipo de evento registado"
+msgstr[1] "{count} tipos de evento registados"
+
+#: src/TimeSeries.tsx:155
+msgid "{count} time bucket"
+msgid_plural "{count} time buckets"
+msgstr[0] "{count} intervalo de tempo"
+msgstr[1] "{count} intervalos de tempo"
+
+#: src/ui.tsx:489
+msgid "{label} breakdown"
+msgstr "Repartição por {label}"
+
+#: src/ui.tsx:495
+msgid "{label} breakdown: {views}, visitors and share of total."
+msgstr "Repartição por {label}: {views}, visitantes e quota do total."
+
+#: src/Footer.tsx:42
+msgid "© {year} Josep Bigorra"
+msgstr "© {year} Josep Bigorra"
+
+#: src/EventTypesPanel.tsx:177
+msgid "1-120 letters, digits or - _ . : characters"
+msgstr "1 a 120 letras, dígitos ou os caracteres - _ . :"
+
+#: src/ConsoleLogs.tsx:46
+msgid "All levels"
+msgstr "Todos os níveis"
+
+#: src/i18n/periods.ts:58
+msgid "All time"
+msgstr "Todo o período"
+
+#: src/ConsoleLogs.tsx:185
+#: src/CountryStatsTable.tsx:88
+#: src/EventStatsTable.tsx:77
+#: src/EventTypesPanel.tsx:118
+#: src/EventTypesPanel.tsx:211
+#: src/RouteStatsTable.tsx:73
+#: src/ScreenSizeStatsTable.tsx:75
+#: src/StatsDashboard.tsx:112
+#: src/TimeSeries.tsx:139
+#: src/UserAgentStatsTable.tsx:72
+msgid "An unknown error occurred"
+msgstr "Ocorreu um erro desconhecido"
+
+#: src/App.tsx:84
+msgid "Analytics"
+msgstr "Análises"
+
+#: src/App.tsx:104
+msgid "Analytics dashboard"
+msgstr "Painel de análises"
+
+#: src/App.tsx:103
+msgid "Analytics for {domain}"
+msgstr "Análises de {domain}"
+
+#: src/DashboardToolbar.tsx:52
+msgid "Analytics updated at {time}"
+msgstr "Análises atualizadas às {time}"
+
+#: src/StatsDashboard.tsx:137
+msgid "Avg. Visit"
+msgstr "Visita média"
+
+#: src/StatsDashboard.tsx:143
+msgid "Bounce Rate"
+msgstr "Taxa de rejeição"
+
+#: src/ConsoleLogs.tsx:203
+msgid "Console log entries"
+msgstr "Entradas do registo da consola"
+
+#: src/ConsoleLogs.tsx:138
+msgid "Console logs"
+msgstr "Registos da consola"
+
+#: src/Footer.tsx:47
+msgid "Contact:"
+msgstr "Contacto:"
+
+#: src/a11y/ContrastToggle.tsx:39
+msgid "Contrast: increased"
+msgstr "Contraste: aumentado"
+
+#: src/a11y/ContrastToggle.tsx:39
+msgid "Contrast: standard"
+msgstr "Contraste: padrão"
+
+#: src/ConsoleLogs.tsx:184
+msgid "Could not load console logs"
+msgstr "Não foi possível carregar os registos da consola"
+
+#: src/CountryStatsTable.tsx:87
+msgid "Could not load countries"
+msgstr "Não foi possível carregar os países"
+
+#: src/EventTypesPanel.tsx:117
+msgid "Could not load event types"
+msgstr "Não foi possível carregar os tipos de evento"
+
+#: src/EventStatsTable.tsx:76
+msgid "Could not load events"
+msgstr "Não foi possível carregar os eventos"
+
+#: src/RouteStatsTable.tsx:72
+msgid "Could not load routes"
+msgstr "Não foi possível carregar os percursos"
+
+#: src/ScreenSizeStatsTable.tsx:74
+msgid "Could not load screen sizes"
+msgstr "Não foi possível carregar os tamanhos de ecrã"
+
+#: src/StatsDashboard.tsx:111
+msgid "Could not load the overview"
+msgstr "Não foi possível carregar a vista geral"
+
+#: src/TimeSeries.tsx:138
+msgid "Could not load the time series"
+msgstr "Não foi possível carregar a série temporal"
+
+#: src/UserAgentStatsTable.tsx:71
+msgid "Could not load user agents"
+msgstr "Não foi possível carregar os agentes de utilizador"
+
+#: src/CountryStatsTable.tsx:77
+msgid "Countries"
+msgstr "Países"
+
+#: src/CountryStatsTable.tsx:100
+msgid "Country"
+msgstr "País"
+
+#: src/ThemeToggle.tsx:43
+msgid "Current mode: {mode}"
+msgstr "Modo atual: {mode}"
+
+#: src/i18n/periods.ts:60
+msgid "Custom"
+msgstr "Personalizado"
+
+#: src/ConsoleLogs.tsx:56
+msgid "Debug"
+msgstr "Depuração"
+
+#: src/EventTypesPanel.tsx:98
+msgid "Declare the event names this application emits."
+msgstr "Declare os nomes de evento que esta aplicação emite."
+
+#: src/EventTypesPanel.tsx:187
+msgid "Description"
+msgstr "Descrição"
+
+#: src/DomainSwitcher.tsx:64
+msgid "Domain"
+msgstr "Domínio"
+
+#: src/DomainSwitcher.tsx:71
+msgid "Enter domain…"
+msgstr "Introduza um domínio…"
+
+#: src/LoginPage.tsx:93
+msgid "Enter username"
+msgstr "Introduza o nome de utilizador"
+
+#: src/ConsoleLogs.tsx:54
+msgid "Error"
+msgstr "Erro"
+
+#: src/EventStatsTable.tsx:88
+msgid "Event"
+msgstr "Evento"
+
+#: src/EventTypesPanel.tsx:167
+msgid "Event name"
+msgstr "Nome do evento"
+
+#: src/EventTypesPanel.tsx:96
+msgid "Event types"
+msgstr "Tipos de evento"
+
+#: src/EventStatsTable.tsx:66
+msgid "Events"
+msgstr "Eventos"
+
+#: src/UserDetails.tsx:42
+#: src/UserDetails.tsx:43
+msgid "Failed to load user"
+msgstr "Não foi possível carregar o utilizador"
+
+#: src/Footer.tsx:60
+msgid "Free Software under the"
+msgstr "Software livre sob a"
+
+#: src/a11y/ContrastToggle.tsx:38
+msgid "Increase contrast"
+msgstr "Aumentar o contraste"
+
+#: src/ConsoleLogs.tsx:50
+msgid "Info"
+msgstr "Info"
+
+#: src/LoginPage.tsx:59
+msgid "Invalid username or password"
+msgstr "Nome de utilizador ou palavra-passe inválidos"
+
+#: src/i18n/LocaleSwitcher.tsx:31
+msgid "Language"
+msgstr "Idioma"
+
+#: src/i18n/periods.ts:52
+msgid "Last 12 Months"
+msgstr "Últimos 12 meses"
+
+#: src/i18n/periods.ts:38
+msgid "Last 24 Hours"
+msgstr "Últimas 24 horas"
+
+#: src/i18n/periods.ts:40
+msgid "Last 3 Days"
+msgstr "Últimos 3 dias"
+
+#: src/i18n/periods.ts:44
+msgid "Last 30 Days"
+msgstr "Últimos 30 dias"
+
+#: src/i18n/periods.ts:50
+msgid "Last 6 Months"
+msgstr "Últimos 6 meses"
+
+#: src/i18n/periods.ts:42
+msgid "Last 7 Days"
+msgstr "Últimos 7 dias"
+
+#: src/i18n/periods.ts:48
+msgid "Last month"
+msgstr "Mês passado"
+
+#: src/i18n/periods.ts:56
+msgid "Last year"
+msgstr "Ano passado"
+
+#: src/ConsoleLogs.tsx:140
+msgid "Latest console output forwarded by the instrumented application."
+msgstr "Saída de consola mais recente enviada pela aplicação instrumentada."
+
+#: src/ui.tsx:392
+msgid "Loading analytics…"
+msgstr "A carregar análises…"
+
+#: src/DomainSwitcher.tsx:52
+msgid "Loading properties…"
+msgstr "A carregar propriedades…"
+
+#: src/ui.tsx:425
+msgid "Loading summary…"
+msgstr "A carregar resumo…"
+
+#: src/TimeSeries.tsx:134
+msgid "Loading time series…"
+msgstr "A carregar série temporal…"
+
+#: src/UserDetails.tsx:34
+msgid "Loading user"
+msgstr "A carregar utilizador"
+
+#: src/UserDetails.tsx:33
+msgid "Loading…"
+msgstr "A carregar…"
+
+#: src/ConsoleLogs.tsx:48
+msgid "Log"
+msgstr "Registo"
+
+#: src/ConsoleLogs.tsx:145
+msgid "Log level"
+msgstr "Nível do registo"
+
+#: src/ConsoleLogs.tsx:190
+msgid "No console logs"
+msgstr "Sem registos da consola"
+
+#: src/ConsoleLogs.tsx:194
+msgid "No console output was forwarded for {domain} at level {level}."
+msgstr "Nenhuma saída de consola foi enviada para {domain} no nível {level}."
+
+#: src/ConsoleLogs.tsx:193
+msgid "No console output was forwarded for {domain}."
+msgstr "Nenhuma saída de consola foi enviada para {domain}."
+
+#: src/CountryStatsTable.tsx:93
+msgid "No country data available"
+msgstr "Sem dados de países"
+
+#: src/EventTypesPanel.tsx:123
+msgid "No event types registered"
+msgstr "Sem tipos de evento registados"
+
+#: src/EventStatsTable.tsx:83
+msgid "No events found for {domain} in this timeframe."
+msgstr "Não foram encontrados eventos para {domain} neste período."
+
+#: src/EventStatsTable.tsx:82
+msgid "No events recorded"
+msgstr "Sem eventos registados"
+
+#: src/RouteStatsTable.tsx:78
+msgid "No route data available"
+msgstr "Sem dados de percursos"
+
+#: src/RouteStatsTable.tsx:79
+msgid "No route records found for {domain} in this timeframe."
+msgstr "Não foram encontrados percursos para {domain} neste período."
+
+#: src/ScreenSizeStatsTable.tsx:80
+msgid "No screen size data available"
+msgstr "Sem dados de tamanhos de ecrã"
+
+#: src/ScreenSizeStatsTable.tsx:81
+msgid "No screen size records found for {domain} in this timeframe."
+msgstr "Não foram encontrados tamanhos de ecrã para {domain} neste período."
+
+#: src/StatsDashboard.tsx:117
+msgid "No summary data available"
+msgstr "Sem dados de resumo"
+
+#: src/StatsDashboard.tsx:118
+msgid "No traffic activity recorded for {domain} in this timeframe."
+msgstr "Nenhuma atividade de tráfego registada para {domain} neste período."
+
+#: src/TimeSeries.tsx:144
+msgid "No traffic recorded"
+msgstr "Sem tráfego registado"
+
+#: src/UserAgentStatsTable.tsx:77
+msgid "No user agent data available"
+msgstr "Sem dados de agentes de utilizador"
+
+#: src/UserAgentStatsTable.tsx:78
+msgid "No user agent records found for {domain} in this timeframe."
+msgstr "Não foram encontrados agentes de utilizador para {domain} neste período."
+
+#: src/CountryStatsTable.tsx:94
+msgid "No visitors with a resolvable country for {domain} in this timeframe."
+msgstr "Sem visitantes com um país identificável para {domain} neste período."
+
+#: src/EventTypesPanel.tsx:124
+msgid ""
+"Nothing has been declared for {domain} yet. Page views appear here "
+"automatically as they are ingested."
+msgstr ""
+"Ainda não foi declarado nada para {domain}. As visualizações aparecem aqui "
+"automaticamente à medida que são recebidas."
+
+#: src/ConsoleLogs.tsx:161
+msgid "Number of log entries"
+msgstr "Número de entradas do registo"
+
+#: src/EventStatsTable.tsx:89
+msgid "Occurrences"
+msgstr "Ocorrências"
+
+#: src/StatsDashboard.tsx:100
+msgid "Overview"
+msgstr "Vista geral"
+
+#: src/TimeSeries.tsx:254
+msgid "Page views"
+msgstr "Visualizações"
+
+#: src/StatsDashboard.tsx:125
+#: src/TimeSeries.tsx:221
+msgid "Page Views"
+msgstr "Visualizações"
+
+#: src/TimeSeries.tsx:124
+msgid "Page views and unique visitors over time"
+msgstr "Visualizações e visitantes únicos ao longo do tempo"
+
+#: src/LoginPage.tsx:102
+msgid "Password"
+msgstr "Palavra-passe"
+
+#: src/DashboardToolbar.tsx:78
+msgid "Period"
+msgstr "Período"
+
+#: src/DomainSwitcher.tsx:84
+msgid "Property"
+msgstr "Propriedade"
+
+#: src/DashboardToolbar.tsx:102
+msgid "Refresh"
+msgstr "Atualizar"
+
+#: src/DashboardToolbar.tsx:65
+msgid "Refreshing analytics…"
+msgstr "A atualizar análises…"
+
+#: src/DashboardToolbar.tsx:102
+msgid "Refreshing…"
+msgstr "A atualizar…"
+
+#: src/EventTypesPanel.tsx:206
+msgid "Register event type"
+msgstr "Registar tipo de evento"
+
+#: src/EventTypesPanel.tsx:216
+msgid "Registered {name}."
+msgstr "{name} registado."
+
+#: src/EventTypesPanel.tsx:206
+msgid "Registering…"
+msgstr "A registar…"
+
+#: src/DashboardToolbar.tsx:70
+msgid "Reporting filters"
+msgstr "Filtros do relatório"
+
+#: src/ui.tsx:298
+msgid "Reporting period"
+msgstr "Período do relatório"
+
+#: src/ScreenSizeStatsTable.tsx:86
+msgid "Resolution"
+msgstr "Resolução"
+
+#: src/RouteStatsTable.tsx:82
+msgid "Route"
+msgstr "Percurso"
+
+#: src/ScreenSizeStatsTable.tsx:64
+msgid "Screen sizes"
+msgstr "Tamanhos de ecrã"
+
+#: src/ui.tsx:521
+msgid "Share"
+msgstr "Quota"
+
+#: src/App.tsx:128
+#: src/LoginPage.tsx:130
+msgid "Sign in"
+msgstr "Iniciar sessão"
+
+#: src/LoginPage.tsx:72
+msgid "Sign in to access your analytics."
+msgstr "Inicie sessão para aceder às suas análises."
+
+#: src/LoginPage.tsx:130
+msgid "Signing in…"
+msgstr "A iniciar sessão…"
+
+#: src/a11y/SkipLink.tsx:41
+msgid "Skip to the analytics"
+msgstr "Saltar para as análises"
+
+#: src/ui.tsx:379
+msgid "Something went wrong"
+msgstr "Algo correu mal"
+
+#: src/Footer.tsx:72
+msgid "Source code:"
+msgstr "Código-fonte:"
+
+#: src/ThemeToggle.tsx:36
+msgid "Switch to dark mode"
+msgstr "Mudar para o modo escuro"
+
+#: src/ThemeToggle.tsx:36
+msgid "Switch to light mode"
+msgstr "Mudar para o modo claro"
+
+#: src/Header.tsx:39
+msgid "symbanta — go to the analytics dashboard"
+msgstr "symbanta — ir para o painel de análises"
+
+#: src/TimeSeries.tsx:145
+msgid "There are no page views or unique visitors recorded for this time period."
+msgstr "Não há visualizações nem visitantes únicos registados neste período."
+
+#: src/i18n/periods.ts:46
+msgid "This month"
+msgstr "Este mês"
+
+#: src/i18n/periods.ts:54
+msgid "This year"
+msgstr "Este ano"
+
+#: src/TimeSeries.tsx:253
+msgid "Time"
+msgstr "Hora"
+
+#: src/i18n/periods.ts:34
+msgid "Today"
+msgstr "Hoje"
+
+#: src/RouteStatsTable.tsx:62
+msgid "Top routes"
+msgstr "Percursos principais"
+
+#: src/StatsDashboard.tsx:102
+msgid "Traffic highlights for the selected period"
+msgstr "Destaques do tráfego no período selecionado"
+
+#: src/TimeSeries.tsx:123
+msgid "Traffic Trends"
+msgstr "Tendências de tráfego"
+
+#: src/TimeSeries.tsx:153
+msgid ""
+"Traffic trends chart: page views and unique visitors across {buckets}. The "
+"same numbers are available in the table that follows."
+msgstr ""
+"Gráfico de tendências de tráfego: visualizações e visitantes únicos em "
+"{buckets}. Os mesmos números estão disponíveis na tabela seguinte."
+
+#: src/TimeSeries.tsx:250
+msgid "Traffic trends for the selected period"
+msgstr "Tendências de tráfego no período selecionado"
+
+#: src/TimeSeries.tsx:255
+msgid "Unique visitors"
+msgstr "Visitantes únicos"
+
+#: src/StatsDashboard.tsx:131
+#: src/TimeSeries.tsx:233
+msgid "Unique Visitors"
+msgstr "Visitantes únicos"
+
+#: src/CountryStatsTable.tsx:100
+#: src/EventStatsTable.tsx:90
+#: src/ScreenSizeStatsTable.tsx:86
+#: src/UserAgentStatsTable.tsx:83
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: src/UserAgentStatsTable.tsx:83
+msgid "User agent"
+msgstr "Agente de utilizador"
+
+#: src/UserAgentStatsTable.tsx:61
+msgid "User agents"
+msgstr "Agentes de utilizador"
+
+#: src/EventTypesPanel.tsx:193
+msgid "User completed the signup form"
+msgstr "A pessoa concluiu o formulário de registo"
+
+#: src/LoginPage.tsx:82
+msgid "Username"
+msgstr "Nome de utilizador"
+
+#: src/ui.tsx:515
+msgid "Visitors"
+msgstr "Visitantes"
+
+#: src/ConsoleLogs.tsx:52
+msgid "Warn"
+msgstr "Aviso"
+
+#: src/LoginPage.tsx:69
+msgid "Welcome back"
+msgstr "Bem-vindo de volta"
+
+#: src/i18n/periods.ts:36
+msgid "Yesterday"
+msgstr "Ontem"
+
+#: src/Header.tsx:62
+msgid "Your privacy-friendly cozy analytics dashboard."
+msgstr "O seu painel de análises acolhedor e amigo da privacidade."

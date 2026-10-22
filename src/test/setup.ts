@@ -62,6 +62,7 @@ function clearCookies(): void {
 function resetDocumentTheme(): void {
   document.documentElement.classList.remove("dark");
   document.documentElement.style.colorScheme = "";
+  document.documentElement.lang = "en";
 }
 
 beforeEach(() => {

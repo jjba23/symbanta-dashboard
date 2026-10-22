@@ -18,11 +18,13 @@
 
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { gettextPlugin } from "./i18n/vite-plugin.ts";
 import { defineConfig } from "vitest/config";
 import { mockApiPlugin } from "./mock-api/plugin.ts";
 
 export default defineConfig({
   plugins: [
+    gettextPlugin(),
     react(),
     tailwindcss(),
     /*
