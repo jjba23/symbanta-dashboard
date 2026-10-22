@@ -35,7 +35,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-stone-200/80 bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700/70"
+      className="glass-control inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-stone-700 transition-[background,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-200"
       title={`Current mode: ${theme} (${resolvedTheme})`}
       aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
     >

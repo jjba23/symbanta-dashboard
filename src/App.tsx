@@ -83,7 +83,7 @@ function DashboardLayout() {
 
   return (
     <PeriodProvider>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pt-5 pb-6 sm:gap-5 sm:px-6 sm:pt-7 lg:gap-6 lg:px-8 lg:pt-8">
+      <div className="mx-auto flex w-full max-w-[86rem] flex-col gap-4 px-4 pt-4 pb-6 sm:gap-5 sm:px-6 sm:pt-6 lg:gap-6 lg:px-8 lg:pt-7">
         <Header selectedDomain={selectedDomain} onSelectDomain={handleSelectDomain} />
         <DashboardToolbar />
         <StatsDashboard domain={selectedDomain} />
@@ -105,7 +105,7 @@ function DashboardLayout() {
 
 function LoginLayout() {
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 pt-5 pb-6 sm:px-6 sm:pt-7 lg:px-8 lg:pt-8">
+    <div className="mx-auto flex w-full max-w-[86rem] flex-col gap-5 px-4 pt-4 pb-6 sm:px-6 sm:pt-6 lg:px-8 lg:pt-7">
       <Header />
       <LoginPage />
       <Footer />
@@ -117,13 +117,10 @@ function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <div className="relative min-h-dvh bg-stone-50 text-stone-900 transition-colors dark:bg-stone-950 dark:text-stone-100">
-          {/* Soft ambient wash so the flat panels have something to sit on */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-rose-100/50 via-stone-50/0 to-transparent dark:from-rose-500/5 dark:via-stone-950/0"
-          />
-          <div className="relative">
+        <div className="relative min-h-dvh text-stone-900 transition-colors dark:text-stone-100">
+          {/* Wallpaper the frosted panels refract */}
+          <div aria-hidden="true" className="app-wallpaper" />
+          <div className="relative z-10">
             <BrowserRouter>
               <Routes>
                 <Route path="/login" element={<LoginLayout />} />

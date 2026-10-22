@@ -19,26 +19,88 @@
 @import "tailwindcss";
 
 @theme {
+  /* SF-style stack: native on Apple platforms, closest match elsewhere. */
   --font-sans:
-    "Lucida Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text",
+    "Segoe UI", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
   --font-mono:
-    "Intel One Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    "SF Mono", "Intel One Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
     monospace;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* -------------------------------------------------------------------------- */
+/*  Frosted-glass tokens                                                       */
+/* -------------------------------------------------------------------------- */
+
+:root {
+  --app-bg: #f3efed;
+
+  --glass-bg: linear-gradient(180deg, rgb(255 255 255 / 0.82), rgb(255 255 255 / 0.64));
+  --glass-border: rgb(255 255 255 / 0.72);
+  --glass-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.9), 0 0 0 1px rgb(41 37 36 / 0.05),
+    0 1px 2px rgb(41 37 36 / 0.04), 0 24px 48px -28px rgb(41 37 36 / 0.4);
+  --glass-blur: 16px;
+  --glass-saturate: 170%;
+
+  --glass-inset-bg: linear-gradient(180deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.3));
+  --glass-inset-border: rgb(255 255 255 / 0.65);
+  --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 1px 2px rgb(41 37 36 / 0.05);
+
+  --glass-control-bg: linear-gradient(180deg, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.72));
+  --glass-control-bg-hover: linear-gradient(180deg, rgb(255 255 255 / 1), rgb(255 255 255 / 0.9));
+  --glass-control-border: rgb(255 255 255 / 0.9);
+  --glass-control-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95), 0 0 0 1px rgb(41 37 36 / 0.07),
+    0 1px 2px rgb(41 37 36 / 0.05);
+
+  --glass-highlight: rgb(255 255 255 / 0.75);
+  --glass-hover: rgb(255 255 255 / 0.35);
+  --glass-divider: rgb(120 113 108 / 0.14);
+}
+
+.dark {
+  --app-bg: #0b0a0a;
+
+  --glass-bg: linear-gradient(180deg, rgb(255 255 255 / 0.085), rgb(255 255 255 / 0.04));
+  --glass-border: rgb(255 255 255 / 0.09);
+  --glass-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.08), 0 0 0 1px rgb(0 0 0 / 0.45),
+    0 24px 56px -24px rgb(0 0 0 / 0.85);
+  --glass-saturate: 150%;
+
+  --glass-inset-bg: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
+  --glass-inset-border: rgb(255 255 255 / 0.07);
+  --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.3);
+
+  --glass-control-bg: linear-gradient(180deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.055));
+  --glass-control-bg-hover: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.17),
+    rgb(255 255 255 / 0.09)
+  );
+  --glass-control-border: rgb(255 255 255 / 0.1);
+  --glass-control-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 1px 2px rgb(0 0 0 / 0.4);
+
+  --glass-highlight: rgb(255 255 255 / 0.12);
+  --glass-hover: rgb(255 255 255 / 0.045);
+  --glass-divider: rgb(255 255 255 / 0.07);
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    background-color: var(--app-bg);
   }
 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    background-color: transparent;
   }
 
   /* Numbers line up in stat cards and tables */
@@ -47,22 +109,18 @@
   }
 
   ::selection {
-    background-color: color-mix(in oklab, var(--color-rose-400) 35%, transparent);
+    background-color: color-mix(in oklab, var(--color-rose-400) 32%, transparent);
   }
 
   /* Slim scrollbars for the scrollable table panels */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-stone-300) transparent;
-  }
-
-  .dark * {
-    scrollbar-color: var(--color-stone-700) transparent;
+    scrollbar-color: color-mix(in oklab, var(--color-stone-500) 32%, transparent) transparent;
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
   }
 
   ::-webkit-scrollbar-track {
@@ -70,20 +128,177 @@
   }
 
   ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
     border-radius: 9999px;
-    background-color: var(--color-stone-300);
+    background-clip: content-box;
+    background-color: color-mix(in oklab, var(--color-stone-500) 30%, transparent);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-stone-400);
+    background-color: color-mix(in oklab, var(--color-stone-500) 48%, transparent);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Surfaces                                                                   */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  /** Translucent panel surface: cards, toolbars, popovers. */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   }
 
-  .dark ::-webkit-scrollbar-thumb {
-    background-color: var(--color-stone-700);
+  /** Floating chrome (titlebar, sticky toolbar) sits a little further off the page. */
+  .glass-toolbar {
+    backdrop-filter: blur(32px) saturate(190%);
+    -webkit-backdrop-filter: blur(32px) saturate(190%);
   }
 
-  .dark ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-stone-600);
+  /** Nested tile inside a glass panel; flat, so stacked blur stays cheap. */
+  .glass-inset {
+    background: var(--glass-inset-bg);
+    border: 1px solid var(--glass-inset-border);
+    box-shadow: var(--glass-inset-shadow);
+  }
+
+  /** macOS-style push button / pop-up menu. */
+  .glass-control {
+    background: var(--glass-control-bg);
+    border: 1px solid var(--glass-control-border);
+    box-shadow: var(--glass-control-shadow);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+  }
+
+  .glass-control:hover:not(:disabled) {
+    background: var(--glass-control-bg-hover);
+  }
+
+  .glass-control:active:not(:disabled) {
+    box-shadow: inset 0 2px 4px rgb(41 37 36 / 0.08);
+  }
+
+  .dark .glass-control:active:not(:disabled) {
+    box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.45);
+  }
+
+  /** Primary call to action: glossy rose, with the inset top highlight of an Aqua button. */
+  .btn-primary {
+    background-image: linear-gradient(180deg, var(--color-rose-500), var(--color-rose-600));
+    border: 1px solid color-mix(in oklab, var(--color-rose-700) 55%, transparent);
+    color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.28),
+      0 1px 2px rgb(28 25 23 / 0.18),
+      0 10px 24px -14px rgb(190 18 60 / 0.9);
+    transition:
+      background-image 150ms ease,
+      box-shadow 200ms ease,
+      transform 100ms ease;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-image: linear-gradient(180deg, var(--color-rose-500), var(--color-rose-500));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.32),
+      0 1px 2px rgb(28 25 23 / 0.16),
+      0 12px 28px -12px rgb(190 18 60 / 0.75);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    background-image: linear-gradient(180deg, var(--color-rose-600), var(--color-rose-600));
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 5px rgb(76 5 25 / 0.35);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* Browsers without backdrop-filter get opaque panels instead of muddy ones. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: rgb(255 255 255 / 0.96);
+    }
+
+    .dark .glass {
+      background: rgb(28 25 23 / 0.96);
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Wallpaper                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.app-wallpaper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--app-bg);
+  background-image:
+    radial-gradient(52rem 38rem at 4% -14%, rgb(251 207 232 / 0.75), transparent 68%),
+    radial-gradient(48rem 34rem at 98% -8%, rgb(233 213 255 / 0.7), transparent 70%),
+    radial-gradient(50rem 38rem at 90% 102%, rgb(186 230 253 / 0.55), transparent 70%),
+    radial-gradient(42rem 32rem at -4% 96%, rgb(254 215 170 / 0.45), transparent 70%),
+    linear-gradient(180deg, #faf7f5 0%, #f2eeec 55%, #ebe7e5 100%);
+}
+
+.dark .app-wallpaper {
+  background-image:
+    radial-gradient(52rem 38rem at 6% -12%, rgb(190 24 93 / 0.28), transparent 68%),
+    radial-gradient(48rem 34rem at 98% -6%, rgb(109 40 217 / 0.3), transparent 70%),
+    radial-gradient(50rem 38rem at 88% 104%, rgb(3 105 161 / 0.26), transparent 70%),
+    radial-gradient(42rem 32rem at -6% 96%, rgb(154 52 18 / 0.2), transparent 70%),
+    linear-gradient(180deg, #121010 0%, #0e0c0c 55%, #0a0909 100%);
+}
+
+/* Fine film grain keeps the large blur fields from banding. */
+.app-wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.dark .app-wallpaper::after {
+  opacity: 0.32;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-bg: rgb(255 255 255 / 0.98);
+    --glass-control-bg: rgb(255 255 255 / 0.98);
+    --glass-control-bg-hover: rgb(255 255 255 / 1);
+    --glass-inset-bg: rgb(255 255 255 / 0.6);
+  }
+
+  .dark {
+    --glass-bg: rgb(24 22 21 / 0.98);
+    --glass-control-bg: rgb(41 37 36 / 0.98);
+    --glass-control-bg-hover: rgb(51 46 45 / 1);
+    --glass-inset-bg: rgb(255 255 255 / 0.06);
+  }
+
+  .glass,
+  .glass-toolbar,
+  .glass-control {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .app-wallpaper::after {
+    display: none;
   }
 }
 

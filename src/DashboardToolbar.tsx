@@ -31,7 +31,7 @@ export function DashboardToolbar() {
   const isFetching = useIsFetching() > 0;
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-stone-200/70 bg-white/70 px-3 py-2.5 shadow-sm shadow-stone-200/30 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:px-4 dark:border-stone-800 dark:bg-stone-900/50 dark:shadow-none">
+    <div className="glass glass-toolbar sticky top-3 z-30 flex flex-col gap-3 rounded-2xl px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4">
       <div className="flex min-w-0 items-center gap-2 sm:gap-3">
         <span className="text-[10px] font-semibold tracking-wider text-stone-400 uppercase sm:text-[11px] dark:text-stone-500">
           Period
@@ -47,7 +47,7 @@ export function DashboardToolbar() {
         onClick={() => queryClient.invalidateQueries()}
         disabled={isFetching}
         aria-busy={isFetching}
-        className={`${controlClass} inline-flex items-center justify-center gap-1.5 self-stretch sm:self-auto disabled:cursor-not-allowed disabled:opacity-60`}
+        className={`${controlClass} inline-flex items-center justify-center gap-1.5 self-stretch disabled:opacity-60 sm:self-auto`}
       >
         {isFetching ? <Spinner className="h-3.5 w-3.5" /> : <RefreshIcon className="h-3.5 w-3.5" />}
         <span>{isFetching ? "Refreshing…" : "Refresh"}</span>

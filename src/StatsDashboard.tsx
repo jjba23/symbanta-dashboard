@@ -52,10 +52,10 @@ function StatCard({
   accent: string;
 }) {
   return (
-    <div className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl border border-stone-200/70 bg-stone-50/80 p-4 transition-colors hover:border-stone-300/80 sm:p-5 dark:border-stone-800 dark:bg-stone-800/40 dark:hover:border-stone-700">
+    <div className="glass-inset group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl p-4 transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-14px_rgb(41_37_36_/_0.45)] sm:p-5">
       <div className="mb-3 flex items-center gap-2">
         <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${accent}`}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg shadow-sm ring-1 ring-white/60 ring-inset ${accent}`}
           aria-hidden="true"
         >
           {icon}
@@ -65,7 +65,7 @@ function StatCard({
         </span>
       </div>
       <span
-        className="block truncate text-xl font-bold tracking-tight tabular-nums text-stone-800 sm:text-2xl xl:text-3xl dark:text-stone-100"
+        className="block truncate text-xl font-semibold tracking-tight tabular-nums text-stone-900 sm:text-2xl xl:text-3xl dark:text-stone-50"
         title={String(value)}
       >
         {value}

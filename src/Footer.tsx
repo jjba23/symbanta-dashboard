@@ -20,7 +20,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-4 border-t border-stone-200/80 pt-6 pb-8 text-sm text-stone-500 sm:pt-8 sm:pb-12 dark:border-stone-800 dark:text-stone-400">
+    <footer className="mt-4 border-t border-stone-500/15 pt-6 pb-8 text-sm text-stone-500 sm:pt-8 sm:pb-12 dark:border-white/10 dark:text-stone-400">
       <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-6">
         {/* Left Section: Logo, Copyright & Contact */}
         <div className="flex flex-col gap-1.5">

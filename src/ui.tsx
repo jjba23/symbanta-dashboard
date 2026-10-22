@@ -31,15 +31,14 @@ import {
 /* -------------------------------------------------------------------------- */
 
 /** Card surface used by every panel of the dashboard. */
-export const cardClass =
-  "@container w-full rounded-3xl border border-stone-200/70 bg-white shadow-sm shadow-stone-200/40 dark:border-stone-800 dark:bg-stone-900/60 dark:shadow-none transition-colors";
+export const cardClass = "@container glass w-full rounded-3xl transition-shadow duration-300";
 
 /** Card inner padding, tuned per breakpoint. */
 export const cardPaddingClass = "p-4 sm:p-6 lg:p-7";
 
 /** Shared styling for the compact controls (selects, inputs, buttons). */
 export const controlClass =
-  "text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 px-3 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700 cursor-pointer transition-colors hover:bg-stone-200/70 dark:hover:bg-stone-700/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:focus-visible:ring-rose-400/40";
+  "glass-control text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-200 px-3 py-1.5 rounded-xl cursor-pointer transition-[background,box-shadow] duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:focus-visible:ring-rose-400/40";
 
 /* -------------------------------------------------------------------------- */
 /*  Icons                                                                      */
@@ -200,7 +199,7 @@ export function Card({
 export function DomainBadge({ domain }: { domain: string }) {
   return (
     <span
-      className="inline-flex max-w-[14rem] items-center truncate rounded-full bg-pink-400/15 px-2.5 py-0.5 align-middle text-sm font-semibold text-pink-700 ring-1 ring-pink-400/30 ring-inset sm:max-w-none dark:bg-pink-400/10 dark:text-pink-300 dark:ring-pink-400/25"
+      className="inline-flex max-w-[14rem] items-center truncate rounded-full bg-rose-500/10 px-2.5 py-0.5 align-middle text-sm font-semibold text-rose-700 ring-1 ring-rose-500/20 ring-inset backdrop-blur-sm sm:max-w-none dark:bg-rose-400/10 dark:text-rose-300 dark:ring-rose-400/20"
       title={domain}
     >
       {domain}
@@ -233,7 +232,7 @@ export function CardHeader({
     <div className="mb-4 flex flex-col gap-2.5 @lg:mb-5 @lg:flex-row @lg:flex-wrap @lg:items-center @lg:justify-between @lg:gap-x-6 @lg:gap-y-2">
       <div className="flex min-w-0 items-center gap-2.5">
         {icon && (
-          <span className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-500 sm:flex dark:bg-stone-800 dark:text-stone-400">
+          <span className="glass-inset hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl text-stone-500 sm:flex dark:text-stone-300">
             {icon}
           </span>
         )}
@@ -305,7 +304,7 @@ export function DateRangeBadge({ from, to }: { from: Date; to: Date }) {
 
   return (
     <div
-      className="inline-flex min-w-0 items-center gap-1.5 rounded-full bg-stone-100 px-2.5 py-1.5 text-[11px] font-medium text-stone-500 sm:text-xs dark:bg-stone-800/80 dark:text-stone-400"
+      className="glass-inset inline-flex min-w-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-medium text-stone-600 sm:text-xs dark:text-stone-300"
       title={formattedDateRange(from, to)}
     >
       <CalendarIcon />
@@ -328,8 +327,8 @@ export function EmptyState({
   description: ReactNode;
 }) {
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-2xl border border-dashed border-stone-200 bg-stone-50/60 px-4 py-10 text-center sm:py-12 dark:border-stone-800 dark:bg-stone-900/30">
-      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200/60 bg-stone-100 text-stone-400 shadow-sm dark:border-stone-700/60 dark:bg-stone-800 dark:text-stone-500">
+    <div className="flex w-full flex-col items-center justify-center rounded-2xl border border-dashed border-stone-400/30 bg-white/20 px-4 py-10 text-center sm:py-12 dark:border-white/10 dark:bg-white/[0.02]">
+      <div className="glass-inset mb-3 flex h-11 w-11 items-center justify-center rounded-2xl text-stone-400 dark:text-stone-400">
         {icon}
       </div>
       <h3 className="mb-1 text-sm font-semibold text-stone-800 sm:text-base dark:text-stone-200">
@@ -352,7 +351,7 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className="flex items-start gap-3 rounded-2xl border border-rose-200/70 bg-rose-50 px-4 py-3.5 text-sm text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-300"
+      className="flex items-start gap-3 rounded-2xl border border-rose-300/50 bg-rose-50/70 px-4 py-3.5 text-sm text-rose-700 backdrop-blur-sm dark:border-rose-500/25 dark:bg-rose-950/40 dark:text-rose-300"
     >
       <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
       <div className="min-w-0">
@@ -372,18 +371,18 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
         {Array.from({ length: columns }).map((_, index) => (
           <div
             key={index}
-            className="h-3 flex-1 rounded-full bg-stone-200/90 dark:bg-stone-800"
+            className="h-3 flex-1 rounded-full bg-stone-400/25 dark:bg-white/10"
             style={{ flexGrow: index === 0 ? 2.5 : 1 }}
           />
         ))}
       </div>
-      <div className="space-y-2.5 border-t border-stone-100 pt-3 dark:border-stone-800/70">
+      <div className="space-y-2.5 border-t border-stone-500/10 pt-3 dark:border-white/5">
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div key={rowIndex} className="flex items-center gap-3">
-            <div className="h-3.5 flex-[2.5] rounded-full bg-stone-100 dark:bg-stone-800/70" />
-            <div className="h-3.5 flex-1 rounded-full bg-stone-100 dark:bg-stone-800/70" />
-            <div className="hidden h-3.5 flex-1 rounded-full bg-stone-100 sm:block dark:bg-stone-800/70" />
-            <div className="h-3.5 w-12 rounded-full bg-stone-100 dark:bg-stone-800/70" />
+            <div className="h-3.5 flex-[2.5] rounded-full bg-stone-400/20 dark:bg-white/[0.07]" />
+            <div className="h-3.5 flex-1 rounded-full bg-stone-400/20 dark:bg-white/[0.07]" />
+            <div className="hidden h-3.5 flex-1 rounded-full bg-stone-400/20 sm:block dark:bg-white/[0.07]" />
+            <div className="h-3.5 w-12 rounded-full bg-stone-400/20 dark:bg-white/[0.07]" />
           </div>
         ))}
       </div>
@@ -400,12 +399,9 @@ export function StatsSkeleton({ count = 4 }: { count?: number }) {
     >
       <span className="sr-only">Loading summary…</span>
       {Array.from({ length: count }).map((_, index) => (
-        <div
-          key={index}
-          className="rounded-2xl border border-stone-100 bg-stone-50/80 p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-800/40"
-        >
-          <div className="mb-3 h-3 w-2/3 rounded-full bg-stone-200/90 dark:bg-stone-700/70" />
-          <div className="h-6 w-1/2 rounded-lg bg-stone-200/90 dark:bg-stone-700/70" />
+        <div key={index} className="glass-inset rounded-2xl p-4 sm:p-5">
+          <div className="mb-3 h-3 w-2/3 rounded-full bg-stone-400/25 dark:bg-white/10" />
+          <div className="h-6 w-1/2 rounded-lg bg-stone-400/25 dark:bg-white/10" />
         </div>
       ))}
     </div>
@@ -425,9 +421,9 @@ export interface StatRow {
 function ShareBar({ percentage }: { percentage: number }) {
   return (
     <div className="flex items-center justify-end gap-2">
-      <div className="hidden h-1.5 w-16 overflow-hidden rounded-full bg-stone-200 md:block lg:w-20 dark:bg-stone-700/80">
+      <div className="hidden h-1.5 w-16 overflow-hidden rounded-full bg-stone-500/15 md:block lg:w-20 dark:bg-white/10">
         <div
-          className="h-full rounded-full bg-rose-500 transition-[width] duration-500 ease-out dark:bg-rose-400"
+          className="h-full rounded-full bg-gradient-to-r from-rose-400 to-rose-500 shadow-[0_0_8px_rgb(244_63_94_/_0.45)] transition-[width] duration-500 ease-out dark:from-rose-400 dark:to-pink-400"
           style={{ width: `${Math.min(100, percentage)}%` }}
         />
       </div>
@@ -461,8 +457,8 @@ export function StatsTable({
   return (
     <div className={`-mx-4 overflow-y-auto sm:-mx-6 lg:-mx-7 ${maxHeightClass}`}>
       <table className="w-full table-fixed border-collapse text-left text-sm">
-        <thead className="sticky top-0 z-10 bg-stone-50/95 backdrop-blur supports-[backdrop-filter]:bg-stone-50/80 dark:bg-stone-900/95 dark:supports-[backdrop-filter]:bg-stone-900/85">
-          <tr className="border-y border-stone-200/70 text-[10px] font-semibold tracking-wider text-stone-500 uppercase sm:text-[11px] dark:border-stone-800 dark:text-stone-400">
+        <thead className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:bg-stone-900/80 dark:supports-[backdrop-filter]:bg-stone-900/60">
+          <tr className="border-y border-white/70 text-[10px] font-semibold tracking-wider text-stone-500 uppercase sm:text-[11px] dark:border-white/[0.07] dark:text-stone-400">
             <th scope="col" className="px-4 py-2.5 font-semibold sm:px-6 lg:px-7">
               {labelHeader}
             </th>
@@ -486,7 +482,7 @@ export function StatsTable({
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-stone-100 dark:divide-stone-800/70">
+        <tbody className="divide-y divide-stone-500/10 dark:divide-white/5">
           {rows.map((row, index) => {
             const percentage = total > 0 ? (row.pageViews / total) * 100 : 0;
             const label = row.label === "" ? emptyLabel : row.label;
@@ -494,7 +490,7 @@ export function StatsTable({
             return (
               <tr
                 key={`${label}-${index}`}
-                className="group text-stone-700 transition-colors hover:bg-stone-50/80 dark:text-stone-300 dark:hover:bg-stone-800/40"
+                className="group text-stone-700 transition-colors hover:bg-white/45 dark:text-stone-300 dark:hover:bg-white/[0.04]"
               >
                 <td className="min-w-0 px-4 py-3 sm:px-6 lg:px-7">
                   <span

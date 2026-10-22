@@ -60,10 +60,10 @@ export function LoginPage() {
       : null;
 
   return (
-    <div className="flex flex-1 items-center justify-center py-8 sm:py-14">
-      <div className="w-full max-w-md rounded-3xl border border-stone-200/70 bg-white p-6 shadow-sm shadow-stone-200/50 transition-colors sm:p-8 dark:border-stone-800 dark:bg-stone-900 dark:shadow-none">
+    <div className="flex flex-1 items-center justify-center py-8 sm:py-16">
+      <div className="glass w-full max-w-sm rounded-3xl p-6 transition-shadow sm:p-8">
         <div className="mb-6">
-          <h2 className="text-xl font-bold tracking-tight text-stone-800 sm:text-2xl dark:text-stone-100">
+          <h2 className="text-xl font-semibold tracking-tight text-stone-900 sm:text-2xl dark:text-stone-50">
             Welcome back
           </h2>
           <p className="mt-1 text-xs text-stone-500 sm:text-sm dark:text-stone-400">
@@ -75,7 +75,7 @@ export function LoginPage() {
           <div>
             <label
               htmlFor="username"
-              className="mb-1.5 block text-xs font-semibold text-stone-600 dark:text-stone-400"
+              className="mb-1.5 block text-[11px] font-semibold tracking-wide text-stone-500 uppercase dark:text-stone-400"
             >
               Username
             </label>
@@ -87,7 +87,7 @@ export function LoginPage() {
               required
               autoComplete="username"
               autoFocus
-              className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-stone-800 transition-colors placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:placeholder:text-stone-500 dark:focus:ring-rose-500/40"
+              className="glass-control w-full cursor-text rounded-xl px-3.5 py-2.5 text-sm text-stone-800 transition-[background,box-shadow] placeholder:text-stone-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-100 dark:placeholder:text-stone-500"
               placeholder="Enter username"
             />
           </div>
@@ -95,7 +95,7 @@ export function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="mb-1.5 block text-xs font-semibold text-stone-600 dark:text-stone-400"
+              className="mb-1.5 block text-[11px] font-semibold tracking-wide text-stone-500 uppercase dark:text-stone-400"
             >
               Password
             </label>
@@ -106,7 +106,7 @@ export function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
-              className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-stone-800 transition-colors placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:placeholder:text-stone-500 dark:focus:ring-rose-500/40"
+              className="glass-control w-full cursor-text rounded-xl px-3.5 py-2.5 text-sm text-stone-800 transition-[background,box-shadow] placeholder:text-stone-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 dark:text-stone-100 dark:placeholder:text-stone-500"
               placeholder="••••••••"
             />
           </div>
@@ -114,7 +114,7 @@ export function LoginPage() {
           {errorMessage && (
             <p
               role="alert"
-              className="rounded-xl border border-rose-200/70 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-600 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-400"
+              className="rounded-xl border border-rose-300/50 bg-rose-50/80 px-3 py-2 text-xs font-medium text-rose-600 backdrop-blur-sm dark:border-rose-500/25 dark:bg-rose-950/40 dark:text-rose-300"
             >
               {errorMessage}
             </p>
@@ -123,7 +123,7 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="mt-1 w-full rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-rose-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 dark:bg-rose-600 dark:focus-visible:ring-offset-stone-900 dark:hover:bg-rose-500"
+            className="btn-primary mt-1 w-full rounded-xl py-2.5 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
           >
             {loginMutation.isPending ? "Signing in…" : "Sign in"}
           </button>

@@ -48,13 +48,13 @@ const levelFilters: Array<{ value: LevelFilter; label: string }> = [
 ];
 
 const levelBadgeClass: Record<ConsoleLogLevel, string> = {
-  log: "bg-stone-100 text-stone-600 ring-stone-200/80 dark:bg-stone-800 dark:text-stone-300 dark:ring-stone-700",
-  info: "bg-sky-50 text-sky-700 ring-sky-200/80 dark:bg-sky-950/60 dark:text-sky-300 dark:ring-sky-900",
-  warn: "bg-amber-50 text-amber-700 ring-amber-200/80 dark:bg-amber-950/60 dark:text-amber-300 dark:ring-amber-900",
+  log: "bg-stone-500/10 text-stone-600 ring-stone-500/20 dark:bg-white/10 dark:text-stone-200 dark:ring-white/15",
+  info: "bg-sky-500/10 text-sky-700 ring-sky-500/25 dark:bg-sky-400/10 dark:text-sky-300 dark:ring-sky-400/25",
+  warn: "bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/25",
   error:
-    "bg-rose-50 text-rose-700 ring-rose-200/80 dark:bg-rose-950/60 dark:text-rose-300 dark:ring-rose-900",
+    "bg-rose-500/10 text-rose-700 ring-rose-500/25 dark:bg-rose-400/10 dark:text-rose-300 dark:ring-rose-400/25",
   debug:
-    "bg-violet-50 text-violet-700 ring-violet-200/80 dark:bg-violet-950/60 dark:text-violet-300 dark:ring-violet-900",
+    "bg-violet-500/10 text-violet-700 ring-violet-500/25 dark:bg-violet-400/10 dark:text-violet-300 dark:ring-violet-400/25",
 };
 
 const limitOptions = [50, 100, 250, 500];
@@ -72,7 +72,7 @@ function LogEntry({ entry }: { entry: V1ConsoleLogEntry }) {
         </span>
         <time dateTime={entry.timestamp}>{formattedDate(new Date(entry.timestamp))}</time>
         {entry.country && entry.country !== "ZZ" && (
-          <span className="rounded bg-stone-100 px-1.5 py-0.5 font-medium dark:bg-stone-800">
+          <span className="rounded-md bg-white/60 px-1.5 py-0.5 font-medium ring-1 ring-white/70 ring-inset dark:bg-white/10 dark:ring-white/10">
             {entry.country}
           </span>
         )}
@@ -171,7 +171,7 @@ export function ConsoleLogs({ domain = "localhost", className }: ConsoleLogsProp
           />
         ) : (
           <div className="-mx-4 max-h-[28rem] overflow-y-auto sm:-mx-6 lg:-mx-7">
-            <ul className="divide-y divide-stone-100 dark:divide-stone-800/70">
+            <ul className="divide-y divide-stone-500/10 dark:divide-white/5">
               {entries.map((entry, index) => (
                 <LogEntry key={`${entry.timestamp}-${index}`} entry={entry} />
               ))}

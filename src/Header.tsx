@@ -25,30 +25,35 @@ interface HeaderProps {
   onSelectDomain?: (domain: string) => void;
 }
 
+/** Frosted title bar: app icon, wordmark and the global controls. */
 function Header({ selectedDomain = "", onSelectDomain }: HeaderProps) {
   return (
-    <header className="flex flex-col gap-4 border-b border-stone-200/70 pb-5 sm:gap-5 sm:pb-6 lg:flex-row lg:items-center lg:justify-between dark:border-stone-800">
-      <div className="min-w-0">
-        <a
-          href="/"
-          className="inline-flex max-w-full items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
-        >
+    <header className="glass glass-toolbar flex flex-col gap-3.5 rounded-2xl px-3.5 py-3 sm:gap-4 sm:px-4 sm:py-3.5 lg:flex-row lg:items-center lg:justify-between">
+      <a
+        href="/"
+        className="group flex min-w-0 items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
+      >
+        <span className="glass-inset flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-[1.03] sm:h-11 sm:w-11">
           <img
             src="https://jointhefreeworld.org/static-assets/symbanta/symbanta-small.png"
             alt="Symbanta logo"
-            className="h-8 w-8 shrink-0 object-contain sm:h-9 sm:w-9"
+            className="h-7 w-7 object-contain sm:h-8 sm:w-8"
           />
-          <span className="truncate text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl lg:text-4xl dark:text-stone-100">
-            symbanta
+        </span>
+        <span className="min-w-0">
+          <span className="flex items-baseline gap-2">
+            <span className="truncate text-xl font-semibold tracking-tight text-stone-900 sm:text-2xl dark:text-stone-50">
+              symbanta
+            </span>
+            <span className="hidden shrink-0 text-xs font-medium text-stone-400 sm:inline dark:text-stone-500">
+              Συμβάντα
+            </span>
           </span>
-          <span className="hidden shrink-0 text-lg font-semibold text-stone-400 sm:inline lg:text-xl dark:text-stone-500">
-            Συμβάντα
+          <span className="mt-0.5 block truncate text-[11px] text-stone-500 sm:text-xs dark:text-stone-400">
+            Your privacy-friendly cozy analytics dashboard.
           </span>
-        </a>
-        <p className="mt-1.5 text-xs text-stone-500 sm:text-sm dark:text-stone-400">
-          Your privacy-friendly cozy analytics dashboard.
-        </p>
-      </div>
+        </span>
+      </a>
 
       <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
         <UserDetails />

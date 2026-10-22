@@ -54,7 +54,7 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
   }
 
   return (
-    <div className="min-w-40 rounded-2xl border border-stone-200/80 bg-white/95 p-3 text-xs font-medium shadow-xl backdrop-blur-md dark:border-stone-800 dark:bg-stone-900/95">
+    <div className="glass min-w-40 rounded-2xl p-3 text-xs font-medium">
       <p className="mb-2 text-[11px] font-semibold tracking-wider text-stone-400 uppercase dark:text-stone-500">
         {label}
       </p>
@@ -63,7 +63,7 @@ const CustomTooltip = ({ active, payload, label }: ChartTooltipProps) => {
           <div key={index} className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span
-                className="h-2.5 w-2.5 rounded-full shadow-sm ring-2 ring-white dark:ring-stone-900"
+                className="h-2.5 w-2.5 rounded-full shadow-sm ring-2 ring-white/80 dark:ring-stone-800"
                 style={{ backgroundColor: entry.color }}
               />
               <span className="font-medium text-stone-600 dark:text-stone-300">{entry.name}</span>
@@ -101,11 +101,11 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
   // Recharts needs raw colour values for SVG attributes; derive them from the
   // *resolved* theme so the chart repaints when the user toggles light/dark.
   const isDarkMode = resolvedTheme === "dark";
-  const gridColor = isDarkMode ? "#292524" : "#eef2f6"; // stone-800 vs light slate
-  const tickColor = isDarkMode ? "#78716c" : "#a8a29e"; // stone-500 vs stone-400
+  const gridColor = isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(120,113,108,0.16)";
+  const tickColor = isDarkMode ? "#a8a29e" : "#78716c"; // stone-400 vs stone-500
   const activeDotStroke = isDarkMode ? "#1c1917" : "#ffffff"; // stone-900 vs white
-  const legendColor = isDarkMode ? "#d6d3d1" : "#57534e"; // stone-300 vs stone-600
-  const cursorColor = isDarkMode ? "#44403c" : "#e7e5e4"; // stone-700 vs stone-200
+  const legendColor = isDarkMode ? "#e7e5e4" : "#57534e"; // stone-200 vs stone-600
+  const cursorColor = isDarkMode ? "rgba(255,255,255,0.22)" : "rgba(120,113,108,0.3)";
 
   const pageViewsColor = isDarkMode ? "#a78bfa" : "#8b5cf6"; // violet-400 vs violet-500
   const visitorsColor = "#f472b6"; // pink-400
@@ -125,7 +125,7 @@ export function TimeSeries({ domain = "localhost" }: TimeSeriesProps) {
 
         {isLoading ? (
           <div
-            className="h-64 w-full animate-pulse rounded-2xl bg-stone-100/90 sm:h-80 lg:h-96 dark:bg-stone-800/50"
+            className="glass-inset h-64 w-full animate-pulse rounded-2xl sm:h-80 lg:h-96"
             role="status"
             aria-live="polite"
           >

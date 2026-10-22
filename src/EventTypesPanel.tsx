@@ -96,7 +96,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
           subtitle="Declare the event names this application emits."
           icon={<BookmarkIcon className="h-4.5 w-4.5" />}
           action={
-            <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-medium text-stone-500 dark:bg-stone-800/80 dark:text-stone-400">
+            <span className="glass-inset rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-600 dark:text-stone-300">
               {eventTypes.length} registered
             </span>
           }
@@ -121,7 +121,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
                 }
               />
             ) : (
-              <ul className="-mx-4 max-h-[22rem] divide-y divide-stone-100 overflow-y-auto sm:-mx-6 dark:divide-stone-800/70">
+              <ul className="-mx-4 max-h-[22rem] divide-y divide-stone-500/10 overflow-y-auto sm:-mx-6 dark:divide-white/5">
                 {eventTypes.map((eventType) => (
                   <li
                     key={eventType.id}
@@ -152,14 +152,11 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
             )}
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-3 rounded-2xl border border-stone-200/70 bg-stone-50/60 p-4 dark:border-stone-800 dark:bg-stone-900/40"
-          >
+          <form onSubmit={handleSubmit} className="glass-inset flex flex-col gap-3 rounded-2xl p-4">
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="event-type-name"
-                className="text-[10px] font-semibold tracking-wider text-stone-400 uppercase dark:text-stone-500"
+                className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase dark:text-stone-400"
               >
                 Event name
               </label>
@@ -179,7 +176,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="event-type-description"
-                className="text-[10px] font-semibold tracking-wider text-stone-400 uppercase dark:text-stone-500"
+                className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase dark:text-stone-400"
               >
                 Description <span className="normal-case">(optional)</span>
               </label>
@@ -197,7 +194,7 @@ export function EventTypesPanel({ domain = "localhost", className }: EventTypesP
               type="submit"
               disabled={!canSubmit}
               aria-busy={register.isPending}
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-rose-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-rose-500 dark:hover:bg-rose-400"
+              className="btn-primary inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50"
             >
               {register.isPending && <Spinner className="h-3.5 w-3.5" />}
               <span>{register.isPending ? "Registering…" : "Register event type"}</span>
