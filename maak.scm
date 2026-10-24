@@ -30,26 +30,21 @@
 
 (define (build)
   "Build the project."
-  ($ (list "nix --extra-experimental-features 'flakes nix-command'"
-           "develop -c bash -c 'npm install && "
-           "npm run build" "'")
-     #:verbose? #t))
+  (nix-develop (list "bash" "-c" "'npm install && npm run build'")
+               #:verbose? #t))
 
 (define (test)
   "Run the automated test suite."
-  ($ (list "nix --extra-experimental-features 'flakes nix-command'"
-           "develop -c bash -c 'npm install && "
-           "npm test" "'")
-     #:verbose? #t))
+  (nix-develop (list "bash" "-c" "'npm install && npm test'")
+               #:verbose? #t))
 
 (define (default)
   "Default task to be run, list available tasks."
-  ($ '("maak --list")))
+  (list-tasks))
 
 (define (deploy)
   "Deploy the project, refusing to continue when the test suite fails."
   (test)
   (build)
-  (delete-file-recursively (~ "~a/*" deploy-dir))
-  ($ (list "cp -rfv dist/*"
-           (~ "~a/" deploy-dir))))
+  (delete-file-recursively (~ "~a/*" deploy-dir) #:expand? #t)
+  (cp "dist/*" (~ "~a/" deploy-dir) #:expand? #t))
