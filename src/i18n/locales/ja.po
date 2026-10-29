@@ -1,7 +1,7 @@
 # symbanta-dashboard — 日本語訳。
 # Copyright © Josep Bigorra <jjbigorra@gmail.com>
 # 
-# This catalog is free documentation under the GNU FDL v1.3 or later.
+# SPDX-License-Identifier: MIT
 # Placeholders such as {count} or {domain} must be kept verbatim.
 msgid ""
 msgstr ""
@@ -12,581 +12,581 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/EventTypesPanel.tsx:187
+#: src/EventTypesPanel.tsx:174
 msgid "(optional)"
 msgstr "（任意）"
 
-#: src/ConsoleLogs.tsx:172
+#: src/ConsoleLogs.tsx:159
 msgid "{count} entry"
 msgid_plural "{count} entries"
 msgstr[0] "{count} 件"
 
-#: src/EventTypesPanel.tsx:102
+#: src/EventTypesPanel.tsx:89
 msgid "{count} registered event type"
 msgid_plural "{count} registered event types"
 msgstr[0] "{count} 件の登録済みイベント種別"
 
-#: src/TimeSeries.tsx:155
+#: src/TimeSeries.tsx:142
 msgid "{count} time bucket"
 msgid_plural "{count} time buckets"
 msgstr[0] "{count} 個の時間バケット"
 
-#: src/ui.tsx:489
+#: src/ui.tsx:476
 msgid "{label} breakdown"
 msgstr "{label} の内訳"
 
-#: src/ui.tsx:495
+#: src/ui.tsx:482
 msgid "{label} breakdown: {views}, visitors and share of total."
 msgstr "{label} の内訳: {views}、訪問者、全体に占める割合。"
 
-#: src/Footer.tsx:42
+#: src/Footer.tsx:29
 msgid "© {year} Josep Bigorra"
 msgstr "© {year} Josep Bigorra"
 
-#: src/EventTypesPanel.tsx:177
+#: src/EventTypesPanel.tsx:164
 msgid "1-120 letters, digits or - _ . : characters"
 msgstr "1〜120文字の英数字、または - _ . : の記号"
 
-#: src/ConsoleLogs.tsx:46
+#: src/ConsoleLogs.tsx:33
 msgid "All levels"
 msgstr "すべてのレベル"
 
-#: src/i18n/periods.ts:58
+#: src/i18n/periods.ts:45
 msgid "All time"
 msgstr "全期間"
 
-#: src/ConsoleLogs.tsx:185
-#: src/CountryStatsTable.tsx:88
-#: src/EventStatsTable.tsx:77
-#: src/EventTypesPanel.tsx:118
-#: src/EventTypesPanel.tsx:211
-#: src/RouteStatsTable.tsx:73
-#: src/ScreenSizeStatsTable.tsx:75
-#: src/StatsDashboard.tsx:112
-#: src/TimeSeries.tsx:139
-#: src/UserAgentStatsTable.tsx:72
+#: src/ConsoleLogs.tsx:172
+#: src/CountryStatsTable.tsx:75
+#: src/EventStatsTable.tsx:64
+#: src/EventTypesPanel.tsx:105
+#: src/EventTypesPanel.tsx:198
+#: src/RouteStatsTable.tsx:60
+#: src/ScreenSizeStatsTable.tsx:62
+#: src/StatsDashboard.tsx:99
+#: src/TimeSeries.tsx:126
+#: src/UserAgentStatsTable.tsx:59
 msgid "An unknown error occurred"
 msgstr "不明なエラーが発生しました"
 
-#: src/App.tsx:84
+#: src/App.tsx:71
 msgid "Analytics"
 msgstr "アクセス解析"
 
-#: src/App.tsx:104
+#: src/App.tsx:91
 msgid "Analytics dashboard"
 msgstr "アクセス解析ダッシュボード"
 
-#: src/App.tsx:103
+#: src/App.tsx:90
 msgid "Analytics for {domain}"
 msgstr "{domain} のアクセス解析"
 
-#: src/DashboardToolbar.tsx:52
+#: src/DashboardToolbar.tsx:39
 msgid "Analytics updated at {time}"
 msgstr "アクセス解析を {time} に更新しました"
 
-#: src/StatsDashboard.tsx:137
+#: src/StatsDashboard.tsx:124
 msgid "Avg. Visit"
 msgstr "平均滞在時間"
 
-#: src/StatsDashboard.tsx:143
+#: src/StatsDashboard.tsx:130
 msgid "Bounce Rate"
 msgstr "直帰率"
 
-#: src/ConsoleLogs.tsx:203
+#: src/ConsoleLogs.tsx:190
 msgid "Console log entries"
 msgstr "コンソールログの項目"
 
-#: src/ConsoleLogs.tsx:138
+#: src/ConsoleLogs.tsx:125
 msgid "Console logs"
 msgstr "コンソールログ"
 
-#: src/Footer.tsx:47
+#: src/Footer.tsx:34
 msgid "Contact:"
 msgstr "連絡先:"
 
-#: src/a11y/ContrastToggle.tsx:39
+#: src/a11y/ContrastToggle.tsx:26
 msgid "Contrast: increased"
 msgstr "コントラスト: 強"
 
-#: src/a11y/ContrastToggle.tsx:39
+#: src/a11y/ContrastToggle.tsx:26
 msgid "Contrast: standard"
 msgstr "コントラスト: 標準"
 
-#: src/ConsoleLogs.tsx:184
+#: src/ConsoleLogs.tsx:171
 msgid "Could not load console logs"
 msgstr "コンソールログを読み込めませんでした"
 
-#: src/CountryStatsTable.tsx:87
+#: src/CountryStatsTable.tsx:74
 msgid "Could not load countries"
 msgstr "国別データを読み込めませんでした"
 
-#: src/EventTypesPanel.tsx:117
+#: src/EventTypesPanel.tsx:104
 msgid "Could not load event types"
 msgstr "イベント種別を読み込めませんでした"
 
-#: src/EventStatsTable.tsx:76
+#: src/EventStatsTable.tsx:63
 msgid "Could not load events"
 msgstr "イベントを読み込めませんでした"
 
-#: src/RouteStatsTable.tsx:72
+#: src/RouteStatsTable.tsx:59
 msgid "Could not load routes"
 msgstr "ルートを読み込めませんでした"
 
-#: src/ScreenSizeStatsTable.tsx:74
+#: src/ScreenSizeStatsTable.tsx:61
 msgid "Could not load screen sizes"
 msgstr "画面サイズを読み込めませんでした"
 
-#: src/StatsDashboard.tsx:111
+#: src/StatsDashboard.tsx:98
 msgid "Could not load the overview"
 msgstr "概要を読み込めませんでした"
 
-#: src/TimeSeries.tsx:138
+#: src/TimeSeries.tsx:125
 msgid "Could not load the time series"
 msgstr "時系列を読み込めませんでした"
 
-#: src/UserAgentStatsTable.tsx:71
+#: src/UserAgentStatsTable.tsx:58
 msgid "Could not load user agents"
 msgstr "ユーザーエージェントを読み込めませんでした"
 
-#: src/CountryStatsTable.tsx:77
+#: src/CountryStatsTable.tsx:64
 msgid "Countries"
 msgstr "国"
 
-#: src/CountryStatsTable.tsx:100
+#: src/CountryStatsTable.tsx:87
 msgid "Country"
 msgstr "国"
 
-#: src/ThemeToggle.tsx:43
+#: src/ThemeToggle.tsx:30
 msgid "Current mode: {mode}"
 msgstr "現在のモード: {mode}"
 
-#: src/i18n/periods.ts:60
+#: src/i18n/periods.ts:47
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/ConsoleLogs.tsx:56
+#: src/ConsoleLogs.tsx:43
 msgid "Debug"
 msgstr "デバッグ"
 
-#: src/EventTypesPanel.tsx:98
+#: src/EventTypesPanel.tsx:85
 msgid "Declare the event names this application emits."
 msgstr "このアプリケーションが送信するイベント名を宣言します。"
 
-#: src/EventTypesPanel.tsx:187
+#: src/EventTypesPanel.tsx:174
 msgid "Description"
 msgstr "説明"
 
-#: src/DomainSwitcher.tsx:64
+#: src/DomainSwitcher.tsx:51
 msgid "Domain"
 msgstr "ドメイン"
 
-#: src/DomainSwitcher.tsx:71
+#: src/DomainSwitcher.tsx:58
 msgid "Enter domain…"
 msgstr "ドメインを入力…"
 
-#: src/LoginPage.tsx:93
+#: src/LoginPage.tsx:80
 msgid "Enter username"
 msgstr "ユーザー名を入力"
 
-#: src/ConsoleLogs.tsx:54
+#: src/ConsoleLogs.tsx:41
 msgid "Error"
 msgstr "エラー"
 
-#: src/EventStatsTable.tsx:88
+#: src/EventStatsTable.tsx:75
 msgid "Event"
 msgstr "イベント"
 
-#: src/EventTypesPanel.tsx:167
+#: src/EventTypesPanel.tsx:154
 msgid "Event name"
 msgstr "イベント名"
 
-#: src/EventTypesPanel.tsx:96
+#: src/EventTypesPanel.tsx:83
 msgid "Event types"
 msgstr "イベント種別"
 
-#: src/EventStatsTable.tsx:66
+#: src/EventStatsTable.tsx:53
 msgid "Events"
 msgstr "イベント"
 
-#: src/UserDetails.tsx:42
-#: src/UserDetails.tsx:43
+#: src/UserDetails.tsx:29
+#: src/UserDetails.tsx:30
 msgid "Failed to load user"
 msgstr "ユーザーを読み込めませんでした"
 
-#: src/Footer.tsx:60
+#: src/Footer.tsx:47
 msgid "Free Software under the"
 msgstr "次のライセンスによる自由ソフトウェア:"
 
-#: src/a11y/ContrastToggle.tsx:38
+#: src/a11y/ContrastToggle.tsx:25
 msgid "Increase contrast"
 msgstr "コントラストを強くする"
 
-#: src/ConsoleLogs.tsx:50
+#: src/ConsoleLogs.tsx:37
 msgid "Info"
 msgstr "情報"
 
-#: src/LoginPage.tsx:59
+#: src/LoginPage.tsx:46
 msgid "Invalid username or password"
 msgstr "ユーザー名またはパスワードが正しくありません"
 
-#: src/i18n/LocaleSwitcher.tsx:31
+#: src/i18n/LocaleSwitcher.tsx:18
 msgid "Language"
 msgstr "言語"
 
-#: src/i18n/periods.ts:52
+#: src/i18n/periods.ts:39
 msgid "Last 12 Months"
 msgstr "過去12か月"
 
-#: src/i18n/periods.ts:38
+#: src/i18n/periods.ts:25
 msgid "Last 24 Hours"
 msgstr "過去24時間"
 
-#: src/i18n/periods.ts:40
+#: src/i18n/periods.ts:27
 msgid "Last 3 Days"
 msgstr "過去3日間"
 
-#: src/i18n/periods.ts:44
+#: src/i18n/periods.ts:31
 msgid "Last 30 Days"
 msgstr "過去30日間"
 
-#: src/i18n/periods.ts:50
+#: src/i18n/periods.ts:37
 msgid "Last 6 Months"
 msgstr "過去6か月"
 
-#: src/i18n/periods.ts:42
+#: src/i18n/periods.ts:29
 msgid "Last 7 Days"
 msgstr "過去7日間"
 
-#: src/i18n/periods.ts:48
+#: src/i18n/periods.ts:35
 msgid "Last month"
 msgstr "先月"
 
-#: src/i18n/periods.ts:56
+#: src/i18n/periods.ts:43
 msgid "Last year"
 msgstr "昨年"
 
-#: src/ConsoleLogs.tsx:140
+#: src/ConsoleLogs.tsx:127
 msgid "Latest console output forwarded by the instrumented application."
 msgstr "計測対象アプリケーションから送信された最新のコンソール出力。"
 
-#: src/ui.tsx:392
+#: src/ui.tsx:379
 msgid "Loading analytics…"
 msgstr "アクセス解析を読み込み中…"
 
-#: src/DomainSwitcher.tsx:52
+#: src/DomainSwitcher.tsx:39
 msgid "Loading properties…"
 msgstr "プロパティを読み込み中…"
 
-#: src/ui.tsx:425
+#: src/ui.tsx:412
 msgid "Loading summary…"
 msgstr "概要を読み込み中…"
 
-#: src/TimeSeries.tsx:134
+#: src/TimeSeries.tsx:121
 msgid "Loading time series…"
 msgstr "時系列を読み込み中…"
 
-#: src/UserDetails.tsx:34
+#: src/UserDetails.tsx:21
 msgid "Loading user"
 msgstr "ユーザーを読み込み中"
 
-#: src/UserDetails.tsx:33
+#: src/UserDetails.tsx:20
 msgid "Loading…"
 msgstr "読み込み中…"
 
-#: src/ConsoleLogs.tsx:48
+#: src/ConsoleLogs.tsx:35
 msgid "Log"
 msgstr "ログ"
 
-#: src/ConsoleLogs.tsx:145
+#: src/ConsoleLogs.tsx:132
 msgid "Log level"
 msgstr "ログレベル"
 
-#: src/ConsoleLogs.tsx:190
+#: src/ConsoleLogs.tsx:177
 msgid "No console logs"
 msgstr "コンソールログはありません"
 
-#: src/ConsoleLogs.tsx:194
+#: src/ConsoleLogs.tsx:181
 msgid "No console output was forwarded for {domain} at level {level}."
 msgstr "{domain} のレベル {level} のコンソール出力は送信されていません。"
 
-#: src/ConsoleLogs.tsx:193
+#: src/ConsoleLogs.tsx:180
 msgid "No console output was forwarded for {domain}."
 msgstr "{domain} のコンソール出力は送信されていません。"
 
-#: src/CountryStatsTable.tsx:93
+#: src/CountryStatsTable.tsx:80
 msgid "No country data available"
 msgstr "国別データがありません"
 
-#: src/EventTypesPanel.tsx:123
+#: src/EventTypesPanel.tsx:110
 msgid "No event types registered"
 msgstr "イベント種別が登録されていません"
 
-#: src/EventStatsTable.tsx:83
+#: src/EventStatsTable.tsx:70
 msgid "No events found for {domain} in this timeframe."
 msgstr "この期間に {domain} のイベントは見つかりませんでした。"
 
-#: src/EventStatsTable.tsx:82
+#: src/EventStatsTable.tsx:69
 msgid "No events recorded"
 msgstr "イベントは記録されていません"
 
-#: src/RouteStatsTable.tsx:78
+#: src/RouteStatsTable.tsx:65
 msgid "No route data available"
 msgstr "ルートデータがありません"
 
-#: src/RouteStatsTable.tsx:79
+#: src/RouteStatsTable.tsx:66
 msgid "No route records found for {domain} in this timeframe."
 msgstr "この期間に {domain} のルートは見つかりませんでした。"
 
-#: src/ScreenSizeStatsTable.tsx:80
+#: src/ScreenSizeStatsTable.tsx:67
 msgid "No screen size data available"
 msgstr "画面サイズのデータがありません"
 
-#: src/ScreenSizeStatsTable.tsx:81
+#: src/ScreenSizeStatsTable.tsx:68
 msgid "No screen size records found for {domain} in this timeframe."
 msgstr "この期間に {domain} の画面サイズは見つかりませんでした。"
 
-#: src/StatsDashboard.tsx:117
+#: src/StatsDashboard.tsx:104
 msgid "No summary data available"
 msgstr "概要データがありません"
 
-#: src/StatsDashboard.tsx:118
+#: src/StatsDashboard.tsx:105
 msgid "No traffic activity recorded for {domain} in this timeframe."
 msgstr "この期間に {domain} のアクセスは記録されていません。"
 
-#: src/TimeSeries.tsx:144
+#: src/TimeSeries.tsx:131
 msgid "No traffic recorded"
 msgstr "アクセスは記録されていません"
 
-#: src/UserAgentStatsTable.tsx:77
+#: src/UserAgentStatsTable.tsx:64
 msgid "No user agent data available"
 msgstr "ユーザーエージェントのデータがありません"
 
-#: src/UserAgentStatsTable.tsx:78
+#: src/UserAgentStatsTable.tsx:65
 msgid "No user agent records found for {domain} in this timeframe."
 msgstr "この期間に {domain} のユーザーエージェントは見つかりませんでした。"
 
-#: src/CountryStatsTable.tsx:94
+#: src/CountryStatsTable.tsx:81
 msgid "No visitors with a resolvable country for {domain} in this timeframe."
 msgstr "この期間に {domain} で国を特定できる訪問者はいません。"
 
-#: src/EventTypesPanel.tsx:124
+#: src/EventTypesPanel.tsx:111
 msgid ""
 "Nothing has been declared for {domain} yet. Page views appear here "
 "automatically as they are ingested."
 msgstr "{domain} にはまだ何も宣言されていません。ページビューは受信すると自動的にここに表示されます。"
 
-#: src/ConsoleLogs.tsx:161
+#: src/ConsoleLogs.tsx:148
 msgid "Number of log entries"
 msgstr "ログの表示件数"
 
-#: src/EventStatsTable.tsx:89
+#: src/EventStatsTable.tsx:76
 msgid "Occurrences"
 msgstr "発生回数"
 
-#: src/StatsDashboard.tsx:100
+#: src/StatsDashboard.tsx:87
 msgid "Overview"
 msgstr "概要"
 
-#: src/TimeSeries.tsx:254
+#: src/TimeSeries.tsx:241
 msgid "Page views"
 msgstr "ページビュー"
 
-#: src/StatsDashboard.tsx:125
-#: src/TimeSeries.tsx:221
+#: src/StatsDashboard.tsx:112
+#: src/TimeSeries.tsx:208
 msgid "Page Views"
 msgstr "ページビュー"
 
-#: src/TimeSeries.tsx:124
+#: src/TimeSeries.tsx:111
 msgid "Page views and unique visitors over time"
 msgstr "ページビューとユニーク訪問者の推移"
 
-#: src/LoginPage.tsx:102
+#: src/LoginPage.tsx:89
 msgid "Password"
 msgstr "パスワード"
 
-#: src/DashboardToolbar.tsx:78
+#: src/DashboardToolbar.tsx:65
 msgid "Period"
 msgstr "期間"
 
-#: src/DomainSwitcher.tsx:84
+#: src/DomainSwitcher.tsx:71
 msgid "Property"
 msgstr "プロパティ"
 
-#: src/DashboardToolbar.tsx:102
+#: src/DashboardToolbar.tsx:89
 msgid "Refresh"
 msgstr "更新"
 
-#: src/DashboardToolbar.tsx:65
+#: src/DashboardToolbar.tsx:52
 msgid "Refreshing analytics…"
 msgstr "アクセス解析を更新中…"
 
-#: src/DashboardToolbar.tsx:102
+#: src/DashboardToolbar.tsx:89
 msgid "Refreshing…"
 msgstr "更新中…"
 
-#: src/EventTypesPanel.tsx:206
+#: src/EventTypesPanel.tsx:193
 msgid "Register event type"
 msgstr "イベント種別を登録"
 
-#: src/EventTypesPanel.tsx:216
+#: src/EventTypesPanel.tsx:203
 msgid "Registered {name}."
 msgstr "{name} を登録しました。"
 
-#: src/EventTypesPanel.tsx:206
+#: src/EventTypesPanel.tsx:193
 msgid "Registering…"
 msgstr "登録中…"
 
-#: src/DashboardToolbar.tsx:70
+#: src/DashboardToolbar.tsx:57
 msgid "Reporting filters"
 msgstr "レポートの絞り込み"
 
-#: src/ui.tsx:298
+#: src/ui.tsx:285
 msgid "Reporting period"
 msgstr "レポート期間"
 
-#: src/ScreenSizeStatsTable.tsx:86
+#: src/ScreenSizeStatsTable.tsx:73
 msgid "Resolution"
 msgstr "解像度"
 
-#: src/RouteStatsTable.tsx:82
+#: src/RouteStatsTable.tsx:69
 msgid "Route"
 msgstr "ルート"
 
-#: src/ScreenSizeStatsTable.tsx:64
+#: src/ScreenSizeStatsTable.tsx:51
 msgid "Screen sizes"
 msgstr "画面サイズ"
 
-#: src/ui.tsx:521
+#: src/ui.tsx:508
 msgid "Share"
 msgstr "割合"
 
-#: src/App.tsx:128
-#: src/LoginPage.tsx:130
+#: src/App.tsx:115
+#: src/LoginPage.tsx:117
 msgid "Sign in"
 msgstr "ログイン"
 
-#: src/LoginPage.tsx:72
+#: src/LoginPage.tsx:59
 msgid "Sign in to access your analytics."
 msgstr "ログインしてアクセス解析を表示します。"
 
-#: src/LoginPage.tsx:130
+#: src/LoginPage.tsx:117
 msgid "Signing in…"
 msgstr "ログイン中…"
 
-#: src/a11y/SkipLink.tsx:41
+#: src/a11y/SkipLink.tsx:28
 msgid "Skip to the analytics"
 msgstr "アクセス解析へ移動"
 
-#: src/ui.tsx:379
+#: src/ui.tsx:366
 msgid "Something went wrong"
 msgstr "問題が発生しました"
 
-#: src/Footer.tsx:72
+#: src/Footer.tsx:59
 msgid "Source code:"
 msgstr "ソースコード:"
 
-#: src/ThemeToggle.tsx:36
+#: src/ThemeToggle.tsx:23
 msgid "Switch to dark mode"
 msgstr "ダークモードに切り替える"
 
-#: src/ThemeToggle.tsx:36
+#: src/ThemeToggle.tsx:23
 msgid "Switch to light mode"
 msgstr "ライトモードに切り替える"
 
-#: src/Header.tsx:39
+#: src/Header.tsx:26
 msgid "symbanta — go to the analytics dashboard"
 msgstr "symbanta — アクセス解析ダッシュボードへ移動"
 
-#: src/TimeSeries.tsx:145
+#: src/TimeSeries.tsx:132
 msgid "There are no page views or unique visitors recorded for this time period."
 msgstr "この期間に記録されたページビューやユニーク訪問者はありません。"
 
-#: src/i18n/periods.ts:46
+#: src/i18n/periods.ts:33
 msgid "This month"
 msgstr "今月"
 
-#: src/i18n/periods.ts:54
+#: src/i18n/periods.ts:41
 msgid "This year"
 msgstr "今年"
 
-#: src/TimeSeries.tsx:253
+#: src/TimeSeries.tsx:240
 msgid "Time"
 msgstr "時刻"
 
-#: src/i18n/periods.ts:34
+#: src/i18n/periods.ts:21
 msgid "Today"
 msgstr "今日"
 
-#: src/RouteStatsTable.tsx:62
+#: src/RouteStatsTable.tsx:49
 msgid "Top routes"
 msgstr "上位ルート"
 
-#: src/StatsDashboard.tsx:102
+#: src/StatsDashboard.tsx:89
 msgid "Traffic highlights for the selected period"
 msgstr "選択した期間のアクセスの概要"
 
-#: src/TimeSeries.tsx:123
+#: src/TimeSeries.tsx:110
 msgid "Traffic Trends"
 msgstr "アクセスの推移"
 
-#: src/TimeSeries.tsx:153
+#: src/TimeSeries.tsx:140
 msgid ""
 "Traffic trends chart: page views and unique visitors across {buckets}. The "
 "same numbers are available in the table that follows."
 msgstr "アクセス推移グラフ: {buckets} にわたるページビューとユニーク訪問者。同じ数値は次の表でも確認できます。"
 
-#: src/TimeSeries.tsx:250
+#: src/TimeSeries.tsx:237
 msgid "Traffic trends for the selected period"
 msgstr "選択した期間のアクセス推移"
 
-#: src/TimeSeries.tsx:255
+#: src/TimeSeries.tsx:242
 msgid "Unique visitors"
 msgstr "ユニーク訪問者"
 
-#: src/StatsDashboard.tsx:131
-#: src/TimeSeries.tsx:233
+#: src/StatsDashboard.tsx:118
+#: src/TimeSeries.tsx:220
 msgid "Unique Visitors"
 msgstr "ユニーク訪問者"
 
-#: src/CountryStatsTable.tsx:100
-#: src/EventStatsTable.tsx:90
-#: src/ScreenSizeStatsTable.tsx:86
-#: src/UserAgentStatsTable.tsx:83
+#: src/CountryStatsTable.tsx:87
+#: src/EventStatsTable.tsx:77
+#: src/ScreenSizeStatsTable.tsx:73
+#: src/UserAgentStatsTable.tsx:70
 msgid "Unknown"
 msgstr "不明"
 
-#: src/UserAgentStatsTable.tsx:83
+#: src/UserAgentStatsTable.tsx:70
 msgid "User agent"
 msgstr "ユーザーエージェント"
 
-#: src/UserAgentStatsTable.tsx:61
+#: src/UserAgentStatsTable.tsx:48
 msgid "User agents"
 msgstr "ユーザーエージェント"
 
-#: src/EventTypesPanel.tsx:193
+#: src/EventTypesPanel.tsx:180
 msgid "User completed the signup form"
 msgstr "登録フォームを送信した"
 
-#: src/LoginPage.tsx:82
+#: src/LoginPage.tsx:69
 msgid "Username"
 msgstr "ユーザー名"
 
-#: src/ui.tsx:515
+#: src/ui.tsx:502
 msgid "Visitors"
 msgstr "訪問者"
 
-#: src/ConsoleLogs.tsx:52
+#: src/ConsoleLogs.tsx:39
 msgid "Warn"
 msgstr "警告"
 
-#: src/LoginPage.tsx:69
+#: src/LoginPage.tsx:56
 msgid "Welcome back"
 msgstr "おかえりなさい"
 
-#: src/i18n/periods.ts:36
+#: src/i18n/periods.ts:23
 msgid "Yesterday"
 msgstr "昨日"
 
-#: src/Header.tsx:62
+#: src/Header.tsx:49
 msgid "Your privacy-friendly cozy analytics dashboard."
 msgstr "プライバシーに配慮した、居心地のよいアクセス解析ダッシュボード。"
