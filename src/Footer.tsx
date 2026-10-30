@@ -1,20 +1,7 @@
-/* symbanta-dashboard
- *
- * Copyright © Josep Bigorra <jjbigorra@gmail.com>
- *
- * symbanta-dashboard is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * symbanta-dashboard is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with symbanta-dashboard.  If not, see <https://www.gnu.org/licenses/>.
- */
+// symbanta-dashboard
+//
+// SPDX-License-Identifier: MIT
+// Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 import { useI18n } from "./i18n/I18nContext.tsx";
 function Footer() {
@@ -59,12 +46,12 @@ function Footer() {
           <p className="flex flex-wrap items-center gap-1.5">
             <span>{t("Free Software under the")}</span>
             <a
-              href="https://www.gnu.org/licenses/agpl-3.0.html"
+              href="https://opensource.org/license/mit"
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-stone-700 underline decoration-stone-300 underline-offset-2 transition-colors hover:text-stone-900 dark:text-stone-300 dark:decoration-stone-700 dark:hover:text-stone-100"
             >
-              GNU AGPLv3+
+              MIT License
             </a>
           </p>
 
