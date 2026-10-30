@@ -4,7 +4,7 @@
 #+language: en
 #+options: toc:nil num:nil
 
-[[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]    [[https://img.shields.io/badge/tests-303_passing-6f42c1.svg]]    [[https://img.shields.io/badge/WCAG_2.1-AA-2ea44f.svg]]    [[https://img.shields.io/badge/development-no_backend_needed-ff69b4.svg]]    [[https://img.shields.io/badge/stack-React_19_+_Vite_8_+_Tailwind_4-38bdf8.svg]]    [[https://img.shields.io/badge/i18n-8_languages_GNU_gettext-a86454.svg]]
+[[https://jointhefreeworld.org/ggg/dist/license-mit.svg]]    [[https://img.shields.io/badge/tests-303_passing-6f42c1.svg]]    [[https://img.shields.io/badge/WCAG_2.1-AA-2ea44f.svg]]    [[https://img.shields.io/badge/development-no_backend_needed-ff69b4.svg]]    [[https://img.shields.io/badge/stack-React_19_+_Vite_8_+_Tailwind_4-38bdf8.svg]]    [[https://img.shields.io/badge/i18n-8_languages_GNU_gettext-a86454.svg]]
 
 #+begin_quote
 *Symbanta* is the dashboard for the [[https://codeberg.org/jjba23/symbanta][symbanta analytics core]]: a fast, beautifully frosted interface that answers one question — /what happened on my site, and is it getting better?/ — without ads, without visitor profiles, and without a single byte of personal data leaving your server.
@@ -499,7 +499,7 @@ npm run build        # type-check + production bundle
 - *Tests are non-negotiable*: every behaviour change comes with a test, and the accessibility suites must stay green. If you add a colour, add it to the contract; the suite will tell you if it is unreadable.
 - *Small, focused commits* with a clear message (the history uses short conventional prefixes such as =feat:=, =ci:= and =fix:=).
 - *Branch =trunk=* is the main line; Woodpecker + Byggsteg run =maak test= then build and deploy on every push.
-- *AI assistance*: fine — as a tool, with a human in the loop. Read the [[*AI Policy][AI Policy]] before contributing; autonomous agents opening pull requests are not accepted.
+- *AI assistance*: fine — as a tool, with a human in the loop. Read the [[*AI Policy][AI Policy]] before contributing.
 
 ** A note on the design system
 
@@ -507,13 +507,9 @@ The glass is not decoration on top of the data; it is the thing that keeps the n
 
 * Licensing
 
-This project and all of its source code are free software, licensed under the GNU Affero General Public License v3 (or newer at your convenience).
+This project and all of its source code, documentation and examples, including this document, are licensed under the MIT License.
 
-https://www.gnu.org/licenses/agpl-3.0.html
-
-The documentation and examples, including this document, which are provided are all licensed under the GNU Free Documentation License v1.3 (or newer at your convenience).
-
-https://www.gnu.org/licenses/fdl-1.3.html
+https://opensource.org/license/mit
 
 * AI Policy
 
@@ -523,7 +519,7 @@ Our core principle is simple: *AI should assist human creativity and problem-sol
 
 While tools like Large Language Models (LLMs) and interactive chatbots can be beneficial for reviewing, refactoring small functions, or acting as a sounding board, they should be used with moderation.
 
-We require a human in the loop for all contributions. The use of autonomous AI agents to automatically generate and submit pull requests to this project is strictly prohibited.
+We require a human in the loop for all contributions.
 
 * Code of conduct
 
