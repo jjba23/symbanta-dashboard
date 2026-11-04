@@ -6,6 +6,9 @@
 
 [[https://jointhefreeworld.org/ggg/dist/license-mit.svg]]    [[https://img.shields.io/badge/tests-303_passing-6f42c1.svg]]    [[https://img.shields.io/badge/WCAG_2.1-AA-2ea44f.svg]]    [[https://img.shields.io/badge/development-no_backend_needed-ff69b4.svg]]    [[https://img.shields.io/badge/stack-React_19_+_Vite_8_+_Tailwind_4-38bdf8.svg]]    [[https://img.shields.io/badge/i18n-8_languages_GNU_gettext-a86454.svg]]
 
+#+attr_html: :width 160 :alt Symbanta Dashboard logo
+[[file:logo.svg]]
+
 #+begin_quote
 *Symbanta* is the dashboard for the [[https://codeberg.org/jjba23/symbanta][symbanta analytics core]]: a fast, beautifully frosted interface that answers one question — /what happened on my site, and is it getting better?/ — without ads, without visitor profiles, and without a single byte of personal data leaving your server.
 #+end_quote
